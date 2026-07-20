@@ -50,16 +50,20 @@ def first_float(patterns,text):
         if m:return float(m.group(1).replace(',',''))
     return None
 
-def bedroom_rents(one_bed):
-    # Planning ratios derived from typical long-term-rental relationships.
-    # Exact bedroom-specific figures remain editable because small mountain
-    # markets often lack enough active listings for stable averages.
+def property_rents(one_bed):
+    # The public benchmark is generally closest to an apartment/condo 1BR.
+    # These type-and-bedroom adjustments are editable planning estimates,
+    # particularly in small markets with few long-term rental listings.
+    condo_factors = {'1': 1.00, '2': 1.30, '3': 1.58, '4': 1.86}
+    single_factors = {'1': 1.12, '2': 1.48, '3': 1.90, '4': 2.30}
     return {
-        '1': round(one_bed),
-        '2': round(one_bed * 1.32),
-        '3': round(one_bed * 1.62),
-        '4': round(one_bed * 1.92),
+        'condo': {k: round(one_bed * f / 25) * 25 for k, f in condo_factors.items()},
+        'single': {k: round(one_bed * f / 25) * 25 for k, f in single_factors.items()},
     }
+
+def bedroom_rents(one_bed):
+    # Backward-compatible condo/apartment estimates.
+    return property_rents(one_bed)['condo']
 
 def bedroom_prices(home_value, property_type='condo'):
     # These are editable planning estimates, not appraisals. The overall local
@@ -100,12 +104,14 @@ def market(location='mammoth'):
         out['status']['home_value']='Updated from public home-value page'
     except Exception:
         out['status']['home_value']='Saved editable local home-value benchmark'
-    out['bedroom_rents']=bedroom_rents(out['rent'])
+    out['property_rents']=property_rents(out['rent'])
+    out['bedroom_rents']=out['property_rents']['condo']
     out['bedroom_prices']={
         'condo': bedroom_prices(out['home_value'],'condo'),
         'single': bedroom_prices(out['home_value'],'single')
     }
-    out['status']['bedroom_rents']='Editable bedroom estimates anchored to the local 1BR benchmark'
+    out['status']['bedroom_rents']='Editable condo and single-family rent estimates anchored to the local 1BR benchmark'
+    out['status']['property_rents']='Property-type and bedroom estimates; sparse markets require caution'
     out['status']['bedroom_prices']='Editable purchase-price estimates anchored to the local overall home-value benchmark'
     out['status']['hoa']='Location-specific editable condo benchmark'
     out['status']['insurance']='Editable home-insurance planning estimate'
@@ -122,7 +128,8 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if u.path=='/api/locations':
             data=json.dumps({k:{'name':v['name'],**v,
-                'bedroom_rents':bedroom_rents(v['rent']),
+                'property_rents':property_rents(v['rent']),
+                'bedroom_rents':property_rents(v['rent'])['condo'],
                 'bedroom_prices':{
                     'condo':bedroom_prices(v['home_value'],'condo'),
                     'single':bedroom_prices(v['home_value'],'single')

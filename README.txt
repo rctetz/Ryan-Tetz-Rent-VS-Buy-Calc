@@ -83,3 +83,19 @@ HOUSE ALPHA V11
 - Renter garage/storage raises only the renting side of the primary-residence comparison.
 - Fixes initial premium to compare owner cost with total renter cost including renter storage.
 - Fixes an old initialization reference that could prevent some controls from loading correctly.
+
+HOUSE ALPHA V12
+- Separates Primary Residence and Rental / Investment Property into distinct comparisons.
+- Investment mode compares the rental-property strategy directly with an S&P 500 index-fund strategy.
+- Removes renter, renter-storage, and owner-garage comparisons from investment mode.
+- Rental-property storage/garage costs are forced to zero and the garage UI is hidden in investment mode.
+- Adds estimated rent by location, property type (condo or single-family), and 1–4 bedrooms.
+- Gross collected rent and its market-rent cap can auto-load from the selected property estimate.
+- Rental income growth is capped by a market-rent ceiling that rises with inflation.
+- Adds a Use Local Rent Estimate button and preserves manual rent overrides.
+- Investment results relabel all metrics, milestones, and break-even text around S&P 500 versus rental-property wealth.
+
+V12 FINAL PATCH
+- Investment gross-rent break-even now moves the tested market-rent cap with rent.
+- Down-payment comparison relabels and recalculates monthly property costs for investment mode.
+- Adds clearer no-crossing language when a rental continues to trail the S&P 500.

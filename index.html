@@ -58,17 +58,15 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div><label>PMI cancellation LTV %</label><input id="pmiCancelLtv" type="number" value="80" step="1" min="70" max="100"></div>
 </div>
 
-<h3>Rent and recurring costs</h3>
+<h3 id="primaryRentHeading">Rent-versus-own assumptions</h3>
 <div id="primaryRentSection">
 <div class="form">
 <div><label>Current base rent</label><input id="rent" type="number"></div>
 <div><label>Market rent cap</label><input id="rentCap" type="number"></div>
 </div>
-<div class="switchrow" style="margin-top:10px"><div><b>Include HOA</b><div class="muted">On by default for condos</div></div><label class="switch"><input id="hoaOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
-<div class="form" style="margin-top:10px"><div><label>HOA / month</label><input id="hoa" type="number"></div><div><label>HOA growth %</label><input id="hoaGrowth" type="number" value="4"></div></div>
 <div id="renterGarageBlock" style="margin-top:10px;padding:12px;border:2px solid #cbd9ef;border-radius:13px;background:#f6f9ff">
 <div class="switchrow" style="border:0;padding:0;background:transparent">
-<div><b>Add renter-paid garage/storage</b><div class="muted">Adds a separate garage or storage-unit charge only to the renting side of the comparison.</div></div>
+<div><b>Add renter-paid garage/storage</b><div class="muted">Adds a separate garage or storage-unit charge only to the renting side.</div></div>
 <label class="switch"><input id="renterStorageOn" type="checkbox" checked><span class="sliderSwitch"></span></label>
 </div>
 <div style="margin-top:9px"><label>Renter garage/storage monthly</label><input id="renterStorage" type="number"></div>
@@ -76,9 +74,13 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 </div>
 </div>
 
-<div style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff">
+<h3 id="propertyCostsHeading">Purchased-property expenses</h3>
+<div class="switchrow" style="margin-top:10px"><div><b>Include HOA</b><div class="muted">On by default for condos and townhomes.</div></div><label class="switch"><input id="hoaOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
+<div class="form" style="margin-top:10px"><div><label>HOA / month</label><input id="hoa" type="number"></div><div><label>HOA growth %</label><input id="hoaGrowth" type="number" value="4"></div></div>
+
+<div id="ownerGarageBlock" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff">
 <b>Property being purchased garage/storage</b>
-<div class="muted" style="margin:3px 0 9px">A separate cost paid only after buying.</div>
+<div class="muted" style="margin:3px 0 9px">Used only in the primary-residence comparison.</div>
 <label>Owner garage/storage situation</label>
 <select id="ownerGarageSituation">
 <option value="auto">Auto based on property</option>
@@ -94,28 +96,40 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div class="form" style="margin-top:10px">
 <div><label>Home insurance / month</label><input id="insurance" type="number"></div>
 <div class="switchrow" style="grid-column:1/-1"><div><b>Auto-scale insurance with price</b><div class="muted">Gentler scaling for condos; stronger scaling for single-family homes. Turn off for a real quote.</div></div><label class="switch"><input id="insuranceAuto" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
-<div><label>Property tax rate %</label><input id="taxRate" type="number" step=".01"></div><div><label>Maintenance % / year</label><input id="maintRate" type="number" value=".5" step=".1"></div>
-<div><label>Assessment reserve / month</label><input id="assessment" type="number" value="100"></div><div><label>Holding period, years</label><input id="years" type="number" value="15"></div>
+<div><label>Property tax rate %</label><input id="taxRate" type="number" step=".01"></div>
+<div><label>Maintenance % / year</label><input id="maintRate" type="number" value=".5" step=".1"></div>
+<div><label>Assessment reserve / month</label><input id="assessment" type="number" value="100"></div>
+<div><label>Holding period, years</label><input id="years" type="number" value="15"></div>
 </div>
 
 <div id="rentalSection" style="display:none">
-<h3>Rental-income assumptions</h3>
+<div class="status" style="margin-top:16px;border-left-color:var(--green)">
+<b>Investment comparison</b><br>
+Buy and operate this rental property versus investing the same down payment, closing costs, and future out-of-pocket contributions in an S&amp;P 500 index fund.
+</div>
+<h3>Estimated rental income</h3>
 <div class="form">
-<div><label>Gross rent collected / month</label><input id="rentCollected" type="number" value="2985" step="50"></div>
-<div><label>Local bedroom rent estimate</label><input id="bedroomRentEstimate" type="number" value="2985" disabled></div>
-<div><label>Local bedroom purchase-price estimate</label><input id="bedroomPriceEstimate" type="number" value="385000" disabled></div>
+<div><label>Gross scheduled rent / month</label><input id="rentCollected" type="number" value="2985" step="25"></div>
+<div><label>Local market-rent estimate</label><input id="bedroomRentEstimate" type="number" value="2985" disabled></div>
+<div><label>Market-rent cap today</label><input id="rentCollectedCap" type="number" value="2985" step="25"></div>
+<div><label>Local purchase-price estimate</label><input id="bedroomPriceEstimate" type="number" value="385000" disabled></div>
+</div>
+<div class="row" style="margin-top:9px"><button class="btn secondary" id="useLocalRent" style="padding:8px 11px">Use local rent estimate</button></div>
+
+<h3>Rental operating assumptions</h3>
+<div class="form">
 <div><label>Vacancy %</label><input id="vacancyRate" type="number" value="5" step=".5"></div>
-<div><label>Property management % of collected rent</label><input id="managementRate" type="number" value="8" step=".5"></div>
-<div><label>Repairs / capex reserve % of rent</label><input id="rentalReserveRate" type="number" value="8" step=".5"></div>
+<div><label>Property management % of effective rent</label><input id="managementRate" type="number" value="8" step=".5"></div>
+<div><label>Repairs / capex reserve % of effective rent</label><input id="rentalReserveRate" type="number" value="8" step=".5"></div>
 <div><label>Landlord-paid utilities / month</label><input id="landlordUtilities" type="number" value="0" step="25"></div>
 <div><label>Other landlord expenses / month</label><input id="landlordOther" type="number" value="0" step="25"></div>
-<div><label>Annual rent growth %</label><input id="collectedRentGrowth" type="number" value="3" step=".25"></div>
+<div><label>Rent growth until market cap %</label><input id="collectedRentGrowth" type="number" value="3" step=".25"></div>
 </div>
 <div class="switchrow" style="margin-top:10px"><div><b>Use professional management</b><div class="muted">Turn off to model self-management.</div></div><label class="switch"><input id="managementOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
 </div>
 <h3>Growth assumptions</h3>
 <div class="form">
-<div><label>Stock-market return %</label><input id="stockReturn" type="number" value="10" step=".25"></div>
+<div><label>S&amp;P 500 annual return %</label><input id="stockReturn" type="number" value="10" step=".25"></div>
 <div><label>Home appreciation %</label><input id="appreciation" type="number" value="3" step=".25"></div>
 <div><label>Near-term rent growth %</label><input id="rentGrowth" type="number" value="10"></div>
 <div><label>Long-term inflation %</label><input id="marketGrowth" type="number" value="3"></div>
@@ -125,48 +139,51 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div class="row" style="margin-top:14px"><button class="btn" id="refresh">Refresh location data</button></div><div class="muted" id="updated" style="margin-top:7px"></div>
 </div>
 
-<div class="card right"><h2>House Alpha result</h2><div class="scorebox" id="scorebox"><div class="score" id="score">—</div><div><div class="verdict" id="verdict"></div><div class="muted" id="explain"></div></div></div>
+<div class="card right"><h2 id="resultHeading">House Alpha result</h2><div class="scorebox" id="scorebox"><div class="score" id="score">—</div><div><div class="verdict" id="verdict"></div><div class="muted" id="explain"></div></div></div>
 <div class="metrics">
-<div class="metric"><span class="muted">Owner cost, month 1</span><b id="owner"></b></div><div class="metric"><span class="muted">Renter cost, month 1</span><b id="rentNow"></b></div><div class="metric"><span class="muted">Initial premium</span><b id="gap"></b></div>
-<div class="metric"><span class="muted">Renter wealth</span><b id="rentWealth"></b></div><div class="metric"><span class="muted">Buyer wealth</span><b id="buyWealth"></b></div><div class="metric"><span class="muted">Buyer advantage</span><b id="adv"></b></div>
+<div class="metric"><span class="muted" id="metricLabelOwner">Owner cost, month 1</span><b id="owner"></b></div>
+<div class="metric"><span class="muted" id="metricLabelRent">Renter cost, month 1</span><b id="rentNow"></b></div>
+<div class="metric"><span class="muted" id="metricLabelGap">Initial premium</span><b id="gap"></b></div>
+<div class="metric"><span class="muted" id="metricLabelAlt">Renter wealth</span><b id="rentWealth"></b></div>
+<div class="metric"><span class="muted" id="metricLabelProperty">Buyer wealth</span><b id="buyWealth"></b></div>
+<div class="metric"><span class="muted" id="metricLabelAdv">Buyer advantage</span><b id="adv"></b></div>
 </div>
 <div id="rentalMetrics" style="display:none">
 <h3>Landlord economics</h3>
 <div class="metrics">
 <div class="metric"><span class="muted">Effective rent after vacancy</span><b id="effectiveRent"></b></div>
-<div class="metric"><span class="muted">Monthly landlord cash flow</span><b id="landlordCashFlow"></b></div>
-<div class="metric"><span class="muted">Cash-flow break-even rent</span><b id="cashFlowBreakEven"></b></div>
+<div class="metric"><span class="muted">Monthly property cash flow</span><b id="landlordCashFlow"></b></div>
+<div class="metric"><span class="muted">Gross rent needed for positive cash flow</span><b id="cashFlowBreakEven"></b></div>
 </div>
 </div>
 <h3>Exact modeled break-even</h3><div class="status" id="thresholds"></div>
-<h3>Milestones</h3><table><thead><tr><th>Year</th><th>Rent</th><th>Owner</th><th>Home</th><th>Loan</th><th>Rent wealth</th><th>Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table>
+<h3>Milestones</h3><table><thead><tr><th>Year</th><th id="milestoneIncome">Rent</th><th id="milestoneCost">Owner</th><th>Property value</th><th>Loan</th><th id="milestoneAlt">Rent wealth</th><th id="milestoneProperty">Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table>
 </div></div></section>
 
-<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">Exact model results using the current property, location, and growth assumptions.</p><table><thead><tr><th>Down</th><th>Cash needed</th><th>Owner/mo</th><th>PMI/mo</th><th>Break-even price</th><th>Break-even rent</th><th>Advantage now</th></tr></thead><tbody id="dpRows"></tbody></table></div></section>
+<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">Exact model results using the current property, location, and growth assumptions.</p><table><thead><tr><th>Down</th><th>Cash needed</th><th id="dpCostLabel">Owner/mo</th><th>PMI/mo</th><th>Break-even price</th><th id="dpRentLabel">Break-even rent</th><th id="dpAdvLabel">Advantage now</th></tr></thead><tbody id="dpRows"></tbody></table></div></section>
 <section id="market" class="panel"><div class="card"><h2>Location assumptions and sources</h2><div class="sourcegrid" id="sources"></div><p class="muted">HOA, garage/storage, and insurance are editable planning benchmarks. Small mountain communities often lack enough long-term listings for a statistically stable live average.</p></div></section>
 </main>
 <div class="installbar" id="installbar"><div class="installinner"><div><b>Install House Alpha</b><div class="muted">Add it to your home screen and share the same link.</div></div><button id="installBtn" class="btn">Install</button></div></div>
 
 <script>
 const $=id=>document.getElementById(id);
-const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','renterStorage','rentCollected','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth','rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
+const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','renterStorage','rentCollected','rentCollectedCap','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth','rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
 function model(o={}){
  let v={};ids.forEach(i=>v[i]=i in o?o[i]:n(i));
  v.hoa=$('hoaOn').checked?v.hoa:0;
- v.storage=$('storageOn').checked?v.storage:0;
- v.renterStorage=$('renterStorageOn').checked?v.renterStorage:0;
  const rentalMode=$('useMode').value==='rental';
- if(rentalMode)v.renterStorage=0;
+ v.storage=rentalMode?0:($('storageOn').checked?v.storage:0);
+ v.renterStorage=rentalMode?0:($('renterStorageOn').checked?v.renterStorage:0);
  let M=Math.round(v.years*12),dp=v.price*v.downPct/100,loan=v.price-dp,mp=pmt(loan,v.rate,v.term),rtrn=v.stockReturn/1200;
  let rent=v.rent,cap=v.rentCap,renter=dp+v.price*v.buyClose/100,buyerInv=0,rec=[],pmiEnabled=$('pmiOn').checked&&v.downPct<20;
  // Rental comparison starts with the same initial cash invested in stocks.
  let rentalAlternative=dp+v.price*v.buyClose/100;
- let grossCollected=v.rentCollected;
+ let grossCollected=v.rentCollected, collectedCap=Math.max(v.rentCollectedCap||v.rentCollected,v.rentCollected);
  for(let m=0;m<=M;m++){
    let y=m/12,home=v.price*(1+v.appreciation/100)**y,hoa=v.hoa*(1+v.hoaGrowth/100)**y,
        tax=v.price*v.taxRate/100/12*(1.03**y),ins=v.insurance*(1.03**y),
@@ -193,7 +210,11 @@ function model(o={}){
      // receives those same negative contributions instead.
      if(rentalCashFlow>=0) buyerInv+=rentalCashFlow;
      else rentalAlternative+=-rentalCashFlow;
-     grossCollected*=Math.pow(1+v.collectedRentGrowth/100,1/12);
+     collectedCap*=Math.pow(1+v.marketGrowth/100,1/12);
+     grossCollected=Math.min(
+       grossCollected*Math.pow(1+v.collectedRentGrowth/100,1/12),
+       collectedCap
+     );
    }else{
      let d=owner-totalRenterCost;if(d>0)renter+=d;else buyerInv+=-d;
      cap*=Math.pow(1+v.marketGrowth/100,1/12);
@@ -209,7 +230,10 @@ function scenarioForRoot(field,value,extra={}){
  // For a current-rent break-even, the assumed market-rent ceiling must move
  // with the tested rent. Otherwise a high test rent falls back to the old cap.
  if(field==='rent') o.rentCap=Math.max(value, extra.rentCap||value);
- if(field==='rentCollected') o.rentCollected=value;
+ if(field==='rentCollected'){
+   o.rentCollected=value;
+   o.rentCollectedCap=Math.max(value,extra.rentCollectedCap||value);
+ }
  return o
 }
 function bisectRoot(field,lo,hi,extra={}){
@@ -270,15 +294,29 @@ function cashFlowBreakEven(x){
  const vacancyKeep=Math.max(.01,1-x.v.vacancyRate/100);
  const variableRate=(($('managementOn').checked?x.v.managementRate:0)+x.v.rentalReserveRate)/100;
  const keepAfterVariable=Math.max(.01,1-variableRate);
- const fixed=x.mp+x.pmi0+x.v.hoa+(x.v.price*x.v.taxRate/100/12)+x.v.insurance+(x.v.price*x.v.maintRate/100/12)+x.v.storage+x.v.assessment+x.v.landlordUtilities+x.v.landlordOther;
+ const fixed=x.mp+x.pmi0+x.v.hoa+(x.v.price*x.v.taxRate/100/12)+x.v.insurance+(x.v.price*x.v.maintRate/100/12)+x.v.assessment+x.v.landlordUtilities+x.v.landlordOther;
  return fixed/(vacancyKeep*keepAfterVariable)
 }
-function score(x){let s=50+Math.max(-32,Math.min(32,x.adv/Math.max(x.v.price,1)*80));s+=Math.max(-15,Math.min(12,(500-(x.first.owner-x.first.rent))/70));s+=Math.max(-8,Math.min(8,(x.v.years-7)*1.1));s-=Math.max(0,(x.v.hoa-550)/45);s-=Math.max(0,x.v.storage/100);return Math.max(0,Math.min(100,Math.round(s)))}
+function score(x){
+ let s=50+Math.max(-32,Math.min(32,x.adv/Math.max(x.v.price,1)*80));
+ if(x.rentalMode){
+   s+=Math.max(-15,Math.min(15,x.first.rentalCashFlow/75));
+   const cfbe=cashFlowBreakEven(x);
+   s+=Math.max(-10,Math.min(10,(x.v.rentCollected-cfbe)/Math.max(cfbe,1)*35));
+ }else{
+   s+=Math.max(-15,Math.min(12,(500-(x.first.owner-x.first.totalRenterCost))/70));
+   s-=Math.max(0,x.v.storage/100);
+ }
+ s+=Math.max(-8,Math.min(8,(x.v.years-7)*1.1));
+ s-=Math.max(0,(x.v.hoa-650)/55);
+ return Math.max(0,Math.min(100,Math.round(s)))
+}
 function noRootMessage(field,lo,hi,extra={}){
  const low=model(scenarioForRoot(field,lo,extra)).adv, high=model(scenarioForRoot(field,hi,extra)).adv;
  if(low>0&&high>0)return 'buying wins throughout the tested range';
  if(low<0&&high<0){
    if(field==='rent') return `no break-even below ${money(hi)}/mo under these assumptions`;
+   if(field==='rentCollected') return `the rental still trails the S&P 500 at ${money(hi)}/mo gross rent`;
    return `buying still loses even at ${field==='price'?money(lo):lo}`;
  }
  return 'no stable crossing found';
@@ -353,10 +391,46 @@ function update(){
  setDynamicSliderRange(localPurchaseEstimate(),n('price'));
  $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
  $('score').style.background=c;$('score').textContent=s;$('scorebox').style.background=s>=70?'#eaf9f3':s>=50?'#fff7e7':'#fff0f0';
- $('verdict').textContent=x.rentalMode?(s>=75?'Strong rental candidate':s>=60?'Promising rental':s>=45?'Marginal rental':'Weak rental economics'):(s>=75?'Strong buy candidate':s>=60?'Worth serious consideration':s>=45?'Close call':'Renting remains stronger');
- $('explain').textContent=x.rentalMode?(x.adv>=0?`Owning the rental finishes ${money(x.adv)} ahead of investing the same capital after ${x.v.years} years.`:`Investing the same capital finishes ${money(-x.adv)} ahead of owning the rental after ${x.v.years} years.`):(x.adv>=0?`Buying finishes ${money(x.adv)} ahead after ${x.v.years} years.`:`Renting and investing finishes ${money(-x.adv)} ahead after ${x.v.years} years.`);
- $('owner').innerHTML=money(x.first.owner)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');$('rentNow').innerHTML=money(x.first.totalRenterCost)+(x.first.renterGarage>0?`<span class="muted" style="display:block">${money(x.first.rent)} rent + ${money(x.first.renterGarage)} renter garage</span>`:'');$('gap').textContent=money(x.rentalMode?-x.first.rentalCashFlow:x.first.owner-x.first.totalRenterCost);
- $('rentWealth').textContent=money(x.rentalMode?x.last.rentalAlternative:x.last.renter);$('buyWealth').textContent=money(x.rentalMode?x.last.rentalOwnerWealth:x.last.buyWealth);$('adv').textContent=(x.adv>=0?'+':'')+money(x.adv);$('adv').className=x.adv>=0?'good':'bad';
+ $('verdict').textContent=x.rentalMode?(s>=75?'Rental property beats the index':s>=60?'Competitive rental investment':s>=45?'Close versus the S&P 500':'S&P 500 remains stronger'):(s>=75?'Strong buy candidate':s>=60?'Worth serious consideration':s>=45?'Close call':'Renting remains stronger');
+ $('explain').textContent=x.rentalMode?(x.adv>=0?`The rental-property strategy finishes ${money(x.adv)} ahead of the S&P 500 alternative after ${x.v.years} years.`:`The S&P 500 alternative finishes ${money(-x.adv)} ahead of the rental-property strategy after ${x.v.years} years.`):(x.adv>=0?`Buying finishes ${money(x.adv)} ahead after ${x.v.years} years.`:`Renting and investing finishes ${money(-x.adv)} ahead after ${x.v.years} years.`);
+ if(x.rentalMode){
+   $('resultHeading').textContent='Rental property vs S&P 500';
+   $('metricLabelOwner').textContent='Property costs, month 1';
+   $('metricLabelRent').textContent='Gross scheduled rent';
+   $('metricLabelGap').textContent='Monthly property cash flow';
+   $('metricLabelAlt').textContent='S&P 500 portfolio';
+   $('metricLabelProperty').textContent='Rental-property wealth';
+   $('metricLabelAdv').textContent='Rental advantage';
+   $('owner').innerHTML=money(x.first.landlordCosts)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');
+   $('rentNow').textContent=money(x.first.grossCollected);
+   $('gap').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);
+   $('gap').className=x.first.rentalCashFlow>=0?'good':'bad';
+   $('rentWealth').textContent=money(x.last.rentalAlternative);
+   $('buyWealth').textContent=money(x.last.rentalOwnerWealth);
+   $('milestoneIncome').textContent='Gross rent';
+   $('milestoneCost').textContent='Property costs';
+   $('milestoneAlt').textContent='S&P 500';
+   $('milestoneProperty').textContent='Rental wealth';
+ }else{
+   $('resultHeading').textContent='Rent versus own';
+   $('metricLabelOwner').textContent='Owner cost, month 1';
+   $('metricLabelRent').textContent='Renter cost, month 1';
+   $('metricLabelGap').textContent='Initial premium';
+   $('metricLabelAlt').textContent='Renter wealth';
+   $('metricLabelProperty').textContent='Buyer wealth';
+   $('metricLabelAdv').textContent='Buyer advantage';
+   $('owner').innerHTML=money(x.first.owner)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');
+   $('rentNow').innerHTML=money(x.first.totalRenterCost)+(x.first.renterGarage>0?`<span class="muted" style="display:block">${money(x.first.rent)} rent + ${money(x.first.renterGarage)} renter garage</span>`:'');
+   $('gap').textContent=money(x.first.owner-x.first.totalRenterCost);
+   $('gap').className='';
+   $('rentWealth').textContent=money(x.last.renter);
+   $('buyWealth').textContent=money(x.last.buyWealth);
+   $('milestoneIncome').textContent='Renter cost';
+   $('milestoneCost').textContent='Owner cost';
+   $('milestoneAlt').textContent='Renter wealth';
+   $('milestoneProperty').textContent='Buyer wealth';
+ }
+ $('adv').textContent=(x.adv>=0?'+':'')+money(x.adv);$('adv').className=x.adv>=0?'good':'bad';
  $('rentalMetrics').style.display=x.rentalMode?'block':'none';
  if(x.rentalMode){
    $('effectiveRent').textContent=money(x.first.effectiveCollected);
@@ -373,21 +447,42 @@ function update(){
  const brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result';
  const rrLabel=rr!==null?rootDirection(x.rentalMode?'rentCollected':'rent',rr):(x.rentalMode?'Collected-rent result':'Current-rent result');
  $('thresholds').innerHTML=x.rentalMode
- ? `At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>${rrLabel}</b>: <b>${rrText}</b>. Monthly cash-flow break-even is <b>${money(cashFlowBreakEven(x))}/mo</b>.`
+ ? `At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`
  : `At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;
  $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{let r=x.rec[Math.round(y*12)];return `<tr><td>${y}</td><td>${money(x.rentalMode?r.grossCollected:r.totalRenterCost)}</td><td>${money(x.rentalMode?r.landlordCosts:r.owner)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(x.rentalMode?r.rentalAlternative:r.renter)}</td><td>${money(x.rentalMode?r.rentalOwnerWealth:r.buyWealth)}</td></tr>`}).join('');
  updateDp()
 }
-function updateDp(){let dps=[0,5,10,15,20,25,30,40,50,75,100,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)==i);$('dpRows').innerHTML=dps.map(dp=>{let x=model({downPct:dp}),bp=root('price',50000,1500000,{downPct:dp}),rr=x.rentalMode?root('rentCollected',250,20000,{downPct:dp}):root('rent',250,12000,{downPct:dp});return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">custom</span>':''}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(x.first.owner)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`}).join('')}
-function currentBedroomEstimate(){
+function updateDp(){
+ const rental=$('useMode').value==='rental';
+ $('dpCostLabel').textContent=rental?'Property costs/mo':'Owner/mo';
+ $('dpRentLabel').textContent=rental?'S&P break-even gross rent':'Break-even base rent';
+ $('dpAdvLabel').textContent=rental?'Rental advantage':'Buyer advantage';
+ let dps=[0,5,10,15,20,25,30,40,50,75,100,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)==i);
+ $('dpRows').innerHTML=dps.map(dp=>{
+   let x=model({downPct:dp}),
+       bp=root('price',50000,1500000,{downPct:dp}),
+       rr=x.rentalMode?root('rentCollected',250,20000,{downPct:dp}):root('rent',250,12000,{downPct:dp}),
+       monthlyCost=x.rentalMode?x.first.landlordCosts:x.first.owner;
+   return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">custom</span>':''}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`
+ }).join('')
+}
+function currentPropertyRentEstimate(){
  const loc=locations[currentLocation]||{};
- const br=($('bedrooms').value||'1');
- return +(loc.bedroom_rents?.[br]||loc.rent||n('rent'))
+ const br=$('bedrooms').value||'1';
+ const type=$('propertyType').value||'condo';
+ return +(loc.property_rents?.[type]?.[br]||loc.bedroom_rents?.[br]||loc.rent||n('rent'))
+}
+function applyPropertyRentEstimate(force=false){
+ const estimate=currentPropertyRentEstimate();
+ $('bedroomRentEstimate').value=Math.round(estimate);
+ if(force||rentAuto){
+   rentAuto=true;
+   $('rentCollected').value=Math.round(estimate);
+   $('rentCollectedCap').value=Math.round(estimate);
+ }
 }
 function applyBedroomRent(){
- const estimate=currentBedroomEstimate();
- $('bedroomRentEstimate').value=Math.round(estimate);
- $('rentCollected').value=Math.round(estimate);
+ applyPropertyRentEstimate(false);
  applyLocalPurchaseEstimate(priceAuto);
  update()
 }
@@ -396,16 +491,22 @@ function applyUseMode(){
  $('rentalSection').style.display=rental?'block':'none';
  $('investmentBedroomsField').style.display=rental?'block':'none';
  $('primaryRentSection').style.display=rental?'none':'block';
- if(rental) applyBedroomRent();
- applyOwnerGarageSituation();
- applyLocalPurchaseEstimate(priceAuto);
+ $('primaryRentHeading').style.display=rental?'none':'block';
+ $('ownerGarageBlock').style.display=rental?'none':'block';
+ $('propertyCostsHeading').textContent=rental?'Investment-property expenses':'Purchased-property expenses';
+ if(rental){
+   applyPropertyRentEstimate(false);
+   applyLocalPurchaseEstimate(priceAuto);
+ }else{
+   applyOwnerGarageSituation();
+ }
  update()
 }
 function resolvedOwnerGarageSituation(){
  const selected=$('ownerGarageSituation').value;
  if(selected!=='auto')return selected;
  const type=$('propertyType').value;
- if(type==='condo'&&$('useMode').value==='rental'&&(+($('bedrooms').value)||1)<=1)return 'rent';
+ if(type==='condo')return 'included';
  return 'included'
 }
 function applyOwnerGarageSituation(){
@@ -450,14 +551,17 @@ async function applyLocation(key,live=true){
  $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('storage').value=d.storage;$('renterStorage').value=d.storage;$('renterStorageOn').checked=!!d.renter_storage_default;insuranceUserEditing=false;priceAuto=true;
  if(d.mortgage_rate)$('rate').value=d.mortgage_rate;
  $('updated').textContent=`${d.name}: ${d.note||''}`;
- if($('useMode').value==='rental') applyBedroomRent();
- else applyLocalPurchaseEstimate(true);
+ if($('useMode').value==='rental'){
+   applyPropertyRentEstimate(true);
+   applyLocalPurchaseEstimate(true);
+ }else applyLocalPurchaseEstimate(true);
  applyRenterStorageToggle();
  const src=d.sources||{rent:d.source||'',home:d.home_source||''};
  $('sources').innerHTML=[
   ['Location',d.name,d.note||''],
   ['1BR current-rent default',money(d.rent)+'/mo',d.status?.rent||'Editable location benchmark',src.rent],
-  ['Bedroom rent estimates',`${money(d.bedroom_rents?.['1']||d.rent)}–${money(d.bedroom_rents?.['4']||d.rent*1.92)}/mo`,d.status?.bedroom_rents||'Editable estimates anchored to local 1BR rent'],
+  ['Condo rent estimates',`${money(d.property_rents?.condo?.['1']||d.rent)}–${money(d.property_rents?.condo?.['4']||d.rent*1.86)}/mo`,d.status?.property_rents||'Editable local estimates'],
+  ['Single-family rent estimates',`${money(d.property_rents?.single?.['1']||d.rent*1.12)}–${money(d.property_rents?.single?.['4']||d.rent*2.30)}/mo`,d.status?.property_rents||'Editable local estimates'],
   ['Local home-value benchmark',money(d.home_value||localPurchaseEstimate()),d.status?.home_value||'Editable local planning benchmark',src.home],
   ['Bedroom purchase estimates',`${money(d.bedroom_prices?.condo?.['1']||0)}–${money(d.bedroom_prices?.single?.['4']||0)}`,d.status?.bedroom_prices||'Editable size/type estimates'],
   ['Condo HOA default',money(d.hoa)+'/mo',d.status?.hoa||'Editable location-specific benchmark'],
@@ -486,12 +590,21 @@ $('renterStorageOn').addEventListener('change',()=>{applyRenterStorageToggle();u
 $('renterStorage').addEventListener('input',()=>{applyRenterStorageToggle();update()});
 $('insuranceAuto').addEventListener('change',()=>{insuranceUserEditing=false;syncInsuranceToPrice();update()});
 $('insurance').addEventListener('input',()=>{if(!$('insuranceAuto').checked){insuranceAnchorMonthly=n('insurance');insuranceAnchorPrice=n('price')}else{insuranceUserEditing=true}update()});
-$('propertyType').addEventListener('change',()=>{applyPropertyDefaults();insuranceUserEditing=false;applyLocalPurchaseEstimate(priceAuto);syncInsuranceToPrice();update()});
+$('propertyType').addEventListener('change',()=>{
+ applyPropertyDefaults();insuranceUserEditing=false;
+ if($('useMode').value==='rental')applyPropertyRentEstimate(false);
+ applyLocalPurchaseEstimate(priceAuto);syncInsuranceToPrice();update()
+});
 $('useMode').addEventListener('change',applyUseMode);
-$('bedrooms').addEventListener('change',()=>{applyOwnerGarageSituation();if($('useMode').value==='rental')applyBedroomRent();else update()});
+$('bedrooms').addEventListener('change',()=>{if($('useMode').value==='rental')applyBedroomRent();else update()});
 $('managementOn').addEventListener('change',update);
 $('location').addEventListener('change',e=>applyLocation(e.target.value,true));
-$('refresh').onclick=()=>applyLocation(currentLocation,true);$('cash').onclick=()=>{$('downPct').value=100;update()};$('useLocalPrice').onclick=()=>{priceAuto=true;applyLocalPurchaseEstimate(true);update()};
+$('refresh').onclick=()=>applyLocation(currentLocation,true);
+$('cash').onclick=()=>{$('downPct').value=100;update()};
+$('useLocalPrice').onclick=()=>{priceAuto=true;applyLocalPurchaseEstimate(true);update()};
+$('useLocalRent').onclick=()=>{rentAuto=true;applyPropertyRentEstimate(true);update()};
+$('rentCollected').addEventListener('input',()=>{rentAuto=false;update()});
+$('rentCollectedCap').addEventListener('input',()=>{rentAuto=false;update()});
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
 let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installbar').classList.add('show')});$('installBtn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;$('installbar').classList.remove('show')}else alert('On iPhone: Share → Add to Home Screen. On Android: browser menu → Install app.')};
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
