@@ -46,7 +46,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div class="pricebox"><div class="pricevalue"><span>Purchase price</span><b id="priceDisplay">$385,000</b></div>
 <div class="muted" id="priceEstimateNote">Local editable purchase-price estimate</div>
 <div class="rangeWrap"><input class="range" id="priceSlider" type="range" min="100000" max="800000" step="1000" value="385000"><div class="marker" id="beMarker" title="Modeled break-even price"></div></div>
-<div class="legend"><span class="buy">BUY WINS</span><span class="close">CLOSE CALL</span><span class="rentwin">RENT WINS</span></div>
+<div class="legend"><span class="buy" id="priceLowWinner">BUYING WINS</span><span class="close">CLOSE CALL</span><span class="rentwin" id="priceHighWinner">RENTING WINS</span></div>
 <div class="sliderMeta"><span id="sliderRangeText"></span><span class="snapText" id="snapText"></span><button class="btn secondary" id="useLocalPrice" style="padding:6px 9px;font-size:11px">Use local estimate</button></div></div>
 <div class="form" style="margin-top:10px">
 <div><label>Exact purchase price</label><input id="price" type="number" value="385000" step="1000"></div>
@@ -133,7 +133,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div id="newAduProject" style="display:none;margin-top:12px">
 <h4 style="margin:0 0 8px">ADU project</h4>
 <div class="form">
-<div><label>Total construction cost</label><input id="aduBuildCost" type="number" value="250000" step="5000"></div>
+<div><label>ADU finished square feet</label><input id="aduSize" type="number" value="600" step="25"></div>
+<div><label>Planning build cost / sq ft</label><input id="aduBuildPsf" type="number" value="350" step="25"></div>
+<div><label>Total construction cost</label><input id="aduBuildCost" type="number" value="" step="5000" placeholder="Calculated planning estimate"></div>
 <div><label>Months until rentable</label><input id="aduBuildMonths" type="number" value="12" step="1" min="0"></div>
 <div><label>Pay for construction</label><select id="aduFunding">
 <option value="cash">Cash</option>
@@ -142,6 +144,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div id="aduLoanRateWrap" style="display:none"><label>Construction loan rate %</label><input id="aduLoanRate" type="number" value="7" step=".25"></div>
 <div id="aduLoanTermWrap" style="display:none"><label>Loan term (years)</label><input id="aduLoanTerm" type="number" value="20" step="1"></div>
 </div>
+<button class="btn secondary" id="useOwnerAduBuildEstimate" type="button" style="margin-top:9px;padding:8px 10px">Use local build estimate</button>
+<div class="muted" id="aduBuildEstimateNote" style="margin-top:7px"></div>
 
 <h4 style="margin:14px 0 8px">Estimated value added at completion</h4>
 <div class="form">
@@ -152,7 +156,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <option value="custom">Custom / appraisal estimate</option>
 </select></div>
 <div><label>Modeled value added</label><input id="aduValueAdded" type="number" value="187500" disabled></div>
-<div id="aduLocalSizeWrap" style="display:none"><label>ADU finished square feet</label><input id="aduSize" type="number" value="600" step="25"></div>
 <div id="aduLocalPsfWrap" style="display:none"><label>Local market $ / sq ft</label><input id="aduLocalPsf" type="number" value="672" step="5"></div>
 <div id="aduCustomValueWrap" style="display:none"><label>Custom / appraisal value</label><input id="aduCustomValue" type="number" value="250000" step="5000"></div>
 </div>
@@ -237,7 +240,9 @@ Buy and operate this rental property versus investing the same down payment, clo
 <option value="3">3 bedrooms</option>
 <option value="4">4 bedrooms</option>
 </select></div>
-<div><label>Total construction cost</label><input id="invAduBuildCost" type="number" value="250000" step="5000"></div>
+<div><label>ADU finished square feet</label><input id="invAduSize" type="number" value="600" step="25"></div>
+<div><label>Planning build cost / sq ft</label><input id="invAduBuildPsf" type="number" value="350" step="25"></div>
+<div><label>Total construction cost</label><input id="invAduBuildCost" type="number" value="" step="5000" placeholder="Calculated planning estimate"></div>
 <div><label>Months until rentable</label><input id="invAduBuildMonths" type="number" value="12" step="1" min="0"></div>
 <div><label>Pay for construction</label><select id="invAduFunding">
 <option value="cash">Cash</option>
@@ -246,6 +251,8 @@ Buy and operate this rental property versus investing the same down payment, clo
 <div id="invAduLoanRateWrap" style="display:none"><label>Construction loan rate %</label><input id="invAduLoanRate" type="number" value="7" step=".25"></div>
 <div id="invAduLoanTermWrap" style="display:none"><label>Loan term (years)</label><input id="invAduLoanTerm" type="number" value="20" step="1"></div>
 </div>
+<button class="btn secondary" id="useInvAduBuildEstimate" type="button" style="margin-top:9px;padding:8px 10px">Use local build estimate</button>
+<div class="muted" id="invAduBuildEstimateNote" style="margin-top:7px"></div>
 
 <h4 style="margin:14px 0 8px">Estimated value added at completion</h4>
 <div class="form">
@@ -256,7 +263,6 @@ Buy and operate this rental property versus investing the same down payment, clo
 <option value="custom">Custom / appraisal estimate</option>
 </select></div>
 <div><label>Modeled value added</label><input id="invAduValueAdded" type="number" value="187500" disabled></div>
-<div id="invAduLocalSizeWrap" style="display:none"><label>ADU finished square feet</label><input id="invAduSize" type="number" value="600" step="25"></div>
 <div id="invAduLocalPsfWrap" style="display:none"><label>Local market $ / sq ft</label><input id="invAduLocalPsf" type="number" value="672" step="5"></div>
 <div id="invAduCustomValueWrap" style="display:none"><label>Custom / appraisal value</label><input id="invAduCustomValue" type="number" value="250000" step="5000"></div>
 </div>
@@ -370,13 +376,13 @@ const $=id=>document.getElementById(id);
 const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','renterStorage',
 'renterShareContribution','renterShareVacancy','renterShareGrowth',
 'ownerIncomeGross','ownerIncomeCap','ownerIncomeVacancy','ownerIncomeManagement','ownerIncomeReserve','ownerIncomeOther','ownerIncomeGrowth',
-'aduBuildCost','aduBuildMonths','aduLoanRate','aduLoanTerm','aduValueAdded','aduSize','aduLocalPsf','aduCustomValue',
+'aduBuildCost','aduBuildPsf','aduBuildMonths','aduLoanRate','aduLoanTerm','aduValueAdded','aduSize','aduLocalPsf','aduCustomValue',
 'rentCollected','rentCollectedCap','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth',
-'invAduBuildCost','invAduValueAdded','invAduBuildMonths','invAduLoanRate','invAduLoanTerm','invAduSize','invAduLocalPsf','invAduCustomValue',
+'invAduBuildCost','invAduBuildPsf','invAduValueAdded','invAduBuildMonths','invAduLoanRate','invAduLoanTerm','invAduSize','invAduLocalPsf','invAduCustomValue',
 'invAduRent','invAduRentCap','invAduVacancy','invAduReserve','invAduOther','invAduRentGrowth','invAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -795,7 +801,7 @@ function updatePriceVisual(bp){
  const threshold=Math.max(2500,(max-min)*.006);
  const snapped=bp&&Math.abs(n('price')-bp)<=threshold;
  slider.classList.toggle('snap',!!snapped);
- $('snapText').textContent=snapped?`Snapped: ${money(bp)}`:'';
+ $('snapText').textContent=snapped?`Break-even: ${money(bp)}`:'';
 }
 function scaledInsurance(price){
  if(!$('insuranceAuto').checked) return n('insurance');
@@ -847,6 +853,7 @@ function update(){
  syncInsuranceToPrice();
  updateReturnPresetState();
  updateAppreciationPresetState();
+ updateAllAduBuildEstimates(false);
  updateAllAduValues(false);
  let x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
  setDynamicSliderRange(localPurchaseEstimate(),n('price'));
@@ -995,6 +1002,42 @@ function applyBedroomRent(){
  applyLocalPurchaseEstimate(priceAuto);
  update()
 }
+function defaultAduSizeForBedrooms(bedrooms){
+ const sizes={'1':600,'2':800,'3':1000,'4':1200};
+ return sizes[String(bedrooms)]||600
+}
+function currentAduBuildPsf(){
+ const loc=locations[currentLocation]||{};
+ return +(loc.adu_build_psf||350)
+}
+function setAduBuildEstimateNote(prefix){
+ const loc=locations[currentLocation]||{};
+ const psf=n(prefix+'BuildPsf');
+ const size=n(prefix+'Size');
+ const note=$(prefix+'BuildEstimateNote');
+ const source=loc.adu_build_cost_source||'';
+ const locationNote=loc.adu_build_psf_note||'Editable planning assumption.';
+ const link=source?` <a href="${source}" target="_blank" rel="noopener">Methodology source</a>.`:'';
+ note.innerHTML=`Planning estimate: ${Math.round(size).toLocaleString()} sq ft × ${money(psf)}/sq ft. ${locationNote}${link} Replace this with a contractor bid and site-specific soft costs when available.`;
+}
+function updateAduBuildEstimate(prefix,force=false){
+ const owner=prefix==='adu';
+ const bedrooms=owner?$('ownerIncomeBedrooms').value:$('invAduBedrooms').value;
+ const sizeAuto=owner?ownerAduSizeAuto:invAduSizeAuto;
+ const psfAuto=owner?ownerAduBuildPsfAuto:invAduBuildPsfAuto;
+ const costAuto=owner?ownerAduBuildCostAuto:invAduBuildCostAuto;
+
+ if(force||sizeAuto)$(prefix+'Size').value=defaultAduSizeForBedrooms(bedrooms);
+ if(force||psfAuto)$(prefix+'BuildPsf').value=currentAduBuildPsf();
+ if(force||costAuto){
+   $(prefix+'BuildCost').value=Math.round(n(prefix+'Size')*n(prefix+'BuildPsf')/5000)*5000;
+ }
+ setAduBuildEstimateNote(prefix);
+}
+function updateAllAduBuildEstimates(force=false){
+ updateAduBuildEstimate('adu',force);
+ updateAduBuildEstimate('invAdu',force);
+}
 function currentAduMarketPsf(){
  const loc=locations[currentLocation]||{};
  return +(loc.adu_market_psf||300)
@@ -1026,7 +1069,6 @@ function updateAduValueControls(prefix,forceLocalPsf=false){
  const method=$(prefix+'ValueMethod').value;
  const local=method==='local';
  const custom=method==='custom';
- $(prefix+'LocalSizeWrap').style.display=local?'block':'none';
  $(prefix+'LocalPsfWrap').style.display=local?'block':'none';
  $(prefix+'CustomValueWrap').style.display=custom?'block':'none';
  $(prefix+'LocalProxyNote').style.display=local?'block':'none';
@@ -1098,6 +1140,7 @@ function applyOwnerIncomePreset(forceEstimate=true){
  }
  applyOwnerManagementToggle();
  applyAduFundingToggle();
+ if(newAdu)updateAduBuildEstimate('adu',false);
  if(forceEstimate)updateSharedHousingEstimates(false,true);
 }
 function applyOwnerManagementToggle(){
@@ -1148,7 +1191,10 @@ function applyInvestmentAduToggle(){
  const enabled=$('investmentAduOn').checked;
  $('investmentAduFields').style.display=enabled?'block':'none';
  $('investmentAduCard').classList.toggle('active',enabled);
- if(enabled)applyInvestmentAduRentEstimate(false);
+ if(enabled){
+   applyInvestmentAduRentEstimate(false);
+   updateAduBuildEstimate('invAdu',false);
+ }
  update()
 }
 function applyUseMode(){
@@ -1159,6 +1205,8 @@ function applyUseMode(){
  $('primaryRentHeading').style.display=rental?'none':'block';
  $('ownerGarageBlock').style.display=rental?'none':'block';
  $('propertyCostsHeading').textContent=rental?'Investment-property expenses':'Purchased-property expenses';
+ $('priceLowWinner').textContent=rental?'PROPERTY WINS':'BUYING WINS';
+ $('priceHighWinner').textContent=rental?'S&P 500 WINS':'RENTING WINS';
  if(rental){
    applyPropertyRentEstimate(false);
    applyLocalPurchaseEstimate(priceAuto);
@@ -1214,6 +1262,7 @@ async function loadLocations(){
    applySharedHousingToggles();
    applyInvestmentAduFundingToggle();
    applyInvestmentAduManagementToggle();
+   updateAllAduBuildEstimates(true);
    updateAllAduValues(true);
    applyInvestmentAduToggle();
  })
@@ -1235,6 +1284,9 @@ async function applyLocation(key,live=true){
  applyInvestmentAduRentEstimate(false);
  if(ownerAduPsfAuto)$('aduLocalPsf').value=d.adu_market_psf||300;
  if(invAduPsfAuto)$('invAduLocalPsf').value=d.adu_market_psf||300;
+ if(ownerAduBuildPsfAuto)$('aduBuildPsf').value=d.adu_build_psf||350;
+ if(invAduBuildPsfAuto)$('invAduBuildPsf').value=d.adu_build_psf||350;
+ updateAllAduBuildEstimates(false);
  updateAllAduValues(false);
  const src=d.sources||{rent:d.source||'',home:d.home_source||''};
  $('sources').innerHTML=[
@@ -1287,24 +1339,43 @@ $('managementOn').addEventListener('change',()=>{
 $('investmentAduOn').addEventListener('change',applyInvestmentAduToggle);
 $('invAduFunding').addEventListener('change',applyInvestmentAduFundingToggle);
 $('invAduManagementOn').addEventListener('change',applyInvestmentAduManagementToggle);
-$('invAduBedrooms').addEventListener('change',()=>{invAduRentAuto=true;applyInvestmentAduRentEstimate(true);update()});
+$('invAduBedrooms').addEventListener('change',()=>{
+ invAduRentAuto=true;
+ invAduSizeAuto=true;
+ invAduBuildCostAuto=true;
+ applyInvestmentAduRentEstimate(true);
+ updateAduBuildEstimate('invAdu',false);
+ update()
+});
 $('useInvAduRentEstimate').onclick=()=>{invAduRentAuto=true;applyInvestmentAduRentEstimate(true);update()};
 $('invAduRent').addEventListener('input',()=>{invAduRentAuto=false;update()});
 $('invAduRentCap').addEventListener('input',()=>{invAduRentAuto=false;update()});
 $('renterShareOn').addEventListener('change',applySharedHousingToggles);
 $('ownerIncomeOn').addEventListener('change',applySharedHousingToggles);
 $('ownerIncomeType').addEventListener('change',()=>{applyOwnerIncomePreset(true);update()});
-$('ownerIncomeBedrooms').addEventListener('change',()=>{updateSharedHousingEstimates(false,true);update()});
+$('ownerIncomeBedrooms').addEventListener('change',()=>{
+ updateSharedHousingEstimates(false,true);
+ if($('ownerIncomeType').value==='newadu'){
+   ownerAduSizeAuto=true;
+   ownerAduBuildCostAuto=true;
+   updateAduBuildEstimate('adu',false);
+ }
+ update()
+});
 $('ownerManagementOn').addEventListener('change',applyOwnerManagementToggle);
 $('aduFunding').addEventListener('change',applyAduFundingToggle);
 $('aduValueMethod').addEventListener('change',()=>{if($('aduValueMethod').value==='local'){ownerAduPsfAuto=true;$('aduLocalPsf').value=currentAduMarketPsf()}update()});
-$('aduBuildCost').addEventListener('input',update);
-$('aduSize').addEventListener('input',update);
+$('aduBuildCost').addEventListener('input',()=>{ownerAduBuildCostAuto=false;update()});
+$('aduBuildPsf').addEventListener('input',()=>{ownerAduBuildPsfAuto=false;ownerAduBuildCostAuto=true;update()});
+$('aduSize').addEventListener('input',()=>{ownerAduSizeAuto=false;ownerAduBuildCostAuto=true;update()});
+$('useOwnerAduBuildEstimate').onclick=()=>{ownerAduSizeAuto=true;ownerAduBuildPsfAuto=true;ownerAduBuildCostAuto=true;updateAduBuildEstimate('adu',true);update()};
 $('aduLocalPsf').addEventListener('input',()=>{ownerAduPsfAuto=false;update()});
 $('aduCustomValue').addEventListener('input',update);
 $('invAduValueMethod').addEventListener('change',()=>{if($('invAduValueMethod').value==='local'){invAduPsfAuto=true;$('invAduLocalPsf').value=currentAduMarketPsf()}update()});
-$('invAduBuildCost').addEventListener('input',update);
-$('invAduSize').addEventListener('input',update);
+$('invAduBuildCost').addEventListener('input',()=>{invAduBuildCostAuto=false;update()});
+$('invAduBuildPsf').addEventListener('input',()=>{invAduBuildPsfAuto=false;invAduBuildCostAuto=true;update()});
+$('invAduSize').addEventListener('input',()=>{invAduSizeAuto=false;invAduBuildCostAuto=true;update()});
+$('useInvAduBuildEstimate').onclick=()=>{invAduSizeAuto=true;invAduBuildPsfAuto=true;invAduBuildCostAuto=true;updateAduBuildEstimate('invAdu',true);update()};
 $('invAduLocalPsf').addEventListener('input',()=>{invAduPsfAuto=false;update()});
 $('invAduCustomValue').addEventListener('input',update);
 $('useRenterShareEstimate').onclick=()=>{updateSharedHousingEstimates(true,false);update()};

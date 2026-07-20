@@ -68,6 +68,39 @@ ADU_MARKET_PSF={
  'custom': {'value':300,'source':'','note':'Editable placeholder. Enter a local market $/sq ft estimate.'},
 }
 
+
+# Location-adjusted detached-ADU build-cost planning assumptions.
+# These are deliberately editable starting points, not contractor bids.
+# They use the statewide California ADU cost research as a floor and place
+# remote/high-cost mountain markets toward the upper end of current ranges.
+ADU_BUILD_PSF={
+ 'mammoth': {'value':500,'note':'Remote high-cost mountain-market planning assumption.'},
+ 'june-lake': {'value':475,'note':'Remote mountain-market planning assumption.'},
+ 'crowley-lake': {'value':450,'note':'Eastern Sierra planning assumption.'},
+ 'toms-place': {'value':450,'note':'Eastern Sierra planning assumption.'},
+ 'lee-vining': {'value':475,'note':'Remote Eastern Sierra planning assumption.'},
+ 'bridgeport': {'value':450,'note':'Remote Eastern Sierra planning assumption.'},
+ 'benton': {'value':350,'note':'Rural Eastern California planning assumption.'},
+ 'bishop': {'value':350,'note':'Bishop / Owens Valley planning assumption.'},
+ 'big-pine': {'value':350,'note':'Owens Valley planning assumption.'},
+ 'paradise-sunny-slopes': {'value':375,'note':'North Bishop / mountain-community planning assumption.'},
+ 'swall-meadows': {'value':375,'note':'North Bishop / mountain-community planning assumption.'},
+ 'chalfant': {'value':350,'note':'North Bishop-area planning assumption.'},
+ 'independence': {'value':325,'note':'Southern Owens Valley planning assumption.'},
+ 'lone-pine': {'value':325,'note':'Southern Owens Valley planning assumption.'},
+ 'carson-city': {'value':350,'note':'Carson City planning assumption.'},
+ 'gardnerville': {'value':350,'note':'Carson Valley planning assumption.'},
+ 'truckee': {'value':475,'note':'High-cost Sierra resort-market planning assumption.'},
+ 'sonora': {'value':325,'note':'Sierra foothill planning assumption.'},
+ 'fresno': {'value':300,'note':'Central Valley planning assumption.'},
+ 'south-lake-tahoe': {'value':450,'note':'High-cost Tahoe planning assumption.'},
+ 'incline-village': {'value':500,'note':'High-cost Tahoe resort-market planning assumption.'},
+ 'stateline': {'value':475,'note':'High-cost Tahoe resort-market planning assumption.'},
+ 'zephyr-cove': {'value':500,'note':'High-cost Tahoe resort-market planning assumption.'},
+ 'custom': {'value':350,'note':'Editable generic planning assumption.'},
+}
+ADU_BUILD_COST_SOURCE='https://ternercenter.berkeley.edu/blog/cci-adu-survey/'
+
 MORTGAGE_URL='https://www.freddiemac.com/pmms'
 
 def fetch(url):
@@ -139,6 +172,10 @@ def market(location='mammoth'):
     out['adu_market_psf']=adu_psf['value']
     out['adu_market_psf_source']=adu_psf['source']
     out['adu_market_psf_note']=adu_psf['note']
+    adu_build=ADU_BUILD_PSF.get(location,ADU_BUILD_PSF['custom'])
+    out['adu_build_psf']=adu_build['value']
+    out['adu_build_psf_note']=adu_build['note']
+    out['adu_build_cost_source']=ADU_BUILD_COST_SOURCE
     out['property_rents']=property_rents(out['rent'])
     out['bedroom_rents']=out['property_rents']['condo']
     out['bedroom_prices']={
@@ -166,6 +203,9 @@ class Handler(SimpleHTTPRequestHandler):
                 'adu_market_psf':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['value'],
                 'adu_market_psf_source':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['source'],
                 'adu_market_psf_note':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['note'],
+                'adu_build_psf':ADU_BUILD_PSF.get(k,ADU_BUILD_PSF['custom'])['value'],
+                'adu_build_psf_note':ADU_BUILD_PSF.get(k,ADU_BUILD_PSF['custom'])['note'],
+                'adu_build_cost_source':ADU_BUILD_COST_SOURCE,
                 'property_rents':property_rents(v['rent']),
                 'bedroom_rents':property_rents(v['rent'])['condo'],
                 'bedroom_prices':{

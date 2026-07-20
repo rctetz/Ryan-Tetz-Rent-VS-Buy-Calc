@@ -179,3 +179,15 @@ HOUSE ALPHA V22
 - Sparse markets are explicitly identified as county or nearby fallbacks.
 - Local market proxies are labeled as planning estimates, not appraisals.
 - Root and break-even calculations now derive ADU value from the selected method rather than a stale fixed field.
+
+HOUSE ALPHA V23
+- Removes the universal $250,000 ADU construction default.
+- Adds location-adjusted planning build cost per square foot.
+- ADU size defaults by bedroom count: 600, 800, 1,000, or 1,200 square feet.
+- Total construction cost is automatically calculated from size × regional build-cost assumption.
+- Both owner-occupied and investment-property ADUs include a Use Local Build Estimate button.
+- Size, cost per square foot, and total cost remain editable; manual total costs are preserved.
+- Regional estimates are labeled as planning assumptions, not contractor bids.
+- Investment-property price slider now reads PROPERTY WINS versus S&P 500 WINS.
+- Primary-residence slider reads BUYING WINS versus RENTING WINS.
+- Replaces the word Snapped with Break-even at the modeled threshold.
