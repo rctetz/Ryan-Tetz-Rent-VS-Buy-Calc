@@ -191,3 +191,10 @@ HOUSE ALPHA V23
 - Investment-property price slider now reads PROPERTY WINS versus S&P 500 WINS.
 - Primary-residence slider reads BUYING WINS versus RENTING WINS.
 - Replaces the word Snapped with Break-even at the modeled threshold.
+
+HOUSE ALPHA V24
+- Hides the investment-property management percentage when professional management is off.
+- Moves the management-rate field directly beneath the professional-management switch.
+- Turning professional management on reveals the field and suggests 8%.
+- Professional management remains off by default.
+- Users can edit the suggested 8% after enabling management.

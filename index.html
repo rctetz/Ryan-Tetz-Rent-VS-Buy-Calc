@@ -217,13 +217,13 @@ Buy and operate this rental property versus investing the same down payment, clo
 <h3>Rental operating assumptions</h3>
 <div class="form">
 <div><label>Vacancy %</label><input id="vacancyRate" type="number" value="5" step=".5"></div>
-<div><label>Property management % of effective rent</label><input id="managementRate" type="number" value="8" step=".5"></div>
 <div><label>Repairs / capex reserve % of effective rent</label><input id="rentalReserveRate" type="number" value="8" step=".5"></div>
 <div><label>Landlord-paid utilities / month</label><input id="landlordUtilities" type="number" value="0" step="25"></div>
 <div><label>Other landlord expenses / month</label><input id="landlordOther" type="number" value="0" step="25"></div>
 <div><label>Annual rent increase %</label><input id="collectedRentGrowth" type="number" value="3" step=".25"></div>
 </div>
 <div class="switchrow" style="margin-top:10px"><div><b>Use professional management</b><div class="muted">Off by default for a self-managed long-term rental.</div></div><label class="switch"><input id="managementOn" type="checkbox"><span class="sliderSwitch"></span></label></div>
+<div id="managementRateWrap" style="display:none;margin-top:8px"><label>Property management % of effective rent</label><input id="managementRate" type="number" value="8" step=".5"></div>
 
 <div class="sharedCard" id="investmentAduCard" style="margin-top:16px">
 <div class="switchrow" style="border:0;padding:0;background:transparent">
@@ -1183,6 +1183,15 @@ function applyInvestmentAduFundingToggle(){
  $('invAduLoanTermWrap').style.display=loan?'block':'none';
  update()
 }
+function applyRentalManagementToggle(){
+ const enabled=$('managementOn').checked;
+ $('managementRateWrap').style.display=enabled?'block':'none';
+ if(enabled){
+   const current=n('managementRate');
+   if(!Number.isFinite(current)||current<=0)$('managementRate').value=8;
+ }
+ update()
+}
 function applyInvestmentAduManagementToggle(){
  $('invAduManagementRateWrap').style.display=$('invAduManagementOn').checked?'block':'none';
  update()
@@ -1262,6 +1271,7 @@ async function loadLocations(){
    applySharedHousingToggles();
    applyInvestmentAduFundingToggle();
    applyInvestmentAduManagementToggle();
+   applyRentalManagementToggle();
    updateAllAduBuildEstimates(true);
    updateAllAduValues(true);
    applyInvestmentAduToggle();
@@ -1329,13 +1339,7 @@ $('propertyType').addEventListener('change',()=>{
 });
 $('useMode').addEventListener('change',applyUseMode);
 $('bedrooms').addEventListener('change',()=>{if($('useMode').value==='rental')applyBedroomRent();else update()});
-$('managementOn').addEventListener('change',()=>{
- if($('managementOn').checked){
-   const current=n('managementRate');
-   if(!Number.isFinite(current)||current<=0)$('managementRate').value=8;
- }
- update()
-});
+$('managementOn').addEventListener('change',applyRentalManagementToggle);
 $('investmentAduOn').addEventListener('change',applyInvestmentAduToggle);
 $('invAduFunding').addEventListener('change',applyInvestmentAduFundingToggle);
 $('invAduManagementOn').addEventListener('change',applyInvestmentAduManagementToggle);
