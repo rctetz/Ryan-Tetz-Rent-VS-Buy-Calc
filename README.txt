@@ -99,3 +99,13 @@ V12 FINAL PATCH
 - Investment gross-rent break-even now moves the tested market-rent cap with rent.
 - Down-payment comparison relabels and recalculates monthly property costs for investment mode.
 - Adds clearer no-crossing language when a rental continues to trail the S&P 500.
+
+HOUSE ALPHA V13
+- Mortgage-rate searches now begin at a true 0%.
+- Replaces raw '0.01' no-crossing output with plain language explaining that even a 0% mortgage would not make buying catch up.
+- Renter-paid garage/storage is always off by default, including after location changes.
+- Removes Auto from the owner garage/storage dropdown.
+- Condo/townhome visibly defaults to Rent separately as owner.
+- Single-family home visibly defaults to Included with property.
+- The native phone dropdown displays the currently selected option with its normal checkmark.
+- Users can still manually select Included, Rent separately, or Not needed.

@@ -67,7 +67,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div id="renterGarageBlock" style="margin-top:10px;padding:12px;border:2px solid #cbd9ef;border-radius:13px;background:#f6f9ff">
 <div class="switchrow" style="border:0;padding:0;background:transparent">
 <div><b>Add renter-paid garage/storage</b><div class="muted">Adds a separate garage or storage-unit charge only to the renting side.</div></div>
-<label class="switch"><input id="renterStorageOn" type="checkbox" checked><span class="sliderSwitch"></span></label>
+<label class="switch"><input id="renterStorageOn" type="checkbox"><span class="sliderSwitch"></span></label>
 </div>
 <div style="margin-top:9px"><label>Renter garage/storage monthly</label><input id="renterStorage" type="number"></div>
 <div class="muted" id="renterGarageNote" style="margin-top:5px"></div>
@@ -83,9 +83,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div class="muted" style="margin:3px 0 9px">Used only in the primary-residence comparison.</div>
 <label>Owner garage/storage situation</label>
 <select id="ownerGarageSituation">
-<option value="auto">Auto based on property</option>
 <option value="included">Included with purchased property</option>
-<option value="rent">Rent separately as an owner</option>
+<option value="rent" selected>Rent separately as an owner</option>
 <option value="none">Not needed after buying</option>
 </select>
 <div class="muted" id="ownerGarageNote" style="margin-top:5px"></div>
@@ -312,12 +311,32 @@ function score(x){
  return Math.max(0,Math.min(100,Math.round(s)))
 }
 function noRootMessage(field,lo,hi,extra={}){
- const low=model(scenarioForRoot(field,lo,extra)).adv, high=model(scenarioForRoot(field,hi,extra)).adv;
- if(low>0&&high>0)return 'buying wins throughout the tested range';
+ const lowModel=model(scenarioForRoot(field,lo,extra));
+ const highModel=model(scenarioForRoot(field,hi,extra));
+ const low=lowModel.adv,high=highModel.adv;
+ const rental=lowModel.rentalMode;
+ if(field==='rate'){
+   if(low<0&&high<0){
+     return rental
+       ? 'even a 0% mortgage rate would not make the rental property beat the S&P 500'
+       : 'even a 0% mortgage rate would not make buying catch up';
+   }
+   if(low>0&&high>0){
+     return rental
+       ? `the rental property remains ahead throughout the tested 0%–${hi}% mortgage-rate range`
+       : `buying remains ahead throughout the tested 0%–${hi}% mortgage-rate range`;
+   }
+   return 'no reliable mortgage-rate crossing was found';
+ }
+ if(low>0&&high>0)return rental
+   ? 'the rental property wins throughout the tested range'
+   : 'buying wins throughout the tested range';
  if(low<0&&high<0){
    if(field==='rent') return `no break-even below ${money(hi)}/mo under these assumptions`;
    if(field==='rentCollected') return `the rental still trails the S&P 500 at ${money(hi)}/mo gross rent`;
-   return `buying still loses even at ${field==='price'?money(lo):lo}`;
+   return rental
+     ? `the rental still trails the S&P 500 even at ${field==='price'?money(lo):lo}`
+     : `buying still loses even at ${field==='price'?money(lo):lo}`;
  }
  return 'no stable crossing found';
 }
@@ -438,10 +457,10 @@ function update(){
    $('landlordCashFlow').className=x.first.rentalCashFlow>=0?'good':'bad';
    $('cashFlowBreakEven').textContent=money(cashFlowBreakEven(x))+'/mo';
  }
- let bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',.01,20):null,rr=x.rentalMode?root('rentCollected',250,20000):root('rent',250,12000);
+ let bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):root('rent',250,12000);
  updatePriceVisual(bp||50000);
  const bpText=bp?money(bp):noRootMessage('price',50000,1500000);
- const brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',.01,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`));
+ const brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`));
  const rrText=rr?money(rr)+'/mo':(x.rentalMode?noRootMessage('rentCollected',250,20000):noRootMessage('rent',250,12000));
  const bpLabel=bp?rootDirection('price',bp):'Purchase-price result';
  const brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result';
@@ -502,23 +521,21 @@ function applyUseMode(){
  }
  update()
 }
-function resolvedOwnerGarageSituation(){
- const selected=$('ownerGarageSituation').value;
- if(selected!=='auto')return selected;
- const type=$('propertyType').value;
- if(type==='condo')return 'included';
- return 'included'
-}
 function applyOwnerGarageSituation(){
- const resolved=resolvedOwnerGarageSituation(),charge=resolved==='rent';
+ const selected=$('ownerGarageSituation').value;
+ const charge=selected==='rent';
  $('storageOn').checked=charge;
  $('storage').disabled=!charge;
- const selected=$('ownerGarageSituation').value;
- $('ownerGarageNote').textContent=selected==='auto'
-   ? (charge?'Auto: this small purchased condo is modeled with separate owner-paid storage.':'Auto: garage/storage is modeled as included with the purchased property.')
-   : resolved==='rent'?'Separate owner-paid garage/storage is included in ownership costs.'
-   : resolved==='included'?'Garage/storage is included with the purchased property.'
-   :'No owner garage/storage need is modeled.';
+ $('ownerGarageNote').textContent=selected==='rent'
+   ? 'Separate owner-paid garage/storage is included in ownership costs.'
+   : selected==='included'
+   ? 'Garage/storage is included with the purchased property.'
+   : 'No owner garage/storage need is modeled.';
+}
+function selectOwnerGarageFromPropertyType(){
+ // Conservative visible defaults. The user can change the selected option.
+ $('ownerGarageSituation').value=$('propertyType').value==='single'?'included':'rent';
+ applyOwnerGarageSituation();
 }
 function applyRenterStorageToggle(){
  const on=$('renterStorageOn').checked;
@@ -535,20 +552,20 @@ function applyPropertyDefaults(){
  const condo=$('propertyType').value==='condo';
  $('hoaOn').checked=condo;
  $('assessment').value=condo?100:0;
- applyOwnerGarageSituation();
+ selectOwnerGarageFromPropertyType();
  update()
 }
 async function loadLocations(){
  locations=await fetch('/api/locations').then(r=>r.json());
  $('location').innerHTML=Object.entries(locations).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('');
- $('location').value='mammoth';applyLocation('mammoth',false).then(()=>{applyUseMode();applyGarageSituations()})
+ $('location').value='mammoth';applyLocation('mammoth',false).then(()=>{selectOwnerGarageFromPropertyType();applyUseMode();applyRenterStorageToggle()})
 }
 async function applyLocation(key,live=true){
  currentLocation=key;let d;
  try{d=live?await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now()).then(r=>r.json()):locations[key]}catch(e){d=locations[key]}
  if(!d)return;
  locations[key]={...(locations[key]||{}),...d};
- $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('storage').value=d.storage;$('renterStorage').value=d.storage;$('renterStorageOn').checked=!!d.renter_storage_default;insuranceUserEditing=false;priceAuto=true;
+ $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('storage').value=d.storage;$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true;
  if(d.mortgage_rate)$('rate').value=d.mortgage_rate;
  $('updated').textContent=`${d.name}: ${d.note||''}`;
  if($('useMode').value==='rental'){
