@@ -71,3 +71,15 @@ HOUSE ALPHA V10
 - Owner garage cost remains part of ownership and rental-property operating costs.
 - Break-even current rent is explicitly shown as base rent, with renter garage cost listed separately.
 - Rental/investment mode hides the current-renter garage section because it is not part of that comparison.
+
+HOUSE ALPHA V11
+- Shows bedrooms only in Rental / Investment Property mode.
+- Bedroom selection updates both estimated collected rent and estimated purchase price.
+- Adds editable location home-value benchmarks and property-type/bedroom price estimates.
+- Price slider dynamically narrows around the local estimated purchase price.
+- Removes the black vertical break-even marker; uses a small arrow above the track only.
+- Slider snaps precisely near break-even and shows a short snapped-value message.
+- Adds a prominent independent renter-paid garage/storage switch and amount.
+- Renter garage/storage raises only the renting side of the primary-residence comparison.
+- Fixes initial premium to compare owner cost with total renter cost including renter storage.
+- Fixes an old initialization reference that could prevent some controls from loading correctly.

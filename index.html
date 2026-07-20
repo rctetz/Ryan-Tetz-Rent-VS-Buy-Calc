@@ -22,9 +22,10 @@ select{font-weight:650}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:cent
 .status{padding:13px;border-left:5px solid var(--blue);background:#f2f6ff;border-radius:10px;line-height:1.5}
 table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
 .pricebox{padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff}.pricevalue{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}.pricevalue b{font-size:25px}
-.rangeWrap{position:relative;padding:11px 0 24px}.range{appearance:none;width:100%;height:9px;border-radius:3px;outline:none;border:1px solid #bfc9d5;box-shadow:inset 0 1px 2px #0001}.range::-webkit-slider-thumb{appearance:none;width:10px;height:34px;border-radius:3px;background:var(--navy);border:2px solid #fff;box-shadow:0 2px 7px #0005;cursor:ew-resize}.range::-moz-range-thumb{width:8px;height:30px;border-radius:3px;background:var(--navy);border:2px solid #fff;cursor:ew-resize}
-.marker{position:absolute;top:-1px;width:4px;height:31px;background:#111827;border-radius:2px;transform:translateX(-2px);z-index:2}.marker:before{content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid #111827}.marker:after{content:"BREAK-EVEN";position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;white-space:nowrap;color:#111827}
+.rangeWrap{position:relative;padding:25px 2px 14px;min-height:48px}.range{appearance:none;width:100%;height:10px;border-radius:4px;outline:none;border:1px solid #bfc9d5;box-shadow:inset 0 1px 2px #0001}.range::-webkit-slider-thumb{appearance:none;width:8px;height:30px;border-radius:2px;background:var(--navy);border:1px solid #fff;box-shadow:0 2px 6px #0005;cursor:ew-resize}.range::-moz-range-thumb{width:7px;height:28px;border-radius:2px;background:var(--navy);border:1px solid #fff;cursor:ew-resize}
+.marker{position:absolute;top:10px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #111827;transform:translateX(-50%);z-index:2;pointer-events:none}
 .range.snap::-webkit-slider-thumb{background:var(--green);box-shadow:0 0 0 5px #138a6130,0 2px 7px #0005}.range.snap::-moz-range-thumb{background:var(--green)}
+.sliderMeta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;font-size:11px;color:var(--muted)}.snapText{font-weight:850;color:var(--green);min-height:14px}
 .legend{display:flex;justify-content:space-between;font-size:11px;font-weight:800;margin-top:2px}.legend .buy{color:var(--green)}.legend .close{color:var(--amber)}.legend .rentwin{color:var(--red)}
 .sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:12px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eaf0ff;color:#234bb8;font-size:11px;font-weight:800}
 .installbar{position:sticky;bottom:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px;display:none}.installbar.show{display:block}.installinner{max-width:1220px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -39,12 +40,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div><label>Location</label><select id="location"></select></div>
 <div><label>Property use</label><select id="useMode"><option value="primary">Primary residence</option><option value="rental">Rental / investment property</option></select></div>
 <div><label>Property type</label><select id="propertyType"><option value="condo">Condo / townhome</option><option value="single">Single-family home</option></select></div>
-<div><label>Property bedrooms</label><select id="bedrooms"><option value="1">1 bedroom</option><option value="2">2 bedrooms</option><option value="3">3 bedrooms</option><option value="4">4 bedrooms</option></select></div>
+<div id="investmentBedroomsField" style="display:none"><label>Investment-property bedrooms</label><select id="bedrooms"><option value="1">1 bedroom</option><option value="2">2 bedrooms</option><option value="3">3 bedrooms</option><option value="4">4 bedrooms</option></select></div>
 </div>
 <h3>Price discovery</h3>
 <div class="pricebox"><div class="pricevalue"><span>Purchase price</span><b id="priceDisplay">$385,000</b></div>
-<div class="rangeWrap"><input class="range" id="priceSlider" type="range" min="50000" max="1500000" step="1000" value="385000"><div class="marker" id="beMarker"></div></div>
-<div class="legend"><span class="buy">BUY WINS</span><span class="close">CLOSE CALL</span><span class="rentwin">RENT WINS</span></div></div>
+<div class="muted" id="priceEstimateNote">Local editable purchase-price estimate</div>
+<div class="rangeWrap"><input class="range" id="priceSlider" type="range" min="100000" max="800000" step="1000" value="385000"><div class="marker" id="beMarker" title="Modeled break-even price"></div></div>
+<div class="legend"><span class="buy">BUY WINS</span><span class="close">CLOSE CALL</span><span class="rentwin">RENT WINS</span></div>
+<div class="sliderMeta"><span id="sliderRangeText"></span><span class="snapText" id="snapText"></span><button class="btn secondary" id="useLocalPrice" style="padding:6px 9px;font-size:11px">Use local estimate</button></div></div>
 <div class="form" style="margin-top:10px">
 <div><label>Exact purchase price</label><input id="price" type="number" value="385000" step="1000"></div>
 <div><label>Down payment %</label><div class="row" style="flex-wrap:nowrap"><input id="downPct" type="number" value="20" min="0" max="100" step="1"><button class="btn secondary" id="cash" style="white-space:nowrap;padding:10px 11px">100% cash</button></div></div>
@@ -56,26 +59,21 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 </div>
 
 <h3>Rent and recurring costs</h3>
+<div id="primaryRentSection">
 <div class="form">
 <div><label>Current base rent</label><input id="rent" type="number"></div>
-<div><label>Current rental bedrooms</label><select id="currentRentalBedrooms"><option value="1">1 bedroom</option><option value="2">2 bedrooms</option><option value="3">3 bedrooms</option><option value="4">4 bedrooms</option></select></div>
 <div><label>Market rent cap</label><input id="rentCap" type="number"></div>
 </div>
 <div class="switchrow" style="margin-top:10px"><div><b>Include HOA</b><div class="muted">On by default for condos</div></div><label class="switch"><input id="hoaOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
 <div class="form" style="margin-top:10px"><div><label>HOA / month</label><input id="hoa" type="number"></div><div><label>HOA growth %</label><input id="hoaGrowth" type="number" value="4"></div></div>
-<div id="renterGarageBlock" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff">
-<b>Current rental garage/storage</b>
-<div class="muted" style="margin:3px 0 9px">A separate cost paid while you continue renting.</div>
-<label>Renter garage/storage situation</label>
-<select id="renterGarageSituation">
-<option value="auto">Auto based on current rental</option>
-<option value="included">Included with current rental</option>
-<option value="rent">Rent separately as a renter</option>
-<option value="none">Not needed while renting</option>
-</select>
-<div class="muted" id="renterGarageNote" style="margin-top:5px"></div>
+<div id="renterGarageBlock" style="margin-top:10px;padding:12px;border:2px solid #cbd9ef;border-radius:13px;background:#f6f9ff">
+<div class="switchrow" style="border:0;padding:0;background:transparent">
+<div><b>Add renter-paid garage/storage</b><div class="muted">Adds a separate garage or storage-unit charge only to the renting side of the comparison.</div></div>
+<label class="switch"><input id="renterStorageOn" type="checkbox" checked><span class="sliderSwitch"></span></label>
+</div>
 <div style="margin-top:9px"><label>Renter garage/storage monthly</label><input id="renterStorage" type="number"></div>
-<input id="renterStorageOn" type="checkbox" checked style="display:none">
+<div class="muted" id="renterGarageNote" style="margin-top:5px"></div>
+</div>
 </div>
 
 <div style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff">
@@ -105,6 +103,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div class="form">
 <div><label>Gross rent collected / month</label><input id="rentCollected" type="number" value="2985" step="50"></div>
 <div><label>Local bedroom rent estimate</label><input id="bedroomRentEstimate" type="number" value="2985" disabled></div>
+<div><label>Local bedroom purchase-price estimate</label><input id="bedroomPriceEstimate" type="number" value="385000" disabled></div>
 <div><label>Vacancy %</label><input id="vacancyRate" type="number" value="5" step=".5"></div>
 <div><label>Property management % of collected rent</label><input id="managementRate" type="number" value="8" step=".5"></div>
 <div><label>Repairs / capex reserve % of rent</label><input id="rentalReserveRate" type="number" value="8" step=".5"></div>
@@ -152,7 +151,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 const $=id=>document.getElementById(id);
 const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','renterStorage','rentCollected','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth','rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -285,16 +284,58 @@ function noRootMessage(field,lo,hi,extra={}){
  return 'no stable crossing found';
 }
 let currentBreakEvenPrice=null;
+function localPurchaseEstimate(){
+ const loc=locations[currentLocation]||{};
+ const type=$('propertyType').value||'condo';
+ if($('useMode').value==='rental'){
+   const br=$('bedrooms').value||'1';
+   return +(loc.bedroom_prices?.[type]?.[br]||loc.home_value||n('price')||385000)
+ }
+ const base=+(loc.home_value||n('price')||385000);
+ return Math.round(base*(type==='condo'?.72:1)/1000)*1000
+}
+function setDynamicSliderRange(estimate,current){
+ const slider=$('priceSlider');
+ let min=Math.max(50000,Math.floor(estimate*.42/5000)*5000);
+ let max=Math.max(min+150000,Math.ceil(estimate*1.65/5000)*5000);
+ if(current<min)min=Math.max(50000,Math.floor(current*.8/5000)*5000);
+ if(current>max)max=Math.ceil(current*1.2/5000)*5000;
+ slider.min=min;slider.max=max;slider.step=1000;
+ $('sliderRangeText').textContent=`${money(min)} to ${money(max)}`;
+}
+function applyLocalPurchaseEstimate(force=true){
+ const estimate=localPurchaseEstimate();
+ $('bedroomPriceEstimate')&&($('bedroomPriceEstimate').value=Math.round(estimate));
+ $('priceEstimateNote').textContent=$('useMode').value==='rental'
+   ? `${$('bedrooms').value}BR ${$('propertyType').value==='condo'?'condo':'house'} planning estimate: ${money(estimate)}`
+   : `Local ${$('propertyType').value==='condo'?'condo':'home'} planning estimate: ${money(estimate)}`;
+ if(force||priceAuto){
+   priceAuto=true;
+   $('price').value=Math.round(estimate);
+   insuranceUserEditing=false;
+   syncInsuranceToPrice();
+ }
+ setDynamicSliderRange(estimate,n('price'));
+}
 function updatePriceVisual(bp){
  const slider=$('priceSlider'),min=+slider.min,max=+slider.max;
  currentBreakEvenPrice=bp||null;
- const markerPct=Math.max(0,Math.min(100,(bp-min)/(max-min)*100));
- $('beMarker').style.left=markerPct+'%';
- const yellowWidth=Math.max(15000,(max-min)*.035), y1=Math.max(min,bp-yellowWidth),y2=Math.min(max,bp+yellowWidth);
+ if(!bp||bp<min||bp>max){
+   $('beMarker').style.display='none';
+ }else{
+   $('beMarker').style.display='block';
+   $('beMarker').style.left=Math.max(0,Math.min(100,(bp-min)/(max-min)*100))+'%';
+   $('beMarker').title=`Break-even ${money(bp)}`;
+ }
+ const yellowWidth=Math.max(10000,(max-min)*.03);
+ const center=bp||min;
+ const y1=Math.max(min,center-yellowWidth),y2=Math.min(max,center+yellowWidth);
  const p1=(y1-min)/(max-min)*100,p2=(y2-min)/(max-min)*100;
  slider.style.background=`linear-gradient(90deg,var(--green) 0%,var(--green) ${p1}%,var(--amber) ${p1}%,var(--amber) ${p2}%,var(--red) ${p2}%,var(--red) 100%)`;
- const close=Math.abs(n('price')-bp)<=Math.max(3000,(max-min)*.006);
- slider.classList.toggle('snap',close);
+ const threshold=Math.max(2500,(max-min)*.006);
+ const snapped=bp&&Math.abs(n('price')-bp)<=threshold;
+ slider.classList.toggle('snap',!!snapped);
+ $('snapText').textContent=snapped?`Snapped: ${money(bp)}`:'';
 }
 function scaledInsurance(price){
  if(!$('insuranceAuto').checked) return n('insurance');
@@ -309,11 +350,12 @@ function syncInsuranceToPrice(){
 function update(){
  syncInsuranceToPrice();
  let x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
+ setDynamicSliderRange(localPurchaseEstimate(),n('price'));
  $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
  $('score').style.background=c;$('score').textContent=s;$('scorebox').style.background=s>=70?'#eaf9f3':s>=50?'#fff7e7':'#fff0f0';
  $('verdict').textContent=x.rentalMode?(s>=75?'Strong rental candidate':s>=60?'Promising rental':s>=45?'Marginal rental':'Weak rental economics'):(s>=75?'Strong buy candidate':s>=60?'Worth serious consideration':s>=45?'Close call':'Renting remains stronger');
  $('explain').textContent=x.rentalMode?(x.adv>=0?`Owning the rental finishes ${money(x.adv)} ahead of investing the same capital after ${x.v.years} years.`:`Investing the same capital finishes ${money(-x.adv)} ahead of owning the rental after ${x.v.years} years.`):(x.adv>=0?`Buying finishes ${money(x.adv)} ahead after ${x.v.years} years.`:`Renting and investing finishes ${money(-x.adv)} ahead after ${x.v.years} years.`);
- $('owner').innerHTML=money(x.first.owner)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');$('rentNow').innerHTML=money(x.first.totalRenterCost)+(x.first.renterGarage>0?`<span class="muted" style="display:block">${money(x.first.rent)} rent + ${money(x.first.renterGarage)} renter garage</span>`:'');$('gap').textContent=money(x.first.owner-x.first.rent);
+ $('owner').innerHTML=money(x.first.owner)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');$('rentNow').innerHTML=money(x.first.totalRenterCost)+(x.first.renterGarage>0?`<span class="muted" style="display:block">${money(x.first.rent)} rent + ${money(x.first.renterGarage)} renter garage</span>`:'');$('gap').textContent=money(x.rentalMode?-x.first.rentalCashFlow:x.first.owner-x.first.totalRenterCost);
  $('rentWealth').textContent=money(x.rentalMode?x.last.rentalAlternative:x.last.renter);$('buyWealth').textContent=money(x.rentalMode?x.last.rentalOwnerWealth:x.last.buyWealth);$('adv').textContent=(x.adv>=0?'+':'')+money(x.adv);$('adv').className=x.adv>=0?'good':'bad';
  $('rentalMetrics').style.display=x.rentalMode?'block':'none';
  if(x.rentalMode){
@@ -346,30 +388,24 @@ function applyBedroomRent(){
  const estimate=currentBedroomEstimate();
  $('bedroomRentEstimate').value=Math.round(estimate);
  $('rentCollected').value=Math.round(estimate);
+ applyLocalPurchaseEstimate(priceAuto);
  update()
 }
 function applyUseMode(){
  const rental=$('useMode').value==='rental';
  $('rentalSection').style.display=rental?'block':'none';
-  // A rental property does not use the tenant's rent-vs-own input.
+ $('investmentBedroomsField').style.display=rental?'block':'none';
+ $('primaryRentSection').style.display=rental?'none':'block';
  if(rental) applyBedroomRent();
- $('renterGarageBlock').style.display=rental?'none':'block';
- applyGarageSituations();
+ applyOwnerGarageSituation();
+ applyLocalPurchaseEstimate(priceAuto);
  update()
 }
 function resolvedOwnerGarageSituation(){
  const selected=$('ownerGarageSituation').value;
  if(selected!=='auto')return selected;
- const type=$('propertyType').value,beds=+$('bedrooms').value||1;
- if(type==='condo'&&beds<=1)return 'rent';
- return 'included'
-}
-function resolvedRenterGarageSituation(){
- const selected=$('renterGarageSituation').value;
- if(selected!=='auto')return selected;
- const beds=+$('currentRentalBedrooms').value||1;
- // A small rental is more likely to require external gear/vehicle storage.
- if(beds<=1)return 'rent';
+ const type=$('propertyType').value;
+ if(type==='condo'&&$('useMode').value==='rental'&&(+($('bedrooms').value)||1)<=1)return 'rent';
  return 'included'
 }
 function applyOwnerGarageSituation(){
@@ -383,20 +419,16 @@ function applyOwnerGarageSituation(){
    : resolved==='included'?'Garage/storage is included with the purchased property.'
    :'No owner garage/storage need is modeled.';
 }
-function applyRenterGarageSituation(){
- const resolved=resolvedRenterGarageSituation(),charge=resolved==='rent';
- $('renterStorageOn').checked=charge;
- $('renterStorage').disabled=!charge;
- const selected=$('renterGarageSituation').value;
- $('renterGarageNote').textContent=selected==='auto'
-   ? (charge?'Auto: this small current rental is modeled with separate renter-paid storage.':'Auto: garage/storage is modeled as included with the current rental.')
-   : resolved==='rent'?'Separate renter-paid garage/storage is added to the rent side.'
-   : resolved==='included'?'Garage/storage is included in current rent.'
-   :'No renter garage/storage need is modeled.';
+function applyRenterStorageToggle(){
+ const on=$('renterStorageOn').checked;
+ $('renterStorage').disabled=!on;
+ $('renterGarageNote').textContent=on
+   ? `Adds ${money(n('renterStorage'))}/mo to renting costs only.`
+   : 'No separate renter garage/storage cost is included.';
 }
 function applyGarageSituations(){
  applyOwnerGarageSituation();
- applyRenterGarageSituation();
+ applyRenterStorageToggle();
 }
 function applyPropertyDefaults(){
  const condo=$('propertyType').value==='condo';
@@ -408,22 +440,26 @@ function applyPropertyDefaults(){
 async function loadLocations(){
  locations=await fetch('/api/locations').then(r=>r.json());
  $('location').innerHTML=Object.entries(locations).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('');
- $('location').value='mammoth';applyLocation('mammoth',false).then(()=>{applyUseMode();applyGarageSituation()})
+ $('location').value='mammoth';applyLocation('mammoth',false).then(()=>{applyUseMode();applyGarageSituations()})
 }
 async function applyLocation(key,live=true){
  currentLocation=key;let d;
  try{d=live?await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now()).then(r=>r.json()):locations[key]}catch(e){d=locations[key]}
  if(!d)return;
  locations[key]={...(locations[key]||{}),...d};
- $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('storage').value=d.storage;$('renterStorage').value=d.storage;insuranceUserEditing=false;
+ $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('storage').value=d.storage;$('renterStorage').value=d.storage;$('renterStorageOn').checked=!!d.renter_storage_default;insuranceUserEditing=false;priceAuto=true;
  if(d.mortgage_rate)$('rate').value=d.mortgage_rate;
  $('updated').textContent=`${d.name}: ${d.note||''}`;
  if($('useMode').value==='rental') applyBedroomRent();
- const src=d.sources||{rent:d.source||''};
+ else applyLocalPurchaseEstimate(true);
+ applyRenterStorageToggle();
+ const src=d.sources||{rent:d.source||'',home:d.home_source||''};
  $('sources').innerHTML=[
   ['Location',d.name,d.note||''],
   ['1BR current-rent default',money(d.rent)+'/mo',d.status?.rent||'Editable location benchmark',src.rent],
   ['Bedroom rent estimates',`${money(d.bedroom_rents?.['1']||d.rent)}–${money(d.bedroom_rents?.['4']||d.rent*1.92)}/mo`,d.status?.bedroom_rents||'Editable estimates anchored to local 1BR rent'],
+  ['Local home-value benchmark',money(d.home_value||localPurchaseEstimate()),d.status?.home_value||'Editable local planning benchmark',src.home],
+  ['Bedroom purchase estimates',`${money(d.bedroom_prices?.condo?.['1']||0)}–${money(d.bedroom_prices?.single?.['4']||0)}`,d.status?.bedroom_prices||'Editable size/type estimates'],
   ['Condo HOA default',money(d.hoa)+'/mo',d.status?.hoa||'Editable location-specific benchmark'],
   ['Separate garage/storage estimate',money(d.storage)+'/mo','Used independently for renter-paid or owner-paid storage when selected'],
   ['Home insurance',money(d.insurance)+'/mo',d.status?.insurance||'Editable planning estimate'],
@@ -435,26 +471,27 @@ async function applyLocation(key,live=true){
 ids.forEach(i=>$(i).addEventListener('input',update));
 $('priceSlider').addEventListener('input',e=>{
  let val=+e.target.value;
- if(currentBreakEvenPrice!==null&&Math.abs(val-currentBreakEvenPrice)<=5000){
+ const snapDistance=Math.max(2500,(+e.target.max-+e.target.min)*.006);
+ if(currentBreakEvenPrice!==null&&Math.abs(val-currentBreakEvenPrice)<=snapDistance){
    val=Math.round(currentBreakEvenPrice);
    e.target.value=val;
-   e.target.classList.add('snap');
- }else e.target.classList.remove('snap');
+ } 
+ priceAuto=false;
  $('price').value=val;insuranceUserEditing=false;syncInsuranceToPrice();update()
 });
-$('price').addEventListener('input',()=>{insuranceUserEditing=false;syncInsuranceToPrice();update()});
+$('price').addEventListener('input',()=>{priceAuto=false;insuranceUserEditing=false;syncInsuranceToPrice();update()});
 $('hoaOn').addEventListener('change',update);$('storageOn').addEventListener('change',update);$('pmiOn').addEventListener('change',update);
 $('ownerGarageSituation').addEventListener('change',()=>{applyOwnerGarageSituation();update()});
-$('renterGarageSituation').addEventListener('change',()=>{applyRenterGarageSituation();update()});
-$('currentRentalBedrooms').addEventListener('change',()=>{applyRenterGarageSituation();update()});
+$('renterStorageOn').addEventListener('change',()=>{applyRenterStorageToggle();update()});
+$('renterStorage').addEventListener('input',()=>{applyRenterStorageToggle();update()});
 $('insuranceAuto').addEventListener('change',()=>{insuranceUserEditing=false;syncInsuranceToPrice();update()});
 $('insurance').addEventListener('input',()=>{if(!$('insuranceAuto').checked){insuranceAnchorMonthly=n('insurance');insuranceAnchorPrice=n('price')}else{insuranceUserEditing=true}update()});
-$('propertyType').addEventListener('change',()=>{applyPropertyDefaults();insuranceUserEditing=false;syncInsuranceToPrice();update()});
+$('propertyType').addEventListener('change',()=>{applyPropertyDefaults();insuranceUserEditing=false;applyLocalPurchaseEstimate(priceAuto);syncInsuranceToPrice();update()});
 $('useMode').addEventListener('change',applyUseMode);
 $('bedrooms').addEventListener('change',()=>{applyOwnerGarageSituation();if($('useMode').value==='rental')applyBedroomRent();else update()});
 $('managementOn').addEventListener('change',update);
 $('location').addEventListener('change',e=>applyLocation(e.target.value,true));
-$('refresh').onclick=()=>applyLocation(currentLocation,true);$('cash').onclick=()=>{$('downPct').value=100;update()};
+$('refresh').onclick=()=>applyLocation(currentLocation,true);$('cash').onclick=()=>{$('downPct').value=100;update()};$('useLocalPrice').onclick=()=>{priceAuto=true;applyLocalPurchaseEstimate(true);update()};
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
 let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installbar').classList.add('show')});$('installBtn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;$('installbar').classList.remove('show')}else alert('On iPhone: Share → Add to Home Screen. On Android: browser menu → Install app.')};
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
