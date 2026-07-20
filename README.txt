@@ -198,3 +198,10 @@ HOUSE ALPHA V24
 - Turning professional management on reveals the field and suggests 8%.
 - Professional management remains off by default.
 - Users can edit the suggested 8% after enabling management.
+
+HOUSE ALPHA V25
+- Owner garage/storage now displays $0 when Included with purchased property is selected.
+- Owner garage/storage now displays $0 when Not needed after buying is selected.
+- Rent separately as an owner restores the selected location's garage/storage market estimate.
+- PMI controls are hidden whenever the down payment is 20% or greater.
+- Below 20% down, the PMI rate and cancellation fields appear only when Estimate PMI is enabled.

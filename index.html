@@ -53,9 +53,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div><label>Down payment %</label><div class="row" style="flex-wrap:nowrap"><input id="downPct" type="number" value="20" min="0" max="100" step="1"><button class="btn secondary" id="cash" style="white-space:nowrap;padding:10px 11px">100% cash</button></div></div>
 <div><label>Mortgage rate %</label><input id="rate" type="number" value="6.55" step=".01"></div>
 <div><label>Mortgage term</label><input id="term" type="number" value="30"></div>
-<div class="switchrow" style="grid-column:1/-1"><div><b>Estimate PMI below 20% down</b><div class="muted">Uses an editable annual PMI rate and automatically stops when modeled loan-to-value reaches 80%.</div></div><label class="switch"><input id="pmiOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
-<div><label>Estimated annual PMI rate %</label><input id="pmiRate" type="number" value="0.50" step=".05" min="0"></div>
-<div><label>PMI cancellation LTV %</label><input id="pmiCancelLtv" type="number" value="80" step="1" min="70" max="100"></div>
+<div class="switchrow" id="pmiToggleWrap" style="grid-column:1/-1"><div><b>Estimate PMI below 20% down</b><div class="muted">Uses an editable annual PMI rate and automatically stops when modeled loan-to-value reaches 80%.</div></div><label class="switch"><input id="pmiOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
+<div id="pmiRateWrap"><label>Estimated annual PMI rate %</label><input id="pmiRate" type="number" value="0.50" step=".05" min="0"></div>
+<div id="pmiCancelWrap"><label>PMI cancellation LTV %</label><input id="pmiCancelLtv" type="number" value="80" step="1" min="70" max="100"></div>
 </div>
 
 <h3 id="primaryRentHeading">Rent-versus-own assumptions</h3>
@@ -382,7 +382,7 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'invAduRent','invAduRentCap','invAduVacancy','invAduReserve','invAduOther','invAduRentGrowth','invAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -851,6 +851,7 @@ function updateSensitivity(){
 }
 function update(){
  syncInsuranceToPrice();
+ applyPmiVisibility();
  updateReturnPresetState();
  updateAppreciationPresetState();
  updateAllAduBuildEstimates(false);
@@ -1183,6 +1184,13 @@ function applyInvestmentAduFundingToggle(){
  $('invAduLoanTermWrap').style.display=loan?'block':'none';
  update()
 }
+function applyPmiVisibility(){
+ const belowTwenty=n('downPct')<20;
+ const enabled=belowTwenty&&$('pmiOn').checked;
+ $('pmiToggleWrap').style.display=belowTwenty?'flex':'none';
+ $('pmiRateWrap').style.display=enabled?'block':'none';
+ $('pmiCancelWrap').style.display=enabled?'block':'none';
+}
 function applyRentalManagementToggle(){
  const enabled=$('managementOn').checked;
  $('managementRateWrap').style.display=enabled?'block':'none';
@@ -1229,11 +1237,12 @@ function applyOwnerGarageSituation(){
  const charge=selected==='rent';
  $('storageOn').checked=charge;
  $('storage').disabled=!charge;
+ $('storage').value=charge?ownerStorageMarketEstimate:0;
  $('ownerGarageNote').textContent=selected==='rent'
-   ? 'Separate owner-paid garage/storage is included in ownership costs.'
+   ? `Separate owner-paid garage/storage uses the local estimate of ${money(ownerStorageMarketEstimate)}/mo.`
    : selected==='included'
-   ? 'Garage/storage is included with the purchased property.'
-   : 'No owner garage/storage need is modeled.';
+   ? 'Garage/storage is included with the purchased property, so the modeled monthly cost is $0.'
+   : 'No owner garage/storage need is modeled, so the monthly cost is $0.';
 }
 function selectOwnerGarageFromPropertyType(){
  // Conservative visible defaults. The user can change the selected option.
@@ -1272,6 +1281,7 @@ async function loadLocations(){
    applyInvestmentAduFundingToggle();
    applyInvestmentAduManagementToggle();
    applyRentalManagementToggle();
+   applyPmiVisibility();
    updateAllAduBuildEstimates(true);
    updateAllAduValues(true);
    applyInvestmentAduToggle();
@@ -1282,13 +1292,14 @@ async function applyLocation(key,live=true){
  try{d=live?await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now()).then(r=>r.json()):locations[key]}catch(e){d=locations[key]}
  if(!d)return;
  locations[key]={...(locations[key]||{}),...d};
- $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('storage').value=d.storage;$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true;
+ $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;ownerStorageMarketEstimate=+(d.storage||0);$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true;
  if(d.mortgage_rate)$('rate').value=d.mortgage_rate;
  $('updated').textContent=`${d.name}: ${d.note||''}`;
  if($('useMode').value==='rental'){
    applyPropertyRentEstimate(true);
    applyLocalPurchaseEstimate(true);
  }else applyLocalPurchaseEstimate(true);
+ applyOwnerGarageSituation();
  applyRenterStorageToggle();
  updateSharedHousingEstimates(false,false);
  applyInvestmentAduRentEstimate(false);
@@ -1326,7 +1337,7 @@ $('priceSlider').addEventListener('input',e=>{
  $('price').value=val;insuranceUserEditing=false;syncInsuranceToPrice();update()
 });
 $('price').addEventListener('input',()=>{priceAuto=false;insuranceUserEditing=false;syncInsuranceToPrice();update()});
-$('hoaOn').addEventListener('change',update);$('storageOn').addEventListener('change',update);$('pmiOn').addEventListener('change',update);
+$('hoaOn').addEventListener('change',update);$('storageOn').addEventListener('change',update);$('pmiOn').addEventListener('change',()=>{applyPmiVisibility();update()});
 $('ownerGarageSituation').addEventListener('change',()=>{applyOwnerGarageSituation();update()});
 $('renterStorageOn').addEventListener('change',()=>{applyRenterStorageToggle();update()});
 $('renterStorage').addEventListener('input',()=>{applyRenterStorageToggle();update()});
