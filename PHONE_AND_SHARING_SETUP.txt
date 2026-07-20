@@ -1,0 +1,40 @@
+MAMMOTH RENT VS BUY — PHONE APP / SHARING SETUP
+
+WHAT THIS IS
+This is an installable Progressive Web App (PWA). Once hosted at an HTTPS web address, it can be:
+- opened on iPhone, Android, Mac, or PC
+- installed on a phone home screen
+- shared with coworkers using one link
+- used offline for calculations after the first visit
+- refreshed online for current market inputs
+
+EASIEST PUBLIC DEPLOYMENT: RENDER
+1. Create a free GitHub account if needed.
+2. Create a new GitHub repository and upload every file in this folder.
+3. Create a Render account at render.com.
+4. Choose New > Blueprint and connect the GitHub repository.
+5. Render detects render.yaml. Approve the deployment.
+6. Render gives you an HTTPS link such as:
+   https://mammoth-rent-vs-buy.onrender.com
+7. Share that link with coworkers.
+
+INSTALL ON IPHONE
+1. Open the public link in Safari.
+2. Tap the Share button.
+3. Tap Add to Home Screen.
+4. Tap Add.
+
+INSTALL ON ANDROID
+1. Open the public link in Chrome.
+2. Tap Install when prompted, or use the menu > Install app / Add to Home screen.
+
+IMPORTANT
+- The live data refresh requires the hosted Python backend.
+- The app still performs saved/default calculations offline.
+- Public-source page layouts can change and break automated data extraction. The app always keeps values editable and shows fallback data.
+- HOA and insurance are planning benchmarks, not exact quotes.
+
+LOCAL TESTING
+Mac: double-click run_mac.command, or run: python3 app.py
+Windows: open Command Prompt in the folder and run: python app.py
+Then open http://127.0.0.1:8765

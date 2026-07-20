@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: mammoth-rent-vs-buy
+    runtime: python
+    plan: free
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: OPEN_BROWSER
+        value: "0"
+      - key: PYTHON_VERSION
+        value: "3.12.2"
