@@ -169,3 +169,13 @@ HOUSE ALPHA V21
 - Investment-property professional management remains off by default.
 - Turning professional management on automatically suggests an 8% fee when the current fee is blank or zero.
 - Users may still edit the management rate after enabling it.
+
+HOUSE ALPHA V22
+- Adds ADU value-added assumptions to both owner-occupied and investment-property Build New ADU paths.
+- Defaults to 75% of construction cost (Conservative).
+- Adds 100% of cost (Cost basis), Local market proxy, and Custom / appraisal options.
+- Local proxy uses ADU finished square feet × editable local listing $/sq ft × 75%.
+- Adds location-specific city, county, or nearby price-per-square-foot planning benchmarks and source links.
+- Sparse markets are explicitly identified as county or nearby fallbacks.
+- Local market proxies are labeled as planning estimates, not appraisals.
+- Root and break-even calculations now derive ADU value from the selected method rather than a stale fixed field.

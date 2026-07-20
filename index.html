@@ -142,6 +142,25 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div id="aduLoanRateWrap" style="display:none"><label>Construction loan rate %</label><input id="aduLoanRate" type="number" value="7" step=".25"></div>
 <div id="aduLoanTermWrap" style="display:none"><label>Loan term (years)</label><input id="aduLoanTerm" type="number" value="20" step="1"></div>
 </div>
+
+<h4 style="margin:14px 0 8px">Estimated value added at completion</h4>
+<div class="form">
+<div><label>Value assumption</label><select id="aduValueMethod">
+<option value="conservative" selected>75% of cost — conservative</option>
+<option value="cost">100% of cost — cost basis</option>
+<option value="local">Local market proxy</option>
+<option value="custom">Custom / appraisal estimate</option>
+</select></div>
+<div><label>Modeled value added</label><input id="aduValueAdded" type="number" value="187500" disabled></div>
+<div id="aduLocalSizeWrap" style="display:none"><label>ADU finished square feet</label><input id="aduSize" type="number" value="600" step="25"></div>
+<div id="aduLocalPsfWrap" style="display:none"><label>Local market $ / sq ft</label><input id="aduLocalPsf" type="number" value="672" step="5"></div>
+<div id="aduCustomValueWrap" style="display:none"><label>Custom / appraisal value</label><input id="aduCustomValue" type="number" value="250000" step="5000"></div>
+</div>
+<div id="aduLocalProxyNote" class="muted" style="display:none;margin-top:7px">
+Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planning proxy, not an appraisal.
+<span id="aduPsfSourceWrap"> <a id="aduPsfSource" target="_blank" rel="noopener">View market source</a>.</span>
+<div id="aduPsfNote"></div>
+</div>
 <div class="muted" style="margin-top:7px">No ADU rent is counted before the completion month. Cash construction is compared with investing the same capital in the S&amp;P 500.</div>
 </div>
 
@@ -219,7 +238,6 @@ Buy and operate this rental property versus investing the same down payment, clo
 <option value="4">4 bedrooms</option>
 </select></div>
 <div><label>Total construction cost</label><input id="invAduBuildCost" type="number" value="250000" step="5000"></div>
-<div><label>Estimated value added at completion</label><input id="invAduValueAdded" type="number" value="250000" step="5000"></div>
 <div><label>Months until rentable</label><input id="invAduBuildMonths" type="number" value="12" step="1" min="0"></div>
 <div><label>Pay for construction</label><select id="invAduFunding">
 <option value="cash">Cash</option>
@@ -227,6 +245,25 @@ Buy and operate this rental property versus investing the same down payment, clo
 </select></div>
 <div id="invAduLoanRateWrap" style="display:none"><label>Construction loan rate %</label><input id="invAduLoanRate" type="number" value="7" step=".25"></div>
 <div id="invAduLoanTermWrap" style="display:none"><label>Loan term (years)</label><input id="invAduLoanTerm" type="number" value="20" step="1"></div>
+</div>
+
+<h4 style="margin:14px 0 8px">Estimated value added at completion</h4>
+<div class="form">
+<div><label>Value assumption</label><select id="invAduValueMethod">
+<option value="conservative" selected>75% of cost — conservative</option>
+<option value="cost">100% of cost — cost basis</option>
+<option value="local">Local market proxy</option>
+<option value="custom">Custom / appraisal estimate</option>
+</select></div>
+<div><label>Modeled value added</label><input id="invAduValueAdded" type="number" value="187500" disabled></div>
+<div id="invAduLocalSizeWrap" style="display:none"><label>ADU finished square feet</label><input id="invAduSize" type="number" value="600" step="25"></div>
+<div id="invAduLocalPsfWrap" style="display:none"><label>Local market $ / sq ft</label><input id="invAduLocalPsf" type="number" value="672" step="5"></div>
+<div id="invAduCustomValueWrap" style="display:none"><label>Custom / appraisal value</label><input id="invAduCustomValue" type="number" value="250000" step="5000"></div>
+</div>
+<div id="invAduLocalProxyNote" class="muted" style="display:none;margin-top:7px">
+Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planning proxy, not an appraisal.
+<span id="invAduPsfSourceWrap"> <a id="invAduPsfSource" target="_blank" rel="noopener">View market source</a>.</span>
+<div id="invAduPsfNote"></div>
 </div>
 
 <h4 style="margin:14px 0 8px">ADU rental income</h4>
@@ -310,7 +347,7 @@ Buy and operate this rental property versus investing the same down payment, clo
 <div class="metrics">
 <div class="metric"><span class="muted">ADU rent after completion</span><b id="invAduRentResult"></b></div>
 <div class="metric"><span class="muted">Net ADU cash flow after completion</span><b id="invAduCashFlowResult"></b></div>
-<div class="metric"><span class="muted">Estimated ADU value added</span><b id="invAduValueResult"></b></div>
+<div class="metric"><span class="muted">Modeled ADU value added</span><b id="invAduValueResult"></b></div>
 </div>
 <div class="status" id="investmentAduBreakEven" style="margin-top:10px"></div>
 </div>
@@ -333,13 +370,13 @@ const $=id=>document.getElementById(id);
 const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','renterStorage',
 'renterShareContribution','renterShareVacancy','renterShareGrowth',
 'ownerIncomeGross','ownerIncomeCap','ownerIncomeVacancy','ownerIncomeManagement','ownerIncomeReserve','ownerIncomeOther','ownerIncomeGrowth',
-'aduBuildCost','aduBuildMonths','aduLoanRate','aduLoanTerm',
+'aduBuildCost','aduBuildMonths','aduLoanRate','aduLoanTerm','aduValueAdded','aduSize','aduLocalPsf','aduCustomValue',
 'rentCollected','rentCollectedCap','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth',
-'invAduBuildCost','invAduValueAdded','invAduBuildMonths','invAduLoanRate','invAduLoanTerm',
+'invAduBuildCost','invAduValueAdded','invAduBuildMonths','invAduLoanRate','invAduLoanTerm','invAduSize','invAduLocalPsf','invAduCustomValue',
 'invAduRent','invAduRentCap','invAduVacancy','invAduReserve','invAduOther','invAduRentGrowth','invAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -358,6 +395,17 @@ function model(o={}){
  const investmentAduEnabled=rentalMode&&$('investmentAduOn').checked;
  const invAduFunding=$('invAduFunding').value;
  const invAduManagementEnabled=investmentAduEnabled&&$('invAduManagementOn').checked;
+
+ const ownerAduValueMethod=$('aduValueMethod').value;
+ const invAduValueMethod=$('invAduValueMethod').value;
+ const deriveAduValue=(method,cost,size,psf,custom)=>{
+   if(method==='cost')return Math.max(0,cost);
+   if(method==='local')return Math.max(0,size*psf*.75);
+   if(method==='custom')return Math.max(0,custom);
+   return Math.max(0,cost*.75);
+ };
+ v.aduValueAdded=deriveAduValue(ownerAduValueMethod,v.aduBuildCost,v.aduSize,v.aduLocalPsf,v.aduCustomValue);
+ v.invAduValueAdded=deriveAduValue(invAduValueMethod,v.invAduBuildCost,v.invAduSize,v.invAduLocalPsf,v.invAduCustomValue);
 
  v.storage=rentalMode?0:($('storageOn').checked?v.storage:0);
  v.renterStorage=rentalMode?0:($('renterStorageOn').checked?v.renterStorage:0);
@@ -445,7 +493,7 @@ function model(o={}){
          ? bal(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm,m)
          : 0,
        aduValueAdded=newAduEnabled&&m>=aduCompletionMonth
-         ? v.aduBuildCost*(1+v.appreciation/100)**((m-aduCompletionMonth)/12)
+         ? v.aduValueAdded*(1+v.appreciation/100)**((m-aduCompletionMonth)/12)
          : 0,
 
        effectiveCollected=grossCollected*(1-v.vacancyRate/100),
@@ -799,6 +847,7 @@ function update(){
  syncInsuranceToPrice();
  updateReturnPresetState();
  updateAppreciationPresetState();
+ updateAllAduValues(false);
  let x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
  setDynamicSliderRange(localPurchaseEstimate(),n('price'));
  $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
@@ -945,6 +994,53 @@ function applyBedroomRent(){
  applyPropertyRentEstimate(false);
  applyLocalPurchaseEstimate(priceAuto);
  update()
+}
+function currentAduMarketPsf(){
+ const loc=locations[currentLocation]||{};
+ return +(loc.adu_market_psf||300)
+}
+function setAduPsfSource(prefix){
+ const loc=locations[currentLocation]||{};
+ const link=$(prefix+'PsfSource');
+ const wrap=$(prefix+'PsfSourceWrap');
+ const note=$(prefix+'PsfNote');
+ const source=loc.adu_market_psf_source||'';
+ if(source){
+   link.href=source;
+   wrap.style.display='inline';
+ }else{
+   link.removeAttribute('href');
+   wrap.style.display='none';
+ }
+ note.textContent=loc.adu_market_psf_note||'Editable local planning estimate.';
+}
+function calculatedAduValue(prefix){
+ const method=$(prefix+'ValueMethod').value;
+ const cost=n(prefix+'BuildCost');
+ if(method==='cost')return Math.max(0,cost);
+ if(method==='local')return Math.max(0,n(prefix+'Size')*n(prefix+'LocalPsf')*.75);
+ if(method==='custom')return Math.max(0,n(prefix+'CustomValue'));
+ return Math.max(0,cost*.75);
+}
+function updateAduValueControls(prefix,forceLocalPsf=false){
+ const method=$(prefix+'ValueMethod').value;
+ const local=method==='local';
+ const custom=method==='custom';
+ $(prefix+'LocalSizeWrap').style.display=local?'block':'none';
+ $(prefix+'LocalPsfWrap').style.display=local?'block':'none';
+ $(prefix+'CustomValueWrap').style.display=custom?'block':'none';
+ $(prefix+'LocalProxyNote').style.display=local?'block':'none';
+
+ const psfAuto=prefix==='adu'?ownerAduPsfAuto:invAduPsfAuto;
+ if(local&&(forceLocalPsf||psfAuto)){
+   $(prefix+'LocalPsf').value=currentAduMarketPsf();
+ }
+ setAduPsfSource(prefix);
+ $(prefix+'ValueAdded').value=Math.round(calculatedAduValue(prefix));
+}
+function updateAllAduValues(forceLocalPsf=false){
+ updateAduValueControls('adu',forceLocalPsf);
+ updateAduValueControls('invAdu',forceLocalPsf);
 }
 function localOneBedroomRent(){
  const loc=locations[currentLocation]||{};
@@ -1118,6 +1214,7 @@ async function loadLocations(){
    applySharedHousingToggles();
    applyInvestmentAduFundingToggle();
    applyInvestmentAduManagementToggle();
+   updateAllAduValues(true);
    applyInvestmentAduToggle();
  })
 }
@@ -1136,6 +1233,9 @@ async function applyLocation(key,live=true){
  applyRenterStorageToggle();
  updateSharedHousingEstimates(false,false);
  applyInvestmentAduRentEstimate(false);
+ if(ownerAduPsfAuto)$('aduLocalPsf').value=d.adu_market_psf||300;
+ if(invAduPsfAuto)$('invAduLocalPsf').value=d.adu_market_psf||300;
+ updateAllAduValues(false);
  const src=d.sources||{rent:d.source||'',home:d.home_source||''};
  $('sources').innerHTML=[
   ['Location',d.name,d.note||''],
@@ -1197,6 +1297,16 @@ $('ownerIncomeType').addEventListener('change',()=>{applyOwnerIncomePreset(true)
 $('ownerIncomeBedrooms').addEventListener('change',()=>{updateSharedHousingEstimates(false,true);update()});
 $('ownerManagementOn').addEventListener('change',applyOwnerManagementToggle);
 $('aduFunding').addEventListener('change',applyAduFundingToggle);
+$('aduValueMethod').addEventListener('change',()=>{if($('aduValueMethod').value==='local'){ownerAduPsfAuto=true;$('aduLocalPsf').value=currentAduMarketPsf()}update()});
+$('aduBuildCost').addEventListener('input',update);
+$('aduSize').addEventListener('input',update);
+$('aduLocalPsf').addEventListener('input',()=>{ownerAduPsfAuto=false;update()});
+$('aduCustomValue').addEventListener('input',update);
+$('invAduValueMethod').addEventListener('change',()=>{if($('invAduValueMethod').value==='local'){invAduPsfAuto=true;$('invAduLocalPsf').value=currentAduMarketPsf()}update()});
+$('invAduBuildCost').addEventListener('input',update);
+$('invAduSize').addEventListener('input',update);
+$('invAduLocalPsf').addEventListener('input',()=>{invAduPsfAuto=false;update()});
+$('invAduCustomValue').addEventListener('input',update);
 $('useRenterShareEstimate').onclick=()=>{updateSharedHousingEstimates(true,false);update()};
 $('useOwnerIncomeEstimate').onclick=()=>{updateSharedHousingEstimates(false,true);update()};
 $('location').addEventListener('change',e=>applyLocation(e.target.value,true));

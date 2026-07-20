@@ -37,6 +37,37 @@ LOCATIONS={
  'zephyr-cove': {'name':'Zephyr Cove, NV','rent':1950,'tax':0.65,'hoa':650,'insurance':185,'storage':350,'source':'','note':'Small sample; planning benchmark.','home_value':1100000,'home_source':'','renter_storage_default':True},
  'custom': {'name':'Custom / Anywhere','rent':2000,'tax':1.10,'hoa':300,'insurance':160,'storage':250,'source':'','note':'Enter local values manually.','home_value':500000,'home_source':'','renter_storage_default':False},
 }
+
+# Citywide/countywide median listing-price-per-square-foot planning proxies.
+# These are not ADU comparable-sale appraisals. Sparse locations use a
+# clearly identified nearby or county-level fallback and remain editable.
+ADU_MARKET_PSF={
+ 'mammoth': {'value':672,'source':'https://www.realtor.com/local/market/california/mono-county/mammoth-lakes','note':'Mammoth Lakes citywide median listing $/sq ft (June 2026).'},
+ 'june-lake': {'value':566,'source':'https://www.realtor.com/local/market/california/mono-county/june-lake','note':'June Lake / 93529 listing $/sq ft benchmark (2026).'},
+ 'crowley-lake': {'value':638,'source':'https://www.realtor.com/local/market/california/mono-county','note':'Mono County fallback because Crowley Lake has sparse direct data.'},
+ 'toms-place': {'value':667,'source':'https://www.realtor.com/local/market/california/mono-county/toms-place','note':"Tom's Place listing $/sq ft benchmark (2026)."},
+ 'lee-vining': {'value':638,'source':'https://www.realtor.com/local/market/california/mono-county','note':'Mono County fallback because Lee Vining has sparse direct data.'},
+ 'bridgeport': {'value':638,'source':'https://www.realtor.com/local/market/california/mono-county','note':'Mono County fallback because Bridgeport has sparse direct data.'},
+ 'benton': {'value':344,'source':'https://www.realtor.com/local/market/california/inyo-county','note':'Inyo County fallback because Benton has sparse direct data.'},
+ 'bishop': {'value':359,'source':'https://www.realtor.com/local/market/california/inyo-county/bishop','note':'Bishop citywide median listing $/sq ft (June 2026).'},
+ 'big-pine': {'value':344,'source':'https://www.realtor.com/local/market/california/inyo-county','note':'Inyo County fallback because Big Pine has sparse direct data.'},
+ 'paradise-sunny-slopes': {'value':359,'source':'https://www.realtor.com/local/market/california/mono-county/hammil-valley','note':'Nearby Hammil Valley / north Bishop-area planning proxy.'},
+ 'swall-meadows': {'value':359,'source':'https://www.realtor.com/local/market/california/mono-county/hammil-valley','note':'Nearby Hammil Valley planning proxy for sparse Swall Meadows data.'},
+ 'chalfant': {'value':359,'source':'https://www.realtor.com/local/market/california/mono-county/hammil-valley','note':'Nearby Hammil Valley planning proxy for sparse Chalfant data.'},
+ 'independence': {'value':344,'source':'https://www.realtor.com/local/market/california/inyo-county','note':'Inyo County fallback because Independence has sparse direct data.'},
+ 'lone-pine': {'value':288,'source':'https://www.realtor.com/local/market/california/inyo-county/lone-pine','note':'Lone Pine citywide median listing $/sq ft (June 2026).'},
+ 'carson-city': {'value':320,'source':'https://www.realtor.com/local/market/nevada/carson-city','note':'Carson City citywide median listing $/sq ft (2026).'},
+ 'gardnerville': {'value':410,'source':'https://www.realtor.com/local/market/nevada/douglas-county/gardnerville','note':'Gardnerville citywide median listing $/sq ft (June 2026).'},
+ 'truckee': {'value':594,'source':'https://www.realtor.com/local/market/california/nevada-county/truckee','note':'Truckee citywide median listing $/sq ft (June 2026).'},
+ 'sonora': {'value':269,'source':'https://www.realtor.com/local/market/california/tuolumne-county/sonora','note':'Sonora citywide median listing $/sq ft (June 2026).'},
+ 'fresno': {'value':249,'source':'https://www.realtor.com/realestateandhomes-search/Fresno_CA','note':'Fresno citywide median listing $/sq ft (2026).'},
+ 'south-lake-tahoe': {'value':502,'source':'https://www.realtor.com/local/market/california/el-dorado-county/south-lake-tahoe','note':'South Lake Tahoe citywide median listing $/sq ft (June 2026).'},
+ 'incline-village': {'value':846,'source':'https://www.realtor.com/local/market/nevada/washoe-county/incline-village','note':'Incline Village citywide median listing $/sq ft (June 2026).'},
+ 'stateline': {'value':645,'source':'https://www.realtor.com/local/market/nevada/douglas-county/stateline','note':'Stateline citywide median listing $/sq ft (2026).'},
+ 'zephyr-cove': {'value':1005,'source':'https://www.realtor.com/local/market/nevada/douglas-county/zephyr-cove','note':'Zephyr Cove citywide median listing $/sq ft (2026); luxury mix can overstate an ADU.'},
+ 'custom': {'value':300,'source':'','note':'Editable placeholder. Enter a local market $/sq ft estimate.'},
+}
+
 MORTGAGE_URL='https://www.freddiemac.com/pmms'
 
 def fetch(url):
@@ -104,6 +135,10 @@ def market(location='mammoth'):
         out['status']['home_value']='Updated from public home-value page'
     except Exception:
         out['status']['home_value']='Saved editable local home-value benchmark'
+    adu_psf=ADU_MARKET_PSF.get(location,ADU_MARKET_PSF['custom'])
+    out['adu_market_psf']=adu_psf['value']
+    out['adu_market_psf_source']=adu_psf['source']
+    out['adu_market_psf_note']=adu_psf['note']
     out['property_rents']=property_rents(out['rent'])
     out['bedroom_rents']=out['property_rents']['condo']
     out['bedroom_prices']={
@@ -128,6 +163,9 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if u.path=='/api/locations':
             data=json.dumps({k:{'name':v['name'],**v,
+                'adu_market_psf':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['value'],
+                'adu_market_psf_source':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['source'],
+                'adu_market_psf_note':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['note'],
                 'property_rents':property_rents(v['rent']),
                 'bedroom_rents':property_rents(v['rent'])['condo'],
                 'bedroom_prices':{
