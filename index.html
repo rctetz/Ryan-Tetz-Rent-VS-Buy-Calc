@@ -82,10 +82,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 </div>
 <div id="renterShareFields" style="display:none;margin-top:10px">
 <div class="form">
-<div><label>Gross roommate contribution / month</label><input id="renterShareContribution" type="number" value="1600" step="25"></div>
-<div><label>Expected vacancy / turnover %</label><input id="renterShareVacancy" type="number" value="5" step=".5"></div>
-<div><label>Annual contribution growth %</label><input id="renterShareGrowth" type="number" value="3" step=".25"></div>
-<div><label>Local roommate estimate</label><input id="renterShareEstimate" type="number" value="1600" disabled></div>
+<div><label>Roommate contribution / month</label><input id="renterShareContribution" type="number" value="1600" step="25"></div>
+<div><label>Vacancy / turnover %</label><input id="renterShareVacancy" type="number" value="5" step=".5"></div>
+<div><label>Annual rent increase %</label><input id="renterShareGrowth" type="number" value="3" step=".25"></div>
 </div>
 <button class="btn secondary" id="useRenterShareEstimate" type="button" style="margin-top:8px;padding:8px 10px">Use local roommate estimate</button>
 </div>
@@ -93,32 +92,60 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 
 <div class="sharedCard" id="ownerIncomeCard">
 <div class="switchrow" style="border:0;padding:0;background:transparent">
-<div><b>Owner receives housing income</b><div class="muted">Models a roommate, existing ADU, or second duplex unit.</div></div>
+<div><b>Owner receives housing income</b><div class="muted">Models a roommate, existing ADU, new ADU, or duplex unit.</div></div>
 <label class="switch"><input id="ownerIncomeOn" type="checkbox"><span class="sliderSwitch"></span></label>
 </div>
+
 <div id="ownerIncomeFields" style="display:none;margin-top:10px">
 <div class="form">
 <div><label>Arrangement</label><select id="ownerIncomeType">
 <option value="roommate">Roommate / house hack</option>
 <option value="adu">Existing ADU</option>
-<option value="duplex">Owner-occupied duplex unit</option>
 <option value="newadu">Build new ADU</option>
+<option value="duplex">Owner-occupied duplex unit</option>
 </select></div>
-<div><label>Income-space bedrooms</label><select id="ownerIncomeBedrooms">
-<option value="1">1 bedroom</option><option value="2">2 bedrooms</option>
-<option value="3">3 bedrooms</option><option value="4">4 bedrooms</option>
+
+<div id="ownerBedroomsWrap"><label>Income-space bedrooms</label><select id="ownerIncomeBedrooms">
+<option value="1">1 bedroom</option>
+<option value="2">2 bedrooms</option>
+<option value="3">3 bedrooms</option>
+<option value="4">4 bedrooms</option>
 </select></div>
-<div><label>Gross income / month</label><input id="ownerIncomeGross" type="number" value="1600" step="25"></div>
-<div><label>Local income estimate</label><input id="ownerIncomeEstimate" type="number" value="1600" disabled></div>
+
+<div><label>Gross rent / month</label><input id="ownerIncomeGross" type="number" value="1600" step="25"></div>
 <div><label>Market-rent cap today</label><input id="ownerIncomeCap" type="number" value="1600" step="25"></div>
 <div><label>Vacancy %</label><input id="ownerIncomeVacancy" type="number" value="5" step=".5"></div>
-<div><label>Management %</label><input id="ownerIncomeManagement" type="number" value="0" step=".5"></div>
-<div><label>Repairs / capex reserve %</label><input id="ownerIncomeReserve" type="number" value="4" step=".5"></div>
-<div><label>Incremental utilities / month</label><input id="ownerIncomeUtilities" type="number" value="100" step="25"></div>
-<div><label>Other expenses / month</label><input id="ownerIncomeOther" type="number" value="0" step="25"></div>
-<div><label>Income growth until cap %</label><input id="ownerIncomeGrowth" type="number" value="3" step=".25"></div>
+<div id="ownerReserveWrap"><label>Repairs / capex reserve %</label><input id="ownerIncomeReserve" type="number" value="4" step=".5"></div>
+<div id="ownerExpenseWrap"><label>Utilities / other / month</label><input id="ownerIncomeOther" type="number" value="100" step="25"></div>
+<div><label>Annual rent increase %</label><input id="ownerIncomeGrowth" type="number" value="3" step=".25"></div>
 </div>
-<button class="btn secondary" id="useOwnerIncomeEstimate" type="button" style="margin-top:8px;padding:8px 10px">Use local income estimate</button>
+
+<div id="ownerManagementBlock" style="margin-top:10px">
+<div class="switchrow">
+<div><b>Professional management</b><div class="muted">Off by default for owner-managed housing.</div></div>
+<label class="switch"><input id="ownerManagementOn" type="checkbox"><span class="sliderSwitch"></span></label>
+</div>
+<div id="ownerManagementRateWrap" style="display:none;margin-top:8px">
+<label>Management fee %</label><input id="ownerIncomeManagement" type="number" value="8" step=".5">
+</div>
+</div>
+
+<div id="newAduProject" style="display:none;margin-top:12px">
+<h4 style="margin:0 0 8px">ADU project</h4>
+<div class="form">
+<div><label>Total construction cost</label><input id="aduBuildCost" type="number" value="250000" step="5000"></div>
+<div><label>Months until rentable</label><input id="aduBuildMonths" type="number" value="12" step="1" min="0"></div>
+<div><label>Pay for construction</label><select id="aduFunding">
+<option value="cash">Cash</option>
+<option value="loan">Loan</option>
+</select></div>
+<div id="aduLoanRateWrap" style="display:none"><label>Construction loan rate %</label><input id="aduLoanRate" type="number" value="7" step=".25"></div>
+<div id="aduLoanTermWrap" style="display:none"><label>Loan term (years)</label><input id="aduLoanTerm" type="number" value="20" step="1"></div>
+</div>
+<div class="muted" style="margin-top:7px">No ADU rent is counted before the completion month. Cash construction is compared with investing the same capital in the S&amp;P 500.</div>
+</div>
+
+<button class="btn secondary" id="useOwnerIncomeEstimate" type="button" style="margin-top:10px;padding:8px 10px">Use local rent estimate</button>
 </div>
 </div>
 </div>
@@ -239,7 +266,8 @@ Buy and operate this rental property versus investing the same down payment, clo
 const $=id=>document.getElementById(id);
 const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','renterStorage',
 'renterShareContribution','renterShareVacancy','renterShareGrowth',
-'ownerIncomeGross','ownerIncomeCap','ownerIncomeVacancy','ownerIncomeManagement','ownerIncomeReserve','ownerIncomeUtilities','ownerIncomeOther','ownerIncomeGrowth',
+'ownerIncomeGross','ownerIncomeCap','ownerIncomeVacancy','ownerIncomeManagement','ownerIncomeReserve','ownerIncomeOther','ownerIncomeGrowth',
+'aduBuildCost','aduBuildMonths','aduLoanRate','aduLoanTerm',
 'rentCollected','rentCollectedCap','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
@@ -254,6 +282,10 @@ function model(o={}){
  const rentalMode=$('useMode').value==='rental';
  const renterShareEnabled=!rentalMode&&$('renterShareOn').checked;
  const ownerIncomeEnabled=!rentalMode&&$('ownerIncomeOn').checked;
+ const ownerIncomeType=$('ownerIncomeType').value;
+ const newAduEnabled=ownerIncomeEnabled&&ownerIncomeType==='newadu';
+ const ownerManagementEnabled=ownerIncomeEnabled&&$('ownerManagementOn').checked;
+ const aduFunding=$('aduFunding').value;
 
  v.storage=rentalMode?0:($('storageOn').checked?v.storage:0);
  v.renterStorage=rentalMode?0:($('renterStorageOn').checked?v.renterStorage:0);
@@ -279,6 +311,16 @@ function model(o={}){
  let ownerIncomeGross=v.ownerIncomeGross;
  let ownerIncomeCap=Math.max(v.ownerIncomeCap||v.ownerIncomeGross,v.ownerIncomeGross);
 
+ const aduCompletionMonth=Math.max(0,Math.round(v.aduBuildMonths));
+ const aduCashCost=newAduEnabled&&aduFunding==='cash'?v.aduBuildCost:0;
+ const aduLoanPrincipal=newAduEnabled&&aduFunding==='loan'?v.aduBuildCost:0;
+ const aduLoanPayment=aduLoanPrincipal>0?pmt(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm):0;
+
+ if(aduCashCost>0){
+   buyerInv-=aduCashCost;
+   renter+=aduCashCost;
+ }
+
  for(let m=0;m<=M;m++){
    let y=m/12,
        home=v.price*(1+v.appreciation/100)**y,
@@ -298,19 +340,30 @@ function model(o={}){
          : 0,
        totalRenterCost=Math.max(0,rent+renterGarage-renterShareNet),
 
-       ownerIncomeEffective=ownerIncomeEnabled
+       aduAvailable=!newAduEnabled||m>=aduCompletionMonth,
+       ownerIncomeEffective=ownerIncomeEnabled&&aduAvailable
          ? ownerIncomeGross*Math.max(0,1-v.ownerIncomeVacancy/100)
          : 0,
-       ownerIncomeManagement=ownerIncomeEnabled
+       ownerIncomeManagement=ownerManagementEnabled&&aduAvailable
          ? ownerIncomeEffective*v.ownerIncomeManagement/100
          : 0,
-       ownerIncomeReserve=ownerIncomeEnabled
+       ownerIncomeReserve=ownerIncomeEnabled&&aduAvailable
          ? ownerIncomeEffective*v.ownerIncomeReserve/100
          : 0,
-       ownerIncomeNet=ownerIncomeEnabled
-         ? ownerIncomeEffective-ownerIncomeManagement-ownerIncomeReserve-v.ownerIncomeUtilities-v.ownerIncomeOther
+       ownerIncomeNet=ownerIncomeEnabled&&aduAvailable
+         ? ownerIncomeEffective-ownerIncomeManagement-ownerIncomeReserve-v.ownerIncomeOther
          : 0,
-       effectiveOwnerCost=ownerBase-ownerIncomeNet,
+       activeAduLoanPayment=newAduEnabled&&aduFunding==='loan'&&m<Math.round(v.aduLoanTerm*12)
+         ? aduLoanPayment
+         : 0,
+       effectiveOwnerCost=ownerBase+activeAduLoanPayment-ownerIncomeNet,
+
+       aduLoanBalance=newAduEnabled&&aduFunding==='loan'
+         ? bal(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm,m)
+         : 0,
+       aduValueAdded=newAduEnabled&&m>=aduCompletionMonth
+         ? v.aduBuildCost*(1+v.appreciation/100)**((m-aduCompletionMonth)/12)
+         : 0,
 
        effectiveCollected=grossCollected*(1-v.vacancyRate/100),
        management=$('managementOn').checked?effectiveCollected*v.managementRate/100:0,
@@ -318,13 +371,14 @@ function model(o={}){
        landlordCosts=ownerBase+management+rentalReserve+v.landlordUtilities+v.landlordOther,
        rentalCashFlow=effectiveCollected-landlordCosts,
 
-       buyWealth=home*(1-v.sellCost/100)-loanBal+buyerInv,
+       buyWealth=(home+aduValueAdded)*(1-v.sellCost/100)-loanBal-aduLoanBalance+buyerInv,
        rentalOwnerWealth=home*(1-v.sellCost/100)-loanBal+buyerInv;
 
    rec.push({
      m,y,rent,renterGarage,renterShareGross,renterShareNet,totalRenterCost,
      owner:ownerBase,ownerBase,ownerIncomeGross,ownerIncomeEffective,
      ownerIncomeManagement,ownerIncomeReserve,ownerIncomeNet,effectiveOwnerCost,
+     activeAduLoanPayment,aduLoanBalance,aduValueAdded,aduAvailable,
      home,loanBal,renter,buyWealth,pmi,ltv,
      grossCollected,effectiveCollected,management,rentalReserve,landlordCosts,
      rentalCashFlow,rentalAlternative,rentalOwnerWealth
@@ -351,16 +405,13 @@ function model(o={}){
      else buyerInv+=-d;
 
      cap*=Math.pow(1+v.marketGrowth/100,1/12);
-     rent=Math.min(
-       rent*Math.pow(1+v.rentGrowth/100,1/12),
-       cap
-     );
+     rent=Math.min(rent*Math.pow(1+v.rentGrowth/100,1/12),cap);
 
      if(renterShareEnabled){
        renterShareGross*=Math.pow(1+v.renterShareGrowth/100,1/12);
      }
 
-     if(ownerIncomeEnabled){
+     if(ownerIncomeEnabled&&(!newAduEnabled||m>=aduCompletionMonth-1)){
        ownerIncomeCap*=Math.pow(1+v.marketGrowth/100,1/12);
        ownerIncomeGross=Math.min(
          ownerIncomeGross*Math.pow(1+v.ownerIncomeGrowth/100,1/12),
@@ -377,7 +428,8 @@ function model(o={}){
 
  return {
    v,rec,first:rec[0],last:z,dp,mp,pmi0:rec[0].pmi,adv,rentalMode,
-   renterShareEnabled,ownerIncomeEnabled
+   renterShareEnabled,ownerIncomeEnabled,ownerIncomeType,newAduEnabled,
+   ownerManagementEnabled,aduFunding,aduCompletionMonth,aduLoanPayment
  }
 }
 function scenarioForRoot(field,value,extra={}){
@@ -645,7 +697,8 @@ function update(){
  $('sharedHousingMetrics').style.display=sharedActive?'block':'none';
  if(sharedActive){
    $('renterShareNetResult').textContent=x.renterShareEnabled?money(x.first.renterShareNet)+'/mo':'Off';
-   $('ownerIncomeNetResult').textContent=x.ownerIncomeEnabled?money(x.first.ownerIncomeNet)+'/mo':'Off';
+   const displayOwnerIncome=x.newAduEnabled?x.rec[Math.min(x.aduCompletionMonth,x.rec.length-1)].ownerIncomeNet:x.first.ownerIncomeNet;
+   $('ownerIncomeNetResult').textContent=x.ownerIncomeEnabled?money(displayOwnerIncome)+'/mo':'Off';
    const shift=x.first.ownerIncomeNet-x.first.renterShareNet;
    $('sharedHousingShift').textContent=(shift>=0?'+':'')+money(shift)+'/mo';
    $('sharedHousingShift').className=shift>=0?'good':'bad';
@@ -655,7 +708,10 @@ function update(){
      const incomeText=incomeRoot
        ? `${money(incomeRoot)}/mo gross owner income`
        : noRootMessage('ownerIncomeGross',0,20000);
-     $('sharedHousingBreakEven').innerHTML=`Modeled owner housing income needed for buying to match renting: <b>${incomeText}</b>.`;
+     const aduText=x.newAduEnabled
+       ? ` The ADU begins producing rent after month ${x.aduCompletionMonth}.`
+       : '';
+     $('sharedHousingBreakEven').innerHTML=`Modeled owner housing income needed for buying to match renting: <b>${incomeText}</b>.${aduText}`;
    }else{
      $('sharedHousingBreakEven').innerHTML='Enable owner housing income to calculate the house-hacking income needed for buying to catch up.';
    }
@@ -732,45 +788,59 @@ function localOwnerIncomeEstimate(){
  return +(loc.property_rents?.condo?.[beds]||loc.bedroom_rents?.[beds]||loc.rent||2000)
 }
 function updateSharedHousingEstimates(forceRenter=false,forceOwner=false){
- const renterEstimate=localRoommateEstimate();
- const ownerEstimate=localOwnerIncomeEstimate();
- $('renterShareEstimate').value=renterEstimate;
- $('ownerIncomeEstimate').value=ownerEstimate;
- if(forceRenter)$('renterShareContribution').value=renterEstimate;
+ if(forceRenter)$('renterShareContribution').value=localRoommateEstimate();
  if(forceOwner){
-   $('ownerIncomeGross').value=ownerEstimate;
-   $('ownerIncomeCap').value=ownerEstimate;
+   const estimate=localOwnerIncomeEstimate();
+   $('ownerIncomeGross').value=estimate;
+   $('ownerIncomeCap').value=estimate;
  }
 }
 function applyOwnerIncomePreset(forceEstimate=true){
  const type=$('ownerIncomeType').value;
- if(type==='roommate'){
-   $('ownerIncomeBedrooms').value='1';
+ const roommate=type==='roommate';
+ const newAdu=type==='newadu';
+
+ $('ownerBedroomsWrap').style.display=roommate?'none':'block';
+ $('ownerReserveWrap').style.display=roommate?'none':'block';
+ $('ownerExpenseWrap').style.display=roommate?'none':'block';
+ $('ownerManagementBlock').style.display=roommate?'none':'block';
+ $('newAduProject').style.display=newAdu?'block':'none';
+
+ if(roommate){
    $('ownerIncomeVacancy').value=5;
-   $('ownerIncomeManagement').value=0;
-   $('ownerIncomeReserve').value=4;
-   $('ownerIncomeUtilities').value=100;
+   $('ownerIncomeReserve').value=0;
    $('ownerIncomeOther').value=0;
+   $('ownerManagementOn').checked=false;
  }else if(type==='adu'){
    $('ownerIncomeVacancy').value=5;
-   $('ownerIncomeManagement').value=0;
    $('ownerIncomeReserve').value=7;
-   $('ownerIncomeUtilities').value=0;
    $('ownerIncomeOther').value=0;
+   $('ownerManagementOn').checked=false;
  }else if(type==='duplex'){
    $('ownerIncomeVacancy').value=5;
-   $('ownerIncomeManagement').value=8;
    $('ownerIncomeReserve').value=8;
-   $('ownerIncomeUtilities').value=0;
    $('ownerIncomeOther').value=0;
- }else if(type==='newadu'){
+   $('ownerManagementOn').checked=false;
+ }else if(newAdu){
    $('ownerIncomeVacancy').value=5;
-   $('ownerIncomeManagement').value=0;
    $('ownerIncomeReserve').value=7;
-   $('ownerIncomeUtilities').value=0;
    $('ownerIncomeOther').value=0;
+   $('ownerManagementOn').checked=false;
  }
- updateSharedHousingEstimates(false,forceEstimate&&type!=='custom');
+ applyOwnerManagementToggle();
+ applyAduFundingToggle();
+ if(forceEstimate)updateSharedHousingEstimates(false,true);
+}
+function applyOwnerManagementToggle(){
+ const enabled=$('ownerManagementOn').checked;
+ $('ownerManagementRateWrap').style.display=enabled?'block':'none';
+ update()
+}
+function applyAduFundingToggle(){
+ const loan=$('aduFunding').value==='loan';
+ $('aduLoanRateWrap').style.display=loan?'block':'none';
+ $('aduLoanTermWrap').style.display=loan?'block':'none';
+ update()
 }
 function applySharedHousingToggles(){
  const renterOn=$('renterShareOn').checked;
@@ -779,6 +849,7 @@ function applySharedHousingToggles(){
  $('ownerIncomeFields').style.display=ownerOn?'block':'none';
  $('renterShareCard').classList.toggle('active',renterOn);
  $('ownerIncomeCard').classList.toggle('active',ownerOn);
+ if(ownerOn)applyOwnerIncomePreset(false);
  update()
 }
 function applyUseMode(){
@@ -839,6 +910,8 @@ async function loadLocations(){
    updateSharedHousingEstimates(true,true);
    applyUseMode();
    applyRenterStorageToggle();
+   applyOwnerIncomePreset(false);
+   applyAduFundingToggle();
    applySharedHousingToggles();
  })
 }
@@ -902,6 +975,8 @@ $('renterShareOn').addEventListener('change',applySharedHousingToggles);
 $('ownerIncomeOn').addEventListener('change',applySharedHousingToggles);
 $('ownerIncomeType').addEventListener('change',()=>{applyOwnerIncomePreset(true);update()});
 $('ownerIncomeBedrooms').addEventListener('change',()=>{updateSharedHousingEstimates(false,true);update()});
+$('ownerManagementOn').addEventListener('change',applyOwnerManagementToggle);
+$('aduFunding').addEventListener('change',applyAduFundingToggle);
 $('useRenterShareEstimate').onclick=()=>{updateSharedHousingEstimates(true,false);update()};
 $('useOwnerIncomeEstimate').onclick=()=>{updateSharedHousingEstimates(false,true);update()};
 $('location').addEventListener('change',e=>applyLocation(e.target.value,true));

@@ -136,3 +136,15 @@ HOUSE ALPHA V16
 
 HOUSE ALPHA V17
 - Replaced 'Custom income space' with 'Build new ADU' in owner-occupied housing options.
+
+HOUSE ALPHA V19
+- Simplifies Shared Housing / Income Offsets.
+- Removes duplicated disabled local-estimate fields; estimate buttons now fill the main rent fields.
+- Renames growth controls to Annual rent increase.
+- Replaces separate utilities and miscellaneous inputs with one Utilities / other monthly field.
+- Adds an owner-side Professional Management toggle, off by default.
+- Arrangement-specific controls now hide irrelevant fields.
+- Build New ADU now includes construction cost, completion time, cash or loan funding, loan rate, and loan term.
+- New ADU rent begins only after the selected construction period.
+- Cash-funded ADU construction is compared against investing the same capital in the S&P 500.
+- Loan-funded ADU construction includes loan payments and remaining loan balance.
