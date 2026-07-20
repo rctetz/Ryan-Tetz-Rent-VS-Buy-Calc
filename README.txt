@@ -109,3 +109,11 @@ HOUSE ALPHA V13
 - Single-family home visibly defaults to Included with property.
 - The native phone dropdown displays the currently selected option with its normal checkmark.
 - Users can still manually select Included, Rent separately, or Not needed.
+
+HOUSE ALPHA V14
+- Keeps 10% as the default S&P 500 annual return.
+- Adds one-tap 10% Base and 7% Conservative return presets.
+- Preset buttons visually show the active assumption.
+- The return input remains fully editable for custom assumptions.
+- Adds a side-by-side 10% versus 7% sensitivity section to every result.
+- Sensitivity values recalculate for both primary-residence and rental-investment modes.

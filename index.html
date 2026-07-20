@@ -15,7 +15,7 @@ header:after{content:"α";position:absolute;right:16px;top:-45px;font-size:190px
 .panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 7px 24px #18314c0c}.left{grid-column:span 5}.right{grid-column:span 7}.full{grid-column:1/-1}@media(max-width:920px){.left,.right{grid-column:1/-1}}
 h2{margin:0 0 13px;font-size:20px}h3{font-size:16px;margin:18px 0 9px}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}@media(max-width:560px){.form{grid-template-columns:1fr}}
 label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin-bottom:5px}input,select{width:100%;padding:11px;border:1px solid #cfd7e2;border-radius:10px;font-size:15px;background:#fff;color:var(--ink)}
-select{font-weight:650}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.btn{border:0;background:var(--blue);color:white;padding:11px 14px;border-radius:11px;font-weight:800;cursor:pointer}.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+select{font-weight:650}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.btn{border:0;background:var(--blue);color:white;padding:11px 14px;border-radius:11px;font-weight:800;cursor:pointer}.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}.presetGroup{display:flex;gap:7px;margin-top:7px}.presetBtn{flex:1;border:1px solid #cbd5e1;background:#fff;color:var(--ink);padding:9px 8px;border-radius:10px;font-weight:850;cursor:pointer}.presetBtn.active{background:var(--navy);color:#fff;border-color:var(--navy)}.sensitivity{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}@media(max-width:560px){.sensitivity{grid-template-columns:1fr}}
 .switchrow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);padding:10px 12px;border-radius:11px;background:#f9fbfd}.switch{position:relative;width:48px;height:28px}.switch input{opacity:0;width:0;height:0}.sliderSwitch{position:absolute;inset:0;background:#bbc4cf;border-radius:999px;cursor:pointer;transition:.2s}.sliderSwitch:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:white;border-radius:50%;box-shadow:0 1px 4px #0003;transition:.2s}.switch input:checked+.sliderSwitch{background:var(--green)}.switch input:checked+.sliderSwitch:before{transform:translateX(20px)}
 .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:620px){.metrics{grid-template-columns:1fr}}.metric{padding:13px;border:1px solid var(--line);border-radius:13px;background:#fafcfe}.metric b{font-size:23px;display:block;margin-top:4px}.muted{color:var(--muted);font-size:12px;line-height:1.42}
 .scorebox{display:flex;gap:16px;align-items:center;padding:15px;border-radius:15px;margin-bottom:13px}.score{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;color:white;font-size:30px;font-weight:900;box-shadow:inset 0 0 0 7px #ffffff2a}.verdict{font-size:23px;font-weight:900}
@@ -128,7 +128,14 @@ Buy and operate this rental property versus investing the same down payment, clo
 </div>
 <h3>Growth assumptions</h3>
 <div class="form">
-<div><label>S&amp;P 500 annual return %</label><input id="stockReturn" type="number" value="10" step=".25"></div>
+<div>
+<label>S&amp;P 500 annual return %</label>
+<input id="stockReturn" type="number" value="10" step=".25">
+<div class="presetGroup">
+<button type="button" class="presetBtn active" id="return10">10% base</button>
+<button type="button" class="presetBtn" id="return7">7% conservative</button>
+</div>
+</div>
 <div><label>Home appreciation %</label><input id="appreciation" type="number" value="3" step=".25"></div>
 <div><label>Near-term rent growth %</label><input id="rentGrowth" type="number" value="10"></div>
 <div><label>Long-term inflation %</label><input id="marketGrowth" type="number" value="3"></div>
@@ -156,6 +163,11 @@ Buy and operate this rental property versus investing the same down payment, clo
 </div>
 </div>
 <h3>Exact modeled break-even</h3><div class="status" id="thresholds"></div>
+<h3>S&amp;P 500 return sensitivity</h3>
+<div class="sensitivity">
+<div class="metric"><span class="muted">Using 10% annual return</span><b id="sensitivity10"></b><span class="muted" id="sensitivity10note"></span></div>
+<div class="metric"><span class="muted">Using 7% annual return</span><b id="sensitivity7"></b><span class="muted" id="sensitivity7note"></span></div>
+</div>
 <h3>Milestones</h3><table><thead><tr><th>Year</th><th id="milestoneIncome">Rent</th><th id="milestoneCost">Owner</th><th>Property value</th><th>Loan</th><th id="milestoneAlt">Rent wealth</th><th id="milestoneProperty">Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table>
 </div></div></section>
 
@@ -404,8 +416,35 @@ function syncInsuranceToPrice(){
  if(!$('insuranceAuto').checked||insuranceUserEditing)return;
  $('insurance').value=Math.round(scaledInsurance(n('price')))
 }
+function setReturnPreset(value){
+ $('stockReturn').value=value;
+ $('return10').classList.toggle('active',value===10);
+ $('return7').classList.toggle('active',value===7);
+ update()
+}
+function updateReturnPresetState(){
+ const r=n('stockReturn');
+ $('return10').classList.toggle('active',Math.abs(r-10)<.001);
+ $('return7').classList.toggle('active',Math.abs(r-7)<.001);
+}
+function updateSensitivity(){
+ const base10=model({stockReturn:10});
+ const conservative7=model({stockReturn:7});
+ const labelFor=(x)=>{
+   if(x.rentalMode)return x.adv>=0?'Rental property ahead':'S&P 500 ahead';
+   return x.adv>=0?'Buying ahead':'Renting ahead';
+ };
+ const noteFor=(x)=>`${labelFor(x)} after ${x.v.years} years`;
+ $('sensitivity10').textContent=(base10.adv>=0?'+':'')+money(base10.adv);
+ $('sensitivity10').className=base10.adv>=0?'good':'bad';
+ $('sensitivity10note').textContent=noteFor(base10);
+ $('sensitivity7').textContent=(conservative7.adv>=0?'+':'')+money(conservative7.adv);
+ $('sensitivity7').className=conservative7.adv>=0?'good':'bad';
+ $('sensitivity7note').textContent=noteFor(conservative7);
+}
 function update(){
  syncInsuranceToPrice();
+ updateReturnPresetState();
  let x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
  setDynamicSliderRange(localPurchaseEstimate(),n('price'));
  $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
@@ -469,6 +508,7 @@ function update(){
  ? `At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`
  : `At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;
  $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{let r=x.rec[Math.round(y*12)];return `<tr><td>${y}</td><td>${money(x.rentalMode?r.grossCollected:r.totalRenterCost)}</td><td>${money(x.rentalMode?r.landlordCosts:r.owner)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(x.rentalMode?r.rentalAlternative:r.renter)}</td><td>${money(x.rentalMode?r.rentalOwnerWealth:r.buyWealth)}</td></tr>`}).join('');
+ updateSensitivity();
  updateDp()
 }
 function updateDp(){
@@ -620,6 +660,8 @@ $('refresh').onclick=()=>applyLocation(currentLocation,true);
 $('cash').onclick=()=>{$('downPct').value=100;update()};
 $('useLocalPrice').onclick=()=>{priceAuto=true;applyLocalPurchaseEstimate(true);update()};
 $('useLocalRent').onclick=()=>{rentAuto=true;applyPropertyRentEstimate(true);update()};
+$('return10').onclick=()=>setReturnPreset(10);
+$('return7').onclick=()=>setReturnPreset(7);
 $('rentCollected').addEventListener('input',()=>{rentAuto=false;update()});
 $('rentCollectedCap').addEventListener('input',()=>{rentAuto=false;update()});
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
