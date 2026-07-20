@@ -102,7 +102,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <option value="roommate">Roommate / house hack</option>
 <option value="adu">Existing ADU</option>
 <option value="duplex">Owner-occupied duplex unit</option>
-<option value="custom">Custom income space</option>
+<option value="newadu">Build new ADU</option>
 </select></div>
 <div><label>Income-space bedrooms</label><select id="ownerIncomeBedrooms">
 <option value="1">1 bedroom</option><option value="2">2 bedrooms</option>
@@ -761,6 +761,12 @@ function applyOwnerIncomePreset(forceEstimate=true){
    $('ownerIncomeVacancy').value=5;
    $('ownerIncomeManagement').value=8;
    $('ownerIncomeReserve').value=8;
+   $('ownerIncomeUtilities').value=0;
+   $('ownerIncomeOther').value=0;
+ }else if(type==='newadu'){
+   $('ownerIncomeVacancy').value=5;
+   $('ownerIncomeManagement').value=0;
+   $('ownerIncomeReserve').value=7;
    $('ownerIncomeUtilities').value=0;
    $('ownerIncomeOther').value=0;
  }

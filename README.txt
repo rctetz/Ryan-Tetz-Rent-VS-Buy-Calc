@@ -133,3 +133,6 @@ HOUSE ALPHA V15
 
 HOUSE ALPHA V16
 - Investment Property mode now defaults to 0% property management.
+
+HOUSE ALPHA V17
+- Replaced 'Custom income space' with 'Build new ADU' in owner-occupied housing options.
