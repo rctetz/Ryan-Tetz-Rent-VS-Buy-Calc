@@ -148,3 +148,24 @@ HOUSE ALPHA V19
 - New ADU rent begins only after the selected construction period.
 - Cash-funded ADU construction is compared against investing the same capital in the S&P 500.
 - Loan-funded ADU construction includes loan payments and remaining loan balance.
+
+HOUSE ALPHA V20
+- Renames the 10% S&P 500 preset from Base to Average.
+- Keeps the 7% Conservative preset.
+- Adds an optional Investment Property ADU module.
+- Investment ADU inputs include construction cost, estimated value added, construction delay, cash/loan funding, loan rate and term.
+- Adds ADU rent, vacancy, repairs/capex, Utilities / other, annual rent increase, and optional professional management.
+- Investment-property and ADU professional management are off by default.
+- Cash-funded ADUs are compared with investing the same cash in the S&P 500.
+- Loan-funded ADUs include payments and remaining loan balance.
+- ADU rent starts only after construction is complete.
+- Adds ADU rent and construction-cost break-even results.
+- Corrects cash-funded owner-occupied ADU opportunity-cost handling to avoid double-counting the construction cash.
+
+HOUSE ALPHA V21
+- Adds 4% Average and 3% Conservative home-appreciation presets.
+- Home appreciation now defaults to 4%.
+- The appreciation field remains editable for custom scenarios.
+- Investment-property professional management remains off by default.
+- Turning professional management on automatically suggests an 8% fee when the current fee is blank or zero.
+- Users may still edit the management rate after enabling it.

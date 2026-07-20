@@ -195,13 +195,62 @@ Buy and operate this rental property versus investing the same down payment, clo
 <h3>Rental operating assumptions</h3>
 <div class="form">
 <div><label>Vacancy %</label><input id="vacancyRate" type="number" value="5" step=".5"></div>
-<div><label>Property management % of effective rent</label><input id="managementRate" type="number" value="0" step=".5"></div>
+<div><label>Property management % of effective rent</label><input id="managementRate" type="number" value="8" step=".5"></div>
 <div><label>Repairs / capex reserve % of effective rent</label><input id="rentalReserveRate" type="number" value="8" step=".5"></div>
 <div><label>Landlord-paid utilities / month</label><input id="landlordUtilities" type="number" value="0" step="25"></div>
 <div><label>Other landlord expenses / month</label><input id="landlordOther" type="number" value="0" step="25"></div>
-<div><label>Rent growth until market cap %</label><input id="collectedRentGrowth" type="number" value="3" step=".25"></div>
+<div><label>Annual rent increase %</label><input id="collectedRentGrowth" type="number" value="3" step=".25"></div>
 </div>
-<div class="switchrow" style="margin-top:10px"><div><b>Use professional management</b><div class="muted">Turn off to model self-management.</div></div><label class="switch"><input id="managementOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
+<div class="switchrow" style="margin-top:10px"><div><b>Use professional management</b><div class="muted">Off by default for a self-managed long-term rental.</div></div><label class="switch"><input id="managementOn" type="checkbox"><span class="sliderSwitch"></span></label></div>
+
+<div class="sharedCard" id="investmentAduCard" style="margin-top:16px">
+<div class="switchrow" style="border:0;padding:0;background:transparent">
+<div><b>Add an ADU to this investment property</b><div class="muted">Compares building the ADU with investing the same cash in the S&amp;P 500.</div></div>
+<label class="switch"><input id="investmentAduOn" type="checkbox"><span class="sliderSwitch"></span></label>
+</div>
+
+<div id="investmentAduFields" style="display:none;margin-top:12px">
+<h4 style="margin:0 0 8px">ADU project</h4>
+<div class="form">
+<div><label>ADU bedrooms</label><select id="invAduBedrooms">
+<option value="1">1 bedroom</option>
+<option value="2">2 bedrooms</option>
+<option value="3">3 bedrooms</option>
+<option value="4">4 bedrooms</option>
+</select></div>
+<div><label>Total construction cost</label><input id="invAduBuildCost" type="number" value="250000" step="5000"></div>
+<div><label>Estimated value added at completion</label><input id="invAduValueAdded" type="number" value="250000" step="5000"></div>
+<div><label>Months until rentable</label><input id="invAduBuildMonths" type="number" value="12" step="1" min="0"></div>
+<div><label>Pay for construction</label><select id="invAduFunding">
+<option value="cash">Cash</option>
+<option value="loan">Loan</option>
+</select></div>
+<div id="invAduLoanRateWrap" style="display:none"><label>Construction loan rate %</label><input id="invAduLoanRate" type="number" value="7" step=".25"></div>
+<div id="invAduLoanTermWrap" style="display:none"><label>Loan term (years)</label><input id="invAduLoanTerm" type="number" value="20" step="1"></div>
+</div>
+
+<h4 style="margin:14px 0 8px">ADU rental income</h4>
+<div class="form">
+<div><label>Gross ADU rent / month</label><input id="invAduRent" type="number" value="2500" step="25"></div>
+<div><label>Market-rent cap today</label><input id="invAduRentCap" type="number" value="2500" step="25"></div>
+<div><label>Vacancy %</label><input id="invAduVacancy" type="number" value="5" step=".5"></div>
+<div><label>Repairs / capex reserve %</label><input id="invAduReserve" type="number" value="7" step=".5"></div>
+<div><label>Utilities / other / month</label><input id="invAduOther" type="number" value="0" step="25"></div>
+<div><label>Annual rent increase %</label><input id="invAduRentGrowth" type="number" value="3" step=".25"></div>
+</div>
+
+<div class="switchrow" style="margin-top:10px">
+<div><b>Professional management for ADU</b><div class="muted">Off by default.</div></div>
+<label class="switch"><input id="invAduManagementOn" type="checkbox"><span class="sliderSwitch"></span></label>
+</div>
+<div id="invAduManagementRateWrap" style="display:none;margin-top:8px">
+<label>ADU management fee %</label><input id="invAduManagementRate" type="number" value="8" step=".5">
+</div>
+
+<button class="btn secondary" id="useInvAduRentEstimate" type="button" style="margin-top:10px;padding:8px 10px">Use local ADU rent estimate</button>
+<div class="muted" style="margin-top:7px">No ADU rent is counted before completion. Estimated value added is editable because construction cost and market value are not always equal.</div>
+</div>
+</div>
 </div>
 <h3>Growth assumptions</h3>
 <div class="form">
@@ -209,11 +258,18 @@ Buy and operate this rental property versus investing the same down payment, clo
 <label>S&amp;P 500 annual return %</label>
 <input id="stockReturn" type="number" value="10" step=".25">
 <div class="presetGroup">
-<button type="button" class="presetBtn active" id="return10">10% base</button>
+<button type="button" class="presetBtn active" id="return10">10% average</button>
 <button type="button" class="presetBtn" id="return7">7% conservative</button>
 </div>
 </div>
-<div><label>Home appreciation %</label><input id="appreciation" type="number" value="3" step=".25"></div>
+<div>
+<label>Home appreciation %</label>
+<input id="appreciation" type="number" value="4" step=".25">
+<div class="presetGroup">
+<button type="button" class="presetBtn active" id="appreciation4">4% average</button>
+<button type="button" class="presetBtn" id="appreciation3">3% conservative</button>
+</div>
+</div>
 <div><label>Near-term rent growth %</label><input id="rentGrowth" type="number" value="10"></div>
 <div><label>Long-term inflation %</label><input id="marketGrowth" type="number" value="3"></div>
 <div><label>Buying closing costs %</label><input id="buyClose" type="number" value="2"></div>
@@ -245,8 +301,18 @@ Buy and operate this rental property versus investing the same down payment, clo
 <div class="metrics">
 <div class="metric"><span class="muted">Effective rent after vacancy</span><b id="effectiveRent"></b></div>
 <div class="metric"><span class="muted">Monthly property cash flow</span><b id="landlordCashFlow"></b></div>
-<div class="metric"><span class="muted">Gross rent needed for positive cash flow</span><b id="cashFlowBreakEven"></b></div>
+<div class="metric"><span class="muted">Base rent needed for positive cash flow</span><b id="cashFlowBreakEven"></b></div>
 </div>
+</div>
+
+<div id="investmentAduMetrics" style="display:none">
+<h3>Investment-property ADU</h3>
+<div class="metrics">
+<div class="metric"><span class="muted">ADU rent after completion</span><b id="invAduRentResult"></b></div>
+<div class="metric"><span class="muted">Net ADU cash flow after completion</span><b id="invAduCashFlowResult"></b></div>
+<div class="metric"><span class="muted">Estimated ADU value added</span><b id="invAduValueResult"></b></div>
+</div>
+<div class="status" id="investmentAduBreakEven" style="margin-top:10px"></div>
 </div>
 <h3>Exact modeled break-even</h3><div class="status" id="thresholds"></div>
 <h3>S&amp;P 500 return sensitivity</h3>
@@ -269,9 +335,11 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'ownerIncomeGross','ownerIncomeCap','ownerIncomeVacancy','ownerIncomeManagement','ownerIncomeReserve','ownerIncomeOther','ownerIncomeGrowth',
 'aduBuildCost','aduBuildMonths','aduLoanRate','aduLoanTerm',
 'rentCollected','rentCollectedCap','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth',
+'invAduBuildCost','invAduValueAdded','invAduBuildMonths','invAduLoanRate','invAduLoanTerm',
+'invAduRent','invAduRentCap','invAduVacancy','invAduReserve','invAduOther','invAduRentGrowth','invAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -286,6 +354,10 @@ function model(o={}){
  const newAduEnabled=ownerIncomeEnabled&&ownerIncomeType==='newadu';
  const ownerManagementEnabled=ownerIncomeEnabled&&$('ownerManagementOn').checked;
  const aduFunding=$('aduFunding').value;
+
+ const investmentAduEnabled=rentalMode&&$('investmentAduOn').checked;
+ const invAduFunding=$('invAduFunding').value;
+ const invAduManagementEnabled=investmentAduEnabled&&$('invAduManagementOn').checked;
 
  v.storage=rentalMode?0:($('storageOn').checked?v.storage:0);
  v.renterStorage=rentalMode?0:($('renterStorageOn').checked?v.renterStorage:0);
@@ -316,10 +388,21 @@ function model(o={}){
  const aduLoanPrincipal=newAduEnabled&&aduFunding==='loan'?v.aduBuildCost:0;
  const aduLoanPayment=aduLoanPrincipal>0?pmt(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm):0;
 
- if(aduCashCost>0){
-   buyerInv-=aduCashCost;
-   renter+=aduCashCost;
- }
+ // The renter/index alternative receives the same cash the owner spends
+ // building the ADU. The buyer receives the ADU asset instead.
+ if(aduCashCost>0)renter+=aduCashCost;
+
+ const invAduCompletionMonth=Math.max(0,Math.round(v.invAduBuildMonths));
+ const invAduCashCost=investmentAduEnabled&&invAduFunding==='cash'?v.invAduBuildCost:0;
+ const invAduLoanPrincipal=investmentAduEnabled&&invAduFunding==='loan'?v.invAduBuildCost:0;
+ const invAduLoanPayment=invAduLoanPrincipal>0?pmt(invAduLoanPrincipal,v.invAduLoanRate,v.invAduLoanTerm):0;
+
+ // Same-capital comparison: cash used for the rental ADU is invested in
+ // the S&P alternative.
+ if(invAduCashCost>0)rentalAlternative+=invAduCashCost;
+
+ let invAduGrossRent=v.invAduRent;
+ let invAduRentCap=Math.max(v.invAduRentCap||v.invAduRent,v.invAduRent);
 
  for(let m=0;m<=M;m++){
    let y=m/12,
@@ -368,11 +451,39 @@ function model(o={}){
        effectiveCollected=grossCollected*(1-v.vacancyRate/100),
        management=$('managementOn').checked?effectiveCollected*v.managementRate/100:0,
        rentalReserve=effectiveCollected*v.rentalReserveRate/100,
-       landlordCosts=ownerBase+management+rentalReserve+v.landlordUtilities+v.landlordOther,
-       rentalCashFlow=effectiveCollected-landlordCosts,
+       baseLandlordCosts=ownerBase+management+rentalReserve+v.landlordUtilities+v.landlordOther,
+       baseRentalCashFlow=effectiveCollected-baseLandlordCosts,
+
+       investmentAduAvailable=investmentAduEnabled&&m>=invAduCompletionMonth,
+       invAduEffectiveRent=investmentAduAvailable
+         ? invAduGrossRent*Math.max(0,1-v.invAduVacancy/100)
+         : 0,
+       invAduManagement=invAduManagementEnabled&&investmentAduAvailable
+         ? invAduEffectiveRent*v.invAduManagementRate/100
+         : 0,
+       invAduReserve=investmentAduAvailable
+         ? invAduEffectiveRent*v.invAduReserve/100
+         : 0,
+       activeInvAduLoanPayment=investmentAduEnabled&&invAduFunding==='loan'&&m<Math.round(v.invAduLoanTerm*12)
+         ? invAduLoanPayment
+         : 0,
+       invAduCashFlow=investmentAduEnabled
+         ? invAduEffectiveRent-invAduManagement-invAduReserve-(investmentAduAvailable?v.invAduOther:0)-activeInvAduLoanPayment
+         : 0,
+       invAduLoanBalance=investmentAduEnabled&&invAduFunding==='loan'
+         ? bal(invAduLoanPrincipal,v.invAduLoanRate,v.invAduLoanTerm,m)
+         : 0,
+       invAduValue=investmentAduAvailable
+         ? v.invAduValueAdded*(1+v.appreciation/100)**((m-invAduCompletionMonth)/12)
+         : 0,
+
+       totalGrossCollected=grossCollected+(investmentAduAvailable?invAduGrossRent:0),
+       totalEffectiveCollected=effectiveCollected+invAduEffectiveRent,
+       totalLandlordCosts=baseLandlordCosts+invAduManagement+invAduReserve+(investmentAduAvailable?v.invAduOther:0)+activeInvAduLoanPayment,
+       rentalCashFlow=baseRentalCashFlow+invAduCashFlow,
 
        buyWealth=(home+aduValueAdded)*(1-v.sellCost/100)-loanBal-aduLoanBalance+buyerInv,
-       rentalOwnerWealth=home*(1-v.sellCost/100)-loanBal+buyerInv;
+       rentalOwnerWealth=(home+invAduValue)*(1-v.sellCost/100)-loanBal-invAduLoanBalance+buyerInv;
 
    rec.push({
      m,y,rent,renterGarage,renterShareGross,renterShareNet,totalRenterCost,
@@ -380,7 +491,11 @@ function model(o={}){
      ownerIncomeManagement,ownerIncomeReserve,ownerIncomeNet,effectiveOwnerCost,
      activeAduLoanPayment,aduLoanBalance,aduValueAdded,aduAvailable,
      home,loanBal,renter,buyWealth,pmi,ltv,
-     grossCollected,effectiveCollected,management,rentalReserve,landlordCosts,
+     grossCollected,effectiveCollected,management,rentalReserve,
+     baseLandlordCosts,baseRentalCashFlow,
+     investmentAduAvailable,invAduGrossRent,invAduEffectiveRent,invAduManagement,
+     invAduReserve,activeInvAduLoanPayment,invAduCashFlow,invAduLoanBalance,invAduValue,
+     totalGrossCollected,totalEffectiveCollected,totalLandlordCosts,
      rentalCashFlow,rentalAlternative,rentalOwnerWealth
    });
 
@@ -399,6 +514,14 @@ function model(o={}){
        grossCollected*Math.pow(1+v.collectedRentGrowth/100,1/12),
        collectedCap
      );
+
+     if(investmentAduEnabled&&m>=invAduCompletionMonth-1){
+       invAduRentCap*=Math.pow(1+v.marketGrowth/100,1/12);
+       invAduGrossRent=Math.min(
+         invAduGrossRent*Math.pow(1+v.invAduRentGrowth/100,1/12),
+         invAduRentCap
+       );
+     }
    }else{
      let d=effectiveOwnerCost-totalRenterCost;
      if(d>0)renter+=d;
@@ -429,7 +552,9 @@ function model(o={}){
  return {
    v,rec,first:rec[0],last:z,dp,mp,pmi0:rec[0].pmi,adv,rentalMode,
    renterShareEnabled,ownerIncomeEnabled,ownerIncomeType,newAduEnabled,
-   ownerManagementEnabled,aduFunding,aduCompletionMonth,aduLoanPayment
+   ownerManagementEnabled,aduFunding,aduCompletionMonth,aduLoanPayment,
+   investmentAduEnabled,invAduFunding,invAduManagementEnabled,
+   invAduCompletionMonth,invAduLoanPayment
  }
 }
 function scenarioForRoot(field,value,extra={}){
@@ -444,6 +569,10 @@ function scenarioForRoot(field,value,extra={}){
  if(field==='ownerIncomeGross'){
    o.ownerIncomeGross=value;
    o.ownerIncomeCap=Math.max(value,extra.ownerIncomeCap||value);
+ }
+ if(field==='invAduRent'){
+   o.invAduRent=value;
+   o.invAduRentCap=Math.max(value,extra.invAduRentCap||value);
  }
  return o
 }
@@ -499,6 +628,16 @@ function rootDirection(field,rootValue,extra={}){
      ? `minimum rent at which buying remains ahead`
      : `rent needed for buying to catch up`;
  }
+ if(field==='invAduRent'){
+   return now>=0
+     ? `minimum ADU rent before the S&P 500 catches up`
+     : `ADU rent needed for the property strategy to catch up`;
+ }
+ if(field==='invAduBuildCost'){
+   return now>=0
+     ? `maximum ADU construction cost before the S&P 500 wins`
+     : `lower ADU cost needed for the property strategy to catch up`;
+ }
  return '';
 }
 function cashFlowBreakEven(x){
@@ -506,7 +645,8 @@ function cashFlowBreakEven(x){
  const variableRate=(($('managementOn').checked?x.v.managementRate:0)+x.v.rentalReserveRate)/100;
  const keepAfterVariable=Math.max(.01,1-variableRate);
  const fixed=x.mp+x.pmi0+x.v.hoa+(x.v.price*x.v.taxRate/100/12)+x.v.insurance+(x.v.price*x.v.maintRate/100/12)+x.v.assessment+x.v.landlordUtilities+x.v.landlordOther;
- return fixed/(vacancyKeep*keepAfterVariable)
+ const aduContribution=x.investmentAduEnabled?x.first.invAduCashFlow:0;
+ return Math.max(0,(fixed-aduContribution)/(vacancyKeep*keepAfterVariable))
 }
 function score(x){
  let s=50+Math.max(-32,Math.min(32,x.adv/Math.max(x.v.price,1)*80));
@@ -547,6 +687,8 @@ function noRootMessage(field,lo,hi,extra={}){
    if(field==='rent') return `no break-even below ${money(hi)}/mo under these assumptions`;
    if(field==='rentCollected') return `the rental still trails the S&P 500 at ${money(hi)}/mo gross rent`;
    if(field==='ownerIncomeGross') return `buying still trails even at ${money(hi)}/mo gross housing income`;
+   if(field==='invAduRent') return `the rental strategy still trails even at ${money(hi)}/mo of ADU rent`;
+   if(field==='invAduBuildCost') return `the rental strategy does not cross the S&P 500 within the tested ADU-cost range`;
    return rental
      ? `the rental still trails the S&P 500 even at ${field==='price'?money(lo):lo}`
      : `buying still loses even at ${field==='price'?money(lo):lo}`;
@@ -617,6 +759,16 @@ function syncInsuranceToPrice(){
  if(!$('insuranceAuto').checked||insuranceUserEditing)return;
  $('insurance').value=Math.round(scaledInsurance(n('price')))
 }
+function setAppreciationPreset(value){
+ $('appreciation').value=value;
+ updateAppreciationPresetState();
+ update()
+}
+function updateAppreciationPresetState(){
+ const a=n('appreciation');
+ $('appreciation4').classList.toggle('active',Math.abs(a-4)<.001);
+ $('appreciation3').classList.toggle('active',Math.abs(a-3)<.001);
+}
 function setReturnPreset(value){
  $('stockReturn').value=value;
  $('return10').classList.toggle('active',value===10);
@@ -646,6 +798,7 @@ function updateSensitivity(){
 function update(){
  syncInsuranceToPrice();
  updateReturnPresetState();
+ updateAppreciationPresetState();
  let x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
  setDynamicSliderRange(localPurchaseEstimate(),n('price'));
  $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
@@ -660,8 +813,8 @@ function update(){
    $('metricLabelAlt').textContent='S&P 500 portfolio';
    $('metricLabelProperty').textContent='Rental-property wealth';
    $('metricLabelAdv').textContent='Rental advantage';
-   $('owner').innerHTML=money(x.first.landlordCosts)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');
-   $('rentNow').textContent=money(x.first.grossCollected);
+   $('owner').innerHTML=money(x.first.totalLandlordCosts)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');
+   $('rentNow').textContent=money(x.first.totalGrossCollected);
    $('gap').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);
    $('gap').className=x.first.rentalCashFlow>=0?'good':'bad';
    $('rentWealth').textContent=money(x.last.rentalAlternative);
@@ -719,11 +872,31 @@ function update(){
 
  $('rentalMetrics').style.display=x.rentalMode?'block':'none';
  if(x.rentalMode){
-   $('effectiveRent').textContent=money(x.first.effectiveCollected);
+   $('effectiveRent').textContent=money(x.first.totalEffectiveCollected);
    $('landlordCashFlow').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);
    $('landlordCashFlow').className=x.first.rentalCashFlow>=0?'good':'bad';
    $('cashFlowBreakEven').textContent=money(cashFlowBreakEven(x))+'/mo';
  }
+ $('investmentAduMetrics').style.display=x.investmentAduEnabled?'block':'none';
+ if(x.investmentAduEnabled){
+   const completionIndex=Math.min(x.invAduCompletionMonth,x.rec.length-1);
+   const ar=x.rec[completionIndex];
+   const completed=x.invAduCompletionMonth<=Math.round(x.v.years*12);
+   $('invAduRentResult').textContent=completed?money(ar.invAduGrossRent)+'/mo':'Not completed';
+   $('invAduCashFlowResult').textContent=completed?(ar.invAduCashFlow>=0?'+':'')+money(ar.invAduCashFlow)+'/mo':'—';
+   $('invAduCashFlowResult').className=completed?(ar.invAduCashFlow>=0?'good':'bad'):'';
+   $('invAduValueResult').textContent=completed?money(ar.invAduValue):'—';
+
+   const aduRentRoot=root('invAduRent',0,12000);
+   const aduCostRoot=root('invAduBuildCost',0,1500000);
+   const rentText=aduRentRoot?money(aduRentRoot)+'/mo':noRootMessage('invAduRent',0,12000);
+   const costText=aduCostRoot?money(aduCostRoot):noRootMessage('invAduBuildCost',0,1500000);
+   $('investmentAduBreakEven').innerHTML=
+     `The ADU begins producing rent after month <b>${x.invAduCompletionMonth}</b>. `+
+     `Modeled ADU-rent break-even: <b>${rentText}</b>. `+
+     `Modeled construction-cost break-even: <b>${costText}</b>.`;
+ }
+
  let bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):root('rent',250,12000);
  updatePriceVisual(bp||50000);
  const bpText=bp?money(bp):noRootMessage('price',50000,1500000);
@@ -735,7 +908,7 @@ function update(){
  $('thresholds').innerHTML=x.rentalMode
  ? `At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`
  : `At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;
- $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{let r=x.rec[Math.round(y*12)];return `<tr><td>${y}</td><td>${money(x.rentalMode?r.grossCollected:r.totalRenterCost)}</td><td>${money(x.rentalMode?r.landlordCosts:r.effectiveOwnerCost)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(x.rentalMode?r.rentalAlternative:r.renter)}</td><td>${money(x.rentalMode?r.rentalOwnerWealth:r.buyWealth)}</td></tr>`}).join('');
+ $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{let r=x.rec[Math.round(y*12)];return `<tr><td>${y}</td><td>${money(x.rentalMode?r.totalGrossCollected:r.totalRenterCost)}</td><td>${money(x.rentalMode?r.totalLandlordCosts:r.effectiveOwnerCost)}</td><td>${money(r.home+(x.rentalMode?r.invAduValue:0))}</td><td>${money(r.loanBal+(x.rentalMode?r.invAduLoanBalance:0))}</td><td>${money(x.rentalMode?r.rentalAlternative:r.renter)}</td><td>${money(x.rentalMode?r.rentalOwnerWealth:r.buyWealth)}</td></tr>`}).join('');
  updateSensitivity();
  updateDp()
 }
@@ -749,7 +922,7 @@ function updateDp(){
    let x=model({downPct:dp}),
        bp=root('price',50000,1500000,{downPct:dp}),
        rr=x.rentalMode?root('rentCollected',250,20000,{downPct:dp}):root('rent',250,12000,{downPct:dp}),
-       monthlyCost=x.rentalMode?x.first.landlordCosts:x.first.effectiveOwnerCost;
+       monthlyCost=x.rentalMode?x.first.totalLandlordCosts:x.first.effectiveOwnerCost;
    return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">custom</span>':''}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`
  }).join('')
 }
@@ -852,6 +1025,36 @@ function applySharedHousingToggles(){
  if(ownerOn)applyOwnerIncomePreset(false);
  update()
 }
+function currentInvestmentAduRentEstimate(){
+ const loc=locations[currentLocation]||{};
+ const br=$('invAduBedrooms').value||'1';
+ return +(loc.property_rents?.condo?.[br]||loc.bedroom_rents?.[br]||loc.rent||2500)
+}
+function applyInvestmentAduRentEstimate(force=false){
+ const estimate=Math.round(currentInvestmentAduRentEstimate());
+ if(force||invAduRentAuto){
+   invAduRentAuto=true;
+   $('invAduRent').value=estimate;
+   $('invAduRentCap').value=estimate;
+ }
+}
+function applyInvestmentAduFundingToggle(){
+ const loan=$('invAduFunding').value==='loan';
+ $('invAduLoanRateWrap').style.display=loan?'block':'none';
+ $('invAduLoanTermWrap').style.display=loan?'block':'none';
+ update()
+}
+function applyInvestmentAduManagementToggle(){
+ $('invAduManagementRateWrap').style.display=$('invAduManagementOn').checked?'block':'none';
+ update()
+}
+function applyInvestmentAduToggle(){
+ const enabled=$('investmentAduOn').checked;
+ $('investmentAduFields').style.display=enabled?'block':'none';
+ $('investmentAduCard').classList.toggle('active',enabled);
+ if(enabled)applyInvestmentAduRentEstimate(false);
+ update()
+}
 function applyUseMode(){
  const rental=$('useMode').value==='rental';
  $('rentalSection').style.display=rental?'block':'none';
@@ -913,6 +1116,9 @@ async function loadLocations(){
    applyOwnerIncomePreset(false);
    applyAduFundingToggle();
    applySharedHousingToggles();
+   applyInvestmentAduFundingToggle();
+   applyInvestmentAduManagementToggle();
+   applyInvestmentAduToggle();
  })
 }
 async function applyLocation(key,live=true){
@@ -929,6 +1135,7 @@ async function applyLocation(key,live=true){
  }else applyLocalPurchaseEstimate(true);
  applyRenterStorageToggle();
  updateSharedHousingEstimates(false,false);
+ applyInvestmentAduRentEstimate(false);
  const src=d.sources||{rent:d.source||'',home:d.home_source||''};
  $('sources').innerHTML=[
   ['Location',d.name,d.note||''],
@@ -970,7 +1177,20 @@ $('propertyType').addEventListener('change',()=>{
 });
 $('useMode').addEventListener('change',applyUseMode);
 $('bedrooms').addEventListener('change',()=>{if($('useMode').value==='rental')applyBedroomRent();else update()});
-$('managementOn').addEventListener('change',update);
+$('managementOn').addEventListener('change',()=>{
+ if($('managementOn').checked){
+   const current=n('managementRate');
+   if(!Number.isFinite(current)||current<=0)$('managementRate').value=8;
+ }
+ update()
+});
+$('investmentAduOn').addEventListener('change',applyInvestmentAduToggle);
+$('invAduFunding').addEventListener('change',applyInvestmentAduFundingToggle);
+$('invAduManagementOn').addEventListener('change',applyInvestmentAduManagementToggle);
+$('invAduBedrooms').addEventListener('change',()=>{invAduRentAuto=true;applyInvestmentAduRentEstimate(true);update()});
+$('useInvAduRentEstimate').onclick=()=>{invAduRentAuto=true;applyInvestmentAduRentEstimate(true);update()};
+$('invAduRent').addEventListener('input',()=>{invAduRentAuto=false;update()});
+$('invAduRentCap').addEventListener('input',()=>{invAduRentAuto=false;update()});
 $('renterShareOn').addEventListener('change',applySharedHousingToggles);
 $('ownerIncomeOn').addEventListener('change',applySharedHousingToggles);
 $('ownerIncomeType').addEventListener('change',()=>{applyOwnerIncomePreset(true);update()});
@@ -986,6 +1206,8 @@ $('useLocalPrice').onclick=()=>{priceAuto=true;applyLocalPurchaseEstimate(true);
 $('useLocalRent').onclick=()=>{rentAuto=true;applyPropertyRentEstimate(true);update()};
 $('return10').onclick=()=>setReturnPreset(10);
 $('return7').onclick=()=>setReturnPreset(7);
+$('appreciation4').onclick=()=>setAppreciationPreset(4);
+$('appreciation3').onclick=()=>setAppreciationPreset(3);
 $('rentCollected').addEventListener('input',()=>{rentAuto=false;update()});
 $('rentCollectedCap').addEventListener('input',()=>{rentAuto=false;update()});
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
