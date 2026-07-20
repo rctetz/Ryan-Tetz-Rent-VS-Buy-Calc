@@ -43,3 +43,31 @@ HOUSE ALPHA V7
 - Replaces the round slider thumb with a narrow precision bar.
 - Slider snaps to the exact break-even price when moved within $5,000.
 - Break-even marker and green/yellow/red price zones are more precise.
+
+HOUSE ALPHA V8
+- Adds Rental / Investment Property mode.
+- Adds 1, 2, 3, and 4 bedroom rent-collected estimates by location.
+- Adds editable vacancy, management, repairs/capex reserve, utilities, and other landlord costs.
+- Calculates monthly landlord cash flow.
+- Calculates gross-rent cash-flow break-even.
+- Calculates long-term wealth break-even rent versus investing the same initial capital and additional contributions.
+- Self-management toggle removes management fees.
+- Bedroom estimates are anchored to local 1BR benchmarks and remain editable in sparse markets.
+
+HOUSE ALPHA V9
+- Replaces the single global break-even search with a segmented crossing scan.
+- Selects the closest valid crossing to the user's current price/rate/rent.
+- Labels mortgage break-even direction: either the rate needed to catch up or the maximum rate before renting wins.
+- Adds property bedrooms for both primary residences and rentals.
+- Adds Garage/storage situation: Auto, Included, Rent separately, or Not needed.
+- Auto mode charges separate storage for small 1BR condos and assumes included storage for larger condos and single-family homes.
+- Garage/storage assumptions are now independent of rental-versus-primary use.
+
+HOUSE ALPHA V10
+- Separates renter-paid garage/storage from owner-paid garage/storage.
+- Either side can be Auto, Included, Rent separately, or Not needed.
+- Adds current-rental bedroom count for renter-storage auto assumptions.
+- Renter garage cost is added to the rent side and compounds with inflation.
+- Owner garage cost remains part of ownership and rental-property operating costs.
+- Break-even current rent is explicitly shown as base rent, with renter garage cost listed separately.
+- Rental/investment mode hides the current-renter garage section because it is not part of that comparison.

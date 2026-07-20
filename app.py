@@ -50,6 +50,17 @@ def first_float(patterns,text):
         if m:return float(m.group(1).replace(',',''))
     return None
 
+def bedroom_rents(one_bed):
+    # Planning ratios derived from typical long-term-rental relationships.
+    # Exact bedroom-specific figures remain editable because small mountain
+    # markets often lack enough active listings for stable averages.
+    return {
+        '1': round(one_bed),
+        '2': round(one_bed * 1.32),
+        '3': round(one_bed * 1.62),
+        '4': round(one_bed * 1.92),
+    }
+
 def market(location='mammoth'):
     loc=LOCATIONS.get(location,LOCATIONS['mammoth']).copy()
     out={'updated_at':datetime.now(timezone.utc).isoformat(),'mortgage_rate':6.55,'location_key':location,**loc,'status':{}}
@@ -68,6 +79,8 @@ def market(location='mammoth'):
         out['status']['rent']='Updated from public rental-market page'
     except Exception:
         out['status']['rent']='Saved planning benchmark — live source unavailable'
+    out['bedroom_rents']=bedroom_rents(out['rent'])
+    out['status']['bedroom_rents']='Editable bedroom estimates anchored to the local 1BR benchmark'
     out['status']['hoa']='Location-specific editable condo benchmark'
     out['status']['insurance']='Editable home-insurance planning estimate'
     out['status']['storage']='Editable one-car garage / roughly 10×20 storage estimate'
@@ -82,7 +95,7 @@ class Handler(SimpleHTTPRequestHandler):
             data=json.dumps(market(location)).encode()
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if u.path=='/api/locations':
-            data=json.dumps({k:{'name':v['name'],**v} for k,v in LOCATIONS.items()}).encode()
+            data=json.dumps({k:{'name':v['name'],**v,'bedroom_rents':bedroom_rents(v['rent'])} for k,v in LOCATIONS.items()}).encode()
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if u.path=='/': self.path='/index.html'
         return super().do_GET()
