@@ -33,3 +33,13 @@ HOUSE ALPHA V6
 - Condo insurance scales gently; single-family insurance scales more strongly.
 - Adds an insurance auto/manual switch.
 - Labels sub-2% mortgage break-even values as below the practical range.
+
+HOUSE ALPHA V7
+- Adds estimated PMI for down payments below 20%.
+- PMI automatically ends once modeled LTV reaches the selected cancellation threshold.
+- Default PMI estimate is 0.50% annually and remains editable.
+- Keeps the 100% cash button directly beside the down-payment selector.
+- Adds Fresno, California.
+- Replaces the round slider thumb with a narrow precision bar.
+- Slider snaps to the exact break-even price when moved within $5,000.
+- Break-even marker and green/yellow/red price zones are more precise.
