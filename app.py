@@ -9,23 +9,37 @@ from urllib.parse import urlparse, parse_qs
 ROOT=Path(__file__).resolve().parent
 PORT=int(os.environ.get('PORT','8765'))
 
+# Planning presets. Rent values aim to represent a current one-bedroom long-term rental.
+# Sparse-market places are deliberately conservative estimates and remain editable.
 LOCATIONS={
- 'mammoth': {'name':'Mammoth Lakes, CA','slug':'mammoth-lakes-ca','rent':2985,'overall':4000,'tax':1.16,'hoa':900,'insurance':125,'source':'https://www.zillow.com/rental-manager/market-trends/mammoth-lakes-ca/','note':'1-bedroom benchmark; small mountain-market samples can be volatile.'},
- 'bishop': {'name':'Bishop, CA','slug':'bishop-ca','rent':1950,'overall':2100,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/bishop-ca/','note':'1-bedroom benchmark.'},
- 'big-pine': {'name':'Big Pine, CA','slug':'big-pine-ca','rent':1300,'overall':1300,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/big-pine-ca/','note':'Very small rental sample; treat as a rough benchmark.'},
- 'crowley-lake': {'name':'Crowley Lake, CA','slug':'crowley-lake-ca','rent':2250,'overall':3750,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/crowley-lake-ca/','note':'Very small rental sample; treat as a rough benchmark.'},
- 'lone-pine': {'name':'Lone Pine, CA','slug':'lone-pine-ca','rent':1800,'overall':2100,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/lone-pine-ca/','note':'Sparse listings; the app uses the published planning fallback when bedroom data are unavailable.'},
- 'independence': {'name':'Independence, CA','slug':'independence-ca','rent':1595,'overall':1595,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/independence-ca/','note':'Extremely small rental sample; use caution.'},
- 'south-lake-tahoe': {'name':'South Lake Tahoe, CA','slug':'south-lake-tahoe-ca','rent':1575,'overall':3000,'tax':1.10,'hoa':650,'insurance':175,'source':'https://www.zillow.com/rental-manager/market-trends/south-lake-tahoe-ca/','note':'1-bedroom benchmark; HOA varies widely by property.'},
- 'incline-village': {'name':'Incline Village, NV','slug':'incline-village-nv','rent':2400,'overall':4000,'tax':0.65,'hoa':700,'insurance':160,'source':'https://www.zillow.com/rental-manager/market-trends/incline-village-nv/','note':'1-bedroom benchmark; Nevada taxes and HOA structures differ by property.'},
- 'stateline': {'name':'Stateline, NV','slug':'stateline-nv','rent':2133,'overall':4500,'tax':0.65,'hoa':700,'insurance':160,'source':'https://www.zillow.com/rental-manager/market-trends/stateline-nv/','note':'1-bedroom benchmark; small and vacation-heavy market.'},
- 'zephyr-cove': {'name':'Zephyr Cove, NV','slug':'zephyr-cove-nv','rent':1900,'overall':1900,'tax':0.65,'hoa':650,'insurance':160,'source':'https://www.zillow.com/rental-manager/market-trends/zephyr-cove-nv/','note':'Small sample; treat as a planning benchmark.'},
+ 'mammoth': {'name':'Mammoth Lakes, CA','rent':2985,'tax':1.16,'hoa':750,'insurance':175,'storage':350,'source':'https://www.zillow.com/rental-manager/market-trends/mammoth-lakes-ca/','note':'Published 1BR benchmark; vacation-heavy inventory can make the sample volatile.'},
+ 'june-lake': {'name':'June Lake, CA','rent':2850,'tax':1.12,'hoa':700,'insurance':180,'storage':350,'source':'https://www.zillow.com/rental-manager/market-trends/june-lake-ca/','note':'Sparse vacation market. Uses a planning estimate close to Mammoth rather than the distorted all-property average.'},
+ 'crowley-lake': {'name':'Crowley Lake, CA','rent':2250,'tax':1.12,'hoa':250,'insurance':165,'storage':325,'source':'https://www.zillow.com/rental-manager/market-trends/crowley-lake-ca/','note':'Sparse listings; planning estimate.'},
+ 'toms-place': {'name':"Tom's Place, CA",'rent':2050,'tax':1.12,'hoa':200,'insurance':165,'storage':300,'source':'','note':'Very sparse market; planning estimate.'},
+ 'lee-vining': {'name':'Lee Vining, CA','rent':1750,'tax':1.12,'hoa':100,'insurance':160,'storage':275,'source':'','note':'Sparse market; planning estimate.'},
+ 'bridgeport': {'name':'Bridgeport, CA','rent':1550,'tax':1.12,'hoa':100,'insurance':155,'storage':250,'source':'','note':'Sparse market; planning estimate.'},
+ 'benton': {'name':'Benton, CA','rent':1450,'tax':1.12,'hoa':75,'insurance':150,'storage':225,'source':'','note':'Very sparse market; rough planning estimate.'},
+ 'bishop': {'name':'Bishop, CA','rent':1950,'tax':1.12,'hoa':250,'insurance':155,'storage':250,'source':'https://www.zillow.com/rental-manager/market-trends/bishop-ca/','note':'Published or saved 1BR benchmark.'},
+ 'big-pine': {'name':'Big Pine, CA','rent':1300,'tax':1.12,'hoa':100,'insurance':150,'storage':225,'source':'https://www.zillow.com/rental-manager/market-trends/big-pine-ca/','note':'Very small sample; rough planning benchmark.'},
+ 'paradise-sunny-slopes': {'name':'Paradise / Sunny Slopes, CA','rent':1800,'tax':1.12,'hoa':100,'insurance':160,'storage':250,'source':'','note':'Combined local planning estimate.'},
+ 'swall-meadows': {'name':'Swall Meadows, CA','rent':1900,'tax':1.12,'hoa':100,'insurance':165,'storage':275,'source':'','note':'Sparse market; planning estimate.'},
+ 'chalfant': {'name':'Chalfant Valley, CA','rent':1650,'tax':1.12,'hoa':75,'insurance':150,'storage':225,'source':'','note':'Sparse market; planning estimate.'},
+ 'independence': {'name':'Independence, CA','rent':1595,'tax':1.12,'hoa':75,'insurance':150,'storage':225,'source':'https://www.zillow.com/rental-manager/market-trends/independence-ca/','note':'Extremely small sample; use caution.'},
+ 'lone-pine': {'name':'Lone Pine, CA','rent':1800,'tax':1.12,'hoa':100,'insurance':150,'storage':225,'source':'https://www.zillow.com/rental-manager/market-trends/lone-pine-ca/','note':'Sparse listings; planning fallback.'},
+ 'carson-city': {'name':'Carson City, NV','rent':1250,'tax':0.69,'hoa':300,'insurance':145,'storage':250,'source':'https://www.zillow.com/rental-manager/market-trends/carson-city-nv/','note':'Published 1BR benchmark.'},
+ 'gardnerville': {'name':'Gardnerville, NV','rent':1300,'tax':0.65,'hoa':250,'insurance':145,'storage':250,'source':'https://www.zillow.com/rental-manager/market-trends/gardnerville-nv/','note':'Published 1BR benchmark.'},
+ 'truckee': {'name':'Truckee, CA','rent':2000,'tax':1.10,'hoa':700,'insurance':210,'storage':400,'source':'https://www.zillow.com/rental-manager/market-trends/truckee-ca/','note':'Published 1BR benchmark; luxury and vacation inventory heavily affect overall averages.'},
+ 'sonora': {'name':'Sonora, CA','rent':1195,'tax':1.10,'hoa':300,'insurance':150,'storage':250,'source':'https://www.zillow.com/rental-manager/market-trends/sonora-ca/','note':'Published 1BR benchmark.'},
+ 'south-lake-tahoe': {'name':'South Lake Tahoe, CA','rent':1595,'tax':1.10,'hoa':650,'insurance':200,'storage':350,'source':'https://www.zillow.com/rental-manager/market-trends/south-lake-tahoe-ca/','note':'Published 1BR benchmark; HOA varies widely.'},
+ 'incline-village': {'name':'Incline Village, NV','rent':2400,'tax':0.65,'hoa':700,'insurance':185,'storage':375,'source':'https://www.zillow.com/rental-manager/market-trends/incline-village-nv/','note':'Published 1BR benchmark.'},
+ 'stateline': {'name':'Stateline, NV','rent':2100,'tax':0.65,'hoa':700,'insurance':185,'storage':350,'source':'https://www.zillow.com/rental-manager/market-trends/stateline-nv/','note':'Small, vacation-heavy market; planning benchmark.'},
+ 'zephyr-cove': {'name':'Zephyr Cove, NV','rent':1950,'tax':0.65,'hoa':650,'insurance':185,'storage':350,'source':'','note':'Small sample; planning benchmark.'},
+ 'custom': {'name':'Custom / Anywhere','rent':2000,'tax':1.10,'hoa':300,'insurance':160,'storage':250,'source':'','note':'Enter local values manually.'},
 }
-
 MORTGAGE_URL='https://www.freddiemac.com/pmms'
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/3.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/5.0'})
     with urlopen(req,timeout=15) as r:
         return r.read().decode('utf-8',errors='ignore')
 
@@ -46,17 +60,17 @@ def market(location='mammoth'):
     except Exception:
         out['status']['mortgage']='Using saved weekly benchmark'
     try:
+        if not loc.get('source'): raise ValueError('No live source')
         t=fetch(loc['source'])
-        one=first_float([r'one-bedroom apartment[^$]{0,180}\$([0-9,]+)',r'one bedroom[^$]{0,180}\$([0-9,]+)'],t)
-        overall=first_float([r'average rent(?: for all bedrooms and all property types)?[^$]{0,180}\$([0-9,]+)'],t)
-        if one:out['rent']=one
-        if overall:out['overall']=overall
+        one=first_float([r'one-bedroom apartment[^$]{0,220}\$([0-9,]+)',r'one bedroom[^$]{0,220}\$([0-9,]+)'],t)
+        if one: out['rent']=one
         out['status']['rent']='Updated from public rental-market page'
     except Exception:
-        out['status']['rent']='Saved benchmark — live source unavailable'
-    out['status']['hoa']='Editable planning benchmark; no complete live HOA census'
+        out['status']['rent']='Saved planning benchmark — live source unavailable'
+    out['status']['hoa']='Location-specific editable condo benchmark'
     out['status']['insurance']='Editable home-insurance planning estimate'
-    out['sources']={'mortgage':MORTGAGE_URL,'rent':loc['source']}
+    out['status']['storage']='Editable one-car garage / roughly 10×20 storage estimate'
+    out['sources']={'mortgage':MORTGAGE_URL,'rent':loc.get('source','')}
     return out
 
 class Handler(SimpleHTTPRequestHandler):
@@ -67,11 +81,11 @@ class Handler(SimpleHTTPRequestHandler):
             data=json.dumps(market(location)).encode()
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if u.path=='/api/locations':
-            data=json.dumps({k:{'name':v['name']} for k,v in LOCATIONS.items()}).encode()
+            data=json.dumps({k:{'name':v['name'],**v} for k,v in LOCATIONS.items()}).encode()
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
-        if self.path=='/':self.path='/index.html'
+        if u.path=='/': self.path='/index.html'
         return super().do_GET()
-    def log_message(self,fmt,*args):pass
+    def log_message(self,fmt,*args): pass
 
 def main():
     os.chdir(ROOT);host=os.environ.get('HOST','0.0.0.0');server=ThreadingHTTPServer((host,PORT),Handler)

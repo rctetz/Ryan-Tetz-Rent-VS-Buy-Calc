@@ -1,15 +1,27 @@
-HOUSE ALPHA — UPDATE PACKAGE
+HOUSE ALPHA V4
 
-Replace the files in your existing GitHub repository with the contents of this folder, then commit and push. Render should redeploy automatically.
+Deploying over the existing Render app:
+1. Replace the files in your GitHub repository with the contents of this folder.
+2. Commit and push.
+3. Render should redeploy automatically at the same public URL.
+4. On iPhone, reopen the app and refresh. If the old installed icon or layout remains, remove the old home-screen app and add it again after deployment.
 
-Major changes:
-- House Alpha branding
-- HOA on/off switch
+New in v4:
+- Expanded Eastern Sierra location list
+- Location-specific 1BR rent, HOA, home insurance, tax, and one-car garage/storage defaults
+- Current rent automatically equals the location's 1BR default
+- HOA and garage/storage toggles
+- Mammoth HOA default set to $750/month
+- 10% stock-return and 3% inflation defaults
 - Purchase-price slider
-- Better break-even explanations; no generic “outside tested range” message
-- Home insurance wording
-- Location benchmarks for Mammoth, Bishop, Big Pine, Crowley Lake, Lone Pine, Independence, South Lake Tahoe, Incline Village, Stateline and Zephyr Cove
-- Custom / anywhere mode
-- Score breakdown
+- Improved break-even range messages
+- Wealth chart, insight cards, new visual theme, and House Alpha app icon
 
-Important: Market averages in tiny towns can be based on very few listings. HOA and insurance are planning benchmarks and remain editable.
+Important: Small-market rent, HOA, storage, insurance, and tax values are editable planning benchmarks. Always replace them with property-specific figures when available.
+
+
+HOUSE ALPHA V5
+- Adds Carson City, Gardnerville, Truckee, and Sonora.
+- June Lake uses a Mammoth-adjacent planning rent rather than a distorted vacation-rental average.
+- Condo mode enables HOA and garage/storage by default; single-family mode disables both.
+- Price slider shows green/yellow/red zones and a break-even marker.

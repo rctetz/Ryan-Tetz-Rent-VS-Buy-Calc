@@ -1,34 +1,180 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#173b73"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="House Alpha"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png"><title>House Alpha</title>
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10243f"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="House Alpha">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>House Alpha</title>
 <style>
-:root{--bg:#f3f6fa;--card:#fff;--ink:#142033;--muted:#667085;--line:#dfe5ee;--blue:#2457d6;--green:#147d64;--amber:#b7791f;--red:#c53030}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{background:linear-gradient(135deg,#102a56,#2862dd);color:#fff;padding:24px 17px}.wrap{max-width:1240px;margin:auto}h1{margin:0;font-size:clamp(31px,7vw,50px)}header p{margin:5px 0 0;opacity:.9}.tabs{display:flex;gap:7px;overflow:auto;padding:17px 0}.tab{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 14px;font-weight:800}.tab.active{background:var(--blue);color:#fff}.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:0 3px 14px #1018280c}.left{grid-column:span 5}.right{grid-column:span 7}.full{grid-column:1/-1}@media(max-width:900px){.left,.right{grid-column:1/-1}}h2{margin:0 0 13px;font-size:21px}h3{margin:18px 0 8px}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}@media(max-width:550px){.form{grid-template-columns:1fr}}label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin-bottom:5px}input,select{width:100%;padding:11px;border:1px solid #cbd3df;border-radius:10px;font-size:16px;background:#fff}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.btn{border:0;background:var(--blue);color:#fff;padding:11px 14px;border-radius:10px;font-weight:800}.btn.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:620px){.metrics{grid-template-columns:1fr}}.metric{padding:13px;border:1px solid var(--line);border-radius:13px;background:#fafbfc}.metric b{display:block;font-size:23px;margin-top:4px}.muted{font-size:12px;color:var(--muted);line-height:1.45}.scorebox{display:flex;align-items:center;gap:15px;padding:14px;border-radius:14px;margin-bottom:13px}.score{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:29px;font-weight:900}.verdict{font-size:22px;font-weight:900}.status{padding:14px;border-left:5px solid var(--blue);background:#f1f5ff;border-radius:11px;line-height:1.5}.switchrow{display:flex;justify-content:space-between;align-items:center;padding:10px 0}.switch{position:relative;width:52px;height:30px}.switch input{opacity:0;width:0;height:0}.sliderSwitch{position:absolute;inset:0;background:#c8d0dc;border-radius:999px;transition:.2s}.sliderSwitch:before{content:"";position:absolute;width:24px;height:24px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s;box-shadow:0 1px 4px #0003}.switch input:checked+.sliderSwitch{background:var(--blue)}.switch input:checked+.sliderSwitch:before{transform:translateX(22px)}.rangebox{display:grid;grid-template-columns:1fr 105px;gap:10px;align-items:center}.rangebox input[type=range]{padding:0;border:0}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#edf2ff;color:#234bb8;font-size:11px;font-weight:800}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:13px}a{color:var(--blue)}.hide{display:none!important}.installbar{position:sticky;bottom:0;background:#ffffffee;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 15px;display:none}.installbar.show{display:block}@media(display-mode:standalone){.installbar{display:none!important}}
+:root{--bg:#eef3f8;--card:#fff;--ink:#132033;--muted:#667085;--line:#dfe5ec;--navy:#10243f;--blue:#2563eb;--green:#138a61;--amber:#d28a16;--red:#c73a3a}
+*{box-sizing:border-box}body{margin:0;font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 90% 0,#dce8ff 0,transparent 28%),var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,#0c1f38,#244f8e 65%,#2b6ad9);color:#fff;padding:24px 18px 29px;position:relative;overflow:hidden}
+header:after{content:"α";position:absolute;right:16px;top:-45px;font-size:190px;font-weight:900;opacity:.08}
+.wrap{max-width:1220px;margin:auto}h1{margin:0 0 4px;font-size:clamp(30px,5vw,47px);letter-spacing:-1.5px}.tag{opacity:.9;line-height:1.4}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}.tab.active{background:var(--navy);color:#fff}
+.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 7px 24px #18314c0c}.left{grid-column:span 5}.right{grid-column:span 7}.full{grid-column:1/-1}@media(max-width:920px){.left,.right{grid-column:1/-1}}
+h2{margin:0 0 13px;font-size:20px}h3{font-size:16px;margin:18px 0 9px}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}@media(max-width:560px){.form{grid-template-columns:1fr}}
+label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin-bottom:5px}input,select{width:100%;padding:11px;border:1px solid #cfd7e2;border-radius:10px;font-size:15px;background:#fff;color:var(--ink)}
+select{font-weight:650}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.btn{border:0;background:var(--blue);color:white;padding:11px 14px;border-radius:11px;font-weight:800;cursor:pointer}.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.switchrow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);padding:10px 12px;border-radius:11px;background:#f9fbfd}.switch{position:relative;width:48px;height:28px}.switch input{opacity:0;width:0;height:0}.sliderSwitch{position:absolute;inset:0;background:#bbc4cf;border-radius:999px;cursor:pointer;transition:.2s}.sliderSwitch:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:white;border-radius:50%;box-shadow:0 1px 4px #0003;transition:.2s}.switch input:checked+.sliderSwitch{background:var(--green)}.switch input:checked+.sliderSwitch:before{transform:translateX(20px)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:620px){.metrics{grid-template-columns:1fr}}.metric{padding:13px;border:1px solid var(--line);border-radius:13px;background:#fafcfe}.metric b{font-size:23px;display:block;margin-top:4px}.muted{color:var(--muted);font-size:12px;line-height:1.42}
+.scorebox{display:flex;gap:16px;align-items:center;padding:15px;border-radius:15px;margin-bottom:13px}.score{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;color:white;font-size:30px;font-weight:900;box-shadow:inset 0 0 0 7px #ffffff2a}.verdict{font-size:23px;font-weight:900}
+.status{padding:13px;border-left:5px solid var(--blue);background:#f2f6ff;border-radius:10px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
+.pricebox{padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff}.pricevalue{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}.pricevalue b{font-size:25px}
+.rangeWrap{position:relative;padding:11px 0 24px}.range{appearance:none;width:100%;height:14px;border-radius:999px;outline:none;border:1px solid #cbd5df}.range::-webkit-slider-thumb{appearance:none;width:29px;height:29px;border-radius:50%;background:#fff;border:5px solid var(--navy);box-shadow:0 2px 8px #0004;cursor:pointer}.range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:5px solid var(--navy);cursor:pointer}
+.marker{position:absolute;top:2px;width:3px;height:35px;background:#111827;border-radius:2px;transform:translateX(-1px)}.marker:after{content:"Break-even";position:absolute;top:36px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;white-space:nowrap;color:#111827}
+.legend{display:flex;justify-content:space-between;font-size:11px;font-weight:800;margin-top:2px}.legend .buy{color:var(--green)}.legend .close{color:var(--amber)}.legend .rentwin{color:var(--red)}
+.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:12px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eaf0ff;color:#234bb8;font-size:11px;font-weight:800}
+.installbar{position:sticky;bottom:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px;display:none}.installbar.show{display:block}.installinner{max-width:1220px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body>
-<header><div class="wrap"><h1>House Alpha</h1><p>Find the price where owning beats renting—and see exactly why.</p></div></header><main class="wrap">
+<header><div class="wrap"><h1>House Alpha</h1><div class="tag">Find the price where owning starts building more wealth than renting.</div></div></header>
+<main class="wrap">
 <div class="tabs"><button class="tab active" data-tab="calculator">Calculator</button><button class="tab" data-tab="downpayments">Down payments</button><button class="tab" data-tab="market">Market data</button></div>
-<section id="calculator" class="panel active"><div class="grid"><div class="card left"><h2>Property and assumptions</h2><div class="form">
-<div><label>Location benchmark</label><select id="location"><option value="mammoth">Mammoth Lakes, CA</option><option value="bishop">Bishop, CA</option><option value="big-pine">Big Pine, CA</option><option value="crowley-lake">Crowley Lake, CA</option><option value="lone-pine">Lone Pine, CA</option><option value="independence">Independence, CA</option><option value="south-lake-tahoe">South Lake Tahoe, CA</option><option value="incline-village">Incline Village, NV</option><option value="stateline">Stateline, NV</option><option value="zephyr-cove">Zephyr Cove, NV</option><option value="custom">Custom / anywhere</option></select></div><div><label>Custom location label</label><input id="customLocation" placeholder="City, state or ZIP"></div>
-<div style="grid-column:1/-1"><label>Purchase-price slider</label><div class="rangebox"><input id="priceSlider" type="range" min="100000" max="1500000" value="385000" step="5000"><input id="price" type="number" value="385000" step="5000"></div></div>
-<div><label>Down payment %</label><input id="downPct" type="number" value="20" min="0" max="100"></div><div><label>Mortgage rate %</label><input id="rate" type="number" value="6.55" step=".01"></div>
-<div><label>Term, years</label><input id="term" type="number" value="30"></div><div><label>Current rent</label><input id="rent" type="number" value="2000"></div>
-<div><label>Market-rent cap</label><input id="rentCap" type="number" value="2985"></div><div><label>Near-term rent growth %</label><input id="rentGrowth" type="number" value="10"></div>
-<div><label>Market-rent inflation %</label><input id="marketGrowth" type="number" value="3"></div><div><label>Property tax rate %</label><input id="taxRate" type="number" value="1.16" step=".01"></div>
+
+<section id="calculator" class="panel active"><div class="grid">
+<div class="card left"><h2>Home and location</h2>
+<div class="form">
+<div><label>Location</label><select id="location"></select></div>
+<div><label>Property type</label><select id="propertyType"><option value="condo">Condo / townhome</option><option value="single">Single-family home</option></select></div>
 </div>
-<div class="switchrow"><div><b>Include HOA</b><div class="muted">Turn off for a house or property without an association.</div></div><label class="switch"><input id="hoaOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
-<div id="hoaFields" class="form"><div><label>HOA / month</label><input id="hoa" type="number" value="483"></div><div><label>HOA growth %</label><input id="hoaGrowth" type="number" value="4"></div></div>
-<div class="form" style="margin-top:11px"><div><label>Home insurance / month</label><input id="insurance" type="number" value="125"></div><div><label>Storage / month</label><input id="storage" type="number" value="350"></div><div><label>Maintenance % / year</label><input id="maintRate" type="number" value=".5" step=".1"></div><div><label>Assessment reserve / month</label><input id="assessment" type="number" value="100"></div><div><label>Holding period, years</label><input id="years" type="number" value="15"></div><div><label>Stock return %</label><input id="stockReturn" type="number" value="8" step=".25"></div><div><label>Home appreciation %</label><input id="appreciation" type="number" value="3" step=".25"></div><div><label>Buying closing costs %</label><input id="buyClose" type="number" value="2" step=".1"></div><div><label>Selling costs %</label><input id="sellCost" type="number" value="7" step=".1"></div></div>
-<div class="row" style="margin-top:14px"><button class="btn" id="refresh">Refresh market data</button><button class="btn secondary" id="cash">Set 100% cash</button></div><div class="muted" id="updated" style="margin-top:8px"></div></div>
-<div class="card right"><h2>Result</h2><div class="scorebox" id="scorebox"><div class="score" id="score">—</div><div><div class="verdict" id="verdict"></div><div class="muted" id="explain"></div></div></div><div class="metrics"><div class="metric"><span class="muted">Owner cost, month 1</span><b id="owner"></b></div><div class="metric"><span class="muted">Rent, month 1</span><b id="rentNow"></b></div><div class="metric"><span class="muted">Initial premium</span><b id="gap"></b></div><div class="metric"><span class="muted">Renter wealth</span><b id="rentWealth"></b></div><div class="metric"><span class="muted">Buyer wealth</span><b id="buyWealth"></b></div><div class="metric"><span class="muted">Buyer advantage</span><b id="adv"></b></div></div><h3>Exact modeled break-even</h3><div class="status" id="thresholds"></div><h3>Score breakdown</h3><div class="metrics"><div class="metric"><span class="muted">Wealth impact</span><b id="wealthScore"></b></div><div class="metric"><span class="muted">Monthly affordability</span><b id="affScore"></b></div><div class="metric"><span class="muted">Housing friction</span><b id="frictionScore"></b></div></div><h3>Milestones</h3><table><thead><tr><th>Year</th><th>Rent</th><th>Owner</th><th>Home</th><th>Loan</th><th>Rent wealth</th><th>Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table></div></div></section>
-<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">The table reports exact modeled thresholds at the selected holding period. Cash required includes the down payment and estimated buying costs.</p><table><thead><tr><th>Down</th><th>Cash required</th><th>Owner / mo</th><th>Break-even price</th><th>Break-even rent</th><th>Advantage</th></tr></thead><tbody id="dpRows"></tbody></table></div></section>
-<section id="market" class="panel"><div class="card"><h2>Market benchmarks</h2><div class="sourcegrid" id="sources"></div><p class="muted">Small towns may have very few rentals, so an “average” can jump sharply when one listing appears or disappears. HOA and home-insurance values remain editable because no complete public live database exists for those costs.</p></div></section>
-</main><div id="installbar" class="installbar"><div class="wrap row" style="justify-content:space-between"><div><b>Install House Alpha</b><div class="muted">Use it like a phone app and share the same link.</div></div><button id="installBtn" class="btn">Install</button></div></div>
+<h3>Price discovery</h3>
+<div class="pricebox"><div class="pricevalue"><span>Purchase price</span><b id="priceDisplay">$385,000</b></div>
+<div class="rangeWrap"><input class="range" id="priceSlider" type="range" min="100000" max="1000000" step="5000" value="385000"><div class="marker" id="beMarker"></div></div>
+<div class="legend"><span class="buy">BUY WINS</span><span class="close">CLOSE CALL</span><span class="rentwin">RENT WINS</span></div></div>
+<div class="form" style="margin-top:10px">
+<div><label>Exact purchase price</label><input id="price" type="number" value="385000" step="5000"></div>
+<div><label>Down payment %</label><input id="downPct" type="number" value="20" min="0" max="100"></div>
+<div><label>Mortgage rate %</label><input id="rate" type="number" value="6.55" step=".01"></div>
+<div><label>Mortgage term</label><input id="term" type="number" value="30"></div>
+</div>
+
+<h3>Rent and recurring costs</h3>
+<div class="form">
+<div><label>Current rent (defaults to local 1BR)</label><input id="rent" type="number"></div>
+<div><label>Market rent cap</label><input id="rentCap" type="number"></div>
+</div>
+<div class="switchrow" style="margin-top:10px"><div><b>Include HOA</b><div class="muted">On by default for condos</div></div><label class="switch"><input id="hoaOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
+<div class="form" style="margin-top:10px"><div><label>HOA / month</label><input id="hoa" type="number"></div><div><label>HOA growth %</label><input id="hoaGrowth" type="number" value="4"></div></div>
+<div class="switchrow" style="margin-top:10px"><div><b>Rent garage / storage</b><div class="muted">One-car garage or roughly 10×20 unit</div></div><label class="switch"><input id="storageOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
+<div class="form" style="margin-top:10px">
+<div><label>Garage / storage monthly</label><input id="storage" type="number"></div><div><label>Home insurance / month</label><input id="insurance" type="number"></div>
+<div><label>Property tax rate %</label><input id="taxRate" type="number" step=".01"></div><div><label>Maintenance % / year</label><input id="maintRate" type="number" value=".5" step=".1"></div>
+<div><label>Assessment reserve / month</label><input id="assessment" type="number" value="100"></div><div><label>Holding period, years</label><input id="years" type="number" value="15"></div>
+</div>
+<h3>Growth assumptions</h3>
+<div class="form">
+<div><label>Stock-market return %</label><input id="stockReturn" type="number" value="10" step=".25"></div>
+<div><label>Home appreciation %</label><input id="appreciation" type="number" value="3" step=".25"></div>
+<div><label>Near-term rent growth %</label><input id="rentGrowth" type="number" value="10"></div>
+<div><label>Long-term inflation %</label><input id="marketGrowth" type="number" value="3"></div>
+<div><label>Buying closing costs %</label><input id="buyClose" type="number" value="2"></div>
+<div><label>Selling costs %</label><input id="sellCost" type="number" value="7"></div>
+</div>
+<div class="row" style="margin-top:14px"><button class="btn" id="refresh">Refresh location data</button><button class="btn secondary" id="cash">Set 100% cash</button></div><div class="muted" id="updated" style="margin-top:7px"></div>
+</div>
+
+<div class="card right"><h2>House Alpha result</h2><div class="scorebox" id="scorebox"><div class="score" id="score">—</div><div><div class="verdict" id="verdict"></div><div class="muted" id="explain"></div></div></div>
+<div class="metrics">
+<div class="metric"><span class="muted">Owner cost, month 1</span><b id="owner"></b></div><div class="metric"><span class="muted">Rent, month 1</span><b id="rentNow"></b></div><div class="metric"><span class="muted">Initial premium</span><b id="gap"></b></div>
+<div class="metric"><span class="muted">Renter wealth</span><b id="rentWealth"></b></div><div class="metric"><span class="muted">Buyer wealth</span><b id="buyWealth"></b></div><div class="metric"><span class="muted">Buyer advantage</span><b id="adv"></b></div>
+</div>
+<h3>Exact modeled break-even</h3><div class="status" id="thresholds"></div>
+<h3>Milestones</h3><table><thead><tr><th>Year</th><th>Rent</th><th>Owner</th><th>Home</th><th>Loan</th><th>Rent wealth</th><th>Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table>
+</div></div></section>
+
+<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">Exact model results using the current property, location, and growth assumptions.</p><table><thead><tr><th>Down</th><th>Cash needed</th><th>Owner/mo</th><th>Break-even price</th><th>Break-even rent</th><th>Advantage now</th></tr></thead><tbody id="dpRows"></tbody></table></div></section>
+<section id="market" class="panel"><div class="card"><h2>Location assumptions and sources</h2><div class="sourcegrid" id="sources"></div><p class="muted">HOA, garage/storage, and insurance are editable planning benchmarks. Small mountain communities often lack enough long-term listings for a statistically stable live average.</p></div></section>
+</main>
+<div class="installbar" id="installbar"><div class="installinner"><div><b>Install House Alpha</b><div class="muted">Add it to your home screen and share the same link.</div></div><button id="installBtn" class="btn">Install</button></div></div>
+
 <script>
-const $=id=>document.getElementById(id),ids=['price','downPct','rate','term','rent','rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];const n=id=>+$(id).value||0,money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
-function model(o={}){let v={};ids.forEach(i=>v[i]=i in o?o[i]:n(i));v.hoaOn='hoaOn'in o?o.hoaOn:$('hoaOn').checked;if(!v.hoaOn){v.hoa=0;v.hoaGrowth=0}let M=Math.round(v.years*12),dp=v.price*v.downPct/100,loan=v.price-dp,mp=pmt(loan,v.rate,v.term),rtrn=v.stockReturn/1200,rent=v.rent,cap=v.rentCap,renter=dp+v.price*v.buyClose/100,buyerInv=0,rec=[];for(let m=0;m<=M;m++){let y=m/12,home=v.price*(1+v.appreciation/100)**y,hoa=v.hoa*(1+v.hoaGrowth/100)**y,tax=v.price*v.taxRate/100/12*(1.02**y),ins=v.insurance*(1.04**y),maint=home*v.maintRate/100/12,storage=v.storage*(1.03**y),owner=mp+hoa+tax+ins+maint+storage+v.assessment,loanBal=bal(loan,v.rate,v.term,m),buyWealth=home*(1-v.sellCost/100)-loanBal+buyerInv;rec.push({m,y,rent,owner,home,loanBal,renter,buyWealth});if(m===M)break;renter*=1+rtrn;buyerInv*=1+rtrn;let d=owner-rent;if(d>0)renter+=d;else buyerInv+=-d;cap*=Math.pow(1+v.marketGrowth/100,1/12);rent=Math.min(rent*Math.pow(1+v.rentGrowth/100,1/12),cap)}let z=rec.at(-1);return{v,rec,first:rec[0],last:z,dp,mp,adv:z.buyWealth-z.renter}}
-function root(field,lo,hi,extra={}){let fa=model({...extra,[field]:lo}).adv,fb=model({...extra,[field]:hi}).adv;if(fa===0)return{value:lo};if(fb===0)return{value:hi};if(fa*fb>0)return{value:null,lowAdv:fa,highAdv:fb,lo,hi};for(let i=0;i<60;i++){let mid=(lo+hi)/2,fm=model({...extra,[field]:mid}).adv;if(fa*fm<=0){hi=mid;fb=fm}else{lo=mid;fa=fm}}return{value:(lo+hi)/2}}
-function describe(r,kind){if(r.value!=null)return kind==='rate'?r.value.toFixed(2)+'%':kind==='rent'?money(r.value)+'/mo':money(r.value);let bothPositive=r.lowAdv>0&&r.highAdv>0,bothNegative=r.lowAdv<0&&r.highAdv<0;if(kind==='rent')return bothPositive?`Buying wins throughout ${money(r.lo)}–${money(r.hi)}/mo`:`Buying still loses even at ${money(r.hi)}/mo`;if(kind==='price')return bothPositive?`Buying wins throughout ${money(r.lo)}–${money(r.hi)}`:`Buying still loses even at ${money(r.lo)}`;return bothPositive?`Buying wins throughout ${r.lo}%–${r.hi}%`:`Buying still loses even at ${r.lo}%`}
-function subscores(x){let wealth=Math.round(Math.max(0,Math.min(100,50+x.adv/x.v.price*100))),gap=x.first.owner-x.first.rent,aff=Math.round(Math.max(0,Math.min(100,100-gap/18))),fric=Math.round(Math.max(0,100-(x.v.hoaOn?x.v.hoa/12:0)-x.v.storage/10-x.v.insurance/15));return{wealth,aff,fric,overall:Math.round(wealth*.55+aff*.3+fric*.15)}}
-function update(){let x=model(),s=subscores(x),c=s.overall>=70?'#147d64':s.overall>=50?'#b7791f':'#c53030';$('score').style.background=c;$('score').textContent=s.overall;$('scorebox').style.background=s.overall>=70?'#edf9f5':s.overall>=50?'#fff8e8':'#fff1f1';$('verdict').textContent=s.overall>=75?'Strong contender':s.overall>=60?'Worth serious consideration':s.overall>=45?'Borderline':'Renting remains stronger';$('explain').textContent=x.adv>=0?`Buying finishes ${money(x.adv)} ahead at year ${x.v.years}.`:`Renting and investing finishes ${money(-x.adv)} ahead at year ${x.v.years}.`;$('owner').textContent=money(x.first.owner);$('rentNow').textContent=money(x.first.rent);$('gap').textContent=money(x.first.owner-x.first.rent);$('rentWealth').textContent=money(x.last.renter);$('buyWealth').textContent=money(x.last.buyWealth);$('adv').textContent=(x.adv>=0?'+':'')+money(x.adv);$('adv').className=x.adv>=0?'good':'bad';$('wealthScore').textContent=s.wealth+'/100';$('affScore').textContent=s.aff+'/100';$('frictionScore').textContent=s.fric+'/100';let bp=root('price',50000,2000000),br=x.v.downPct<100?root('rate',.01,20):null,rr=root('rent',0,20000);$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, break-even purchase price: <b>${describe(bp,'price')}</b>. ${br?`Break-even mortgage rate: <b>${describe(br,'rate')}</b>. `:''}Break-even current rent: <b>${describe(rr,'rent')}</b>.`;$('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)===i).map(y=>{let r=x.rec[Math.round(y*12)];return`<tr><td>${y}</td><td>${money(r.rent)}</td><td>${money(r.owner)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(r.renter)}</td><td>${money(r.buyWealth)}</td></tr>`}).join('');updateDp()}
-function updateDp(){let dps=[0,5,10,15,20,25,30,40,50,75,100,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)===i);$('dpRows').innerHTML=dps.map(dp=>{let x=model({downPct:dp}),bp=root('price',50000,2000000,{downPct:dp}),rr=root('rent',0,20000,{downPct:dp});return`<tr><td>${dp}%${dp===n('downPct')?' <span class="pill">custom</span>':''}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(x.first.owner)}</td><td>${describe(bp,'price')}</td><td>${describe(rr,'rent')}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`}).join('')}
-async function refresh(){let loc=$('location').value;if(loc==='custom'){$('updated').textContent='Custom location selected. Enter your own rent, tax, HOA and insurance assumptions.';return}$('refresh').textContent='Refreshing…';try{let d=await fetch('/api/market?location='+encodeURIComponent(loc)+'&x='+Date.now()).then(r=>r.json());$('rate').value=d.mortgage_rate;$('rentCap').value=d.rent;$('taxRate').value=d.tax;$('insurance').value=d.insurance;if($('hoaOn').checked&&n('hoa')===0)$('hoa').value=d.hoa;$('updated').textContent=`${d.name} benchmarks refreshed ${new Date(d.updated_at).toLocaleString()}. ${d.note}`;let cards=[['Location',d.name,d.note,''],['30-year mortgage',d.mortgage_rate+'%',d.status.mortgage,d.sources.mortgage],['Market rent benchmark',money(d.rent)+'/mo',d.status.rent,d.sources.rent],['Overall rent',money(d.overall)+'/mo','All bedrooms and property types; not used unless you enter it. ',d.sources.rent],['HOA benchmark',d.hoa?money(d.hoa)+'/mo':'Usually off for detached-home analysis',d.status.hoa,''],['Property tax',d.tax+'%','Editable location benchmark',''],['Home insurance',money(d.insurance)+'/mo',d.status.insurance,'']];$('sources').innerHTML=cards.map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:6px"><a href="${a[3]}" target="_blank">Open source</a></div>`:''}</div>`).join('');update()}catch(e){$('updated').textContent='Refresh unavailable. Saved editable benchmarks remain loaded.'}finally{$('refresh').textContent='Refresh market data'}}
-$('priceSlider').oninput=()=>{$('price').value=$('priceSlider').value;update()};$('price').oninput=()=>{$('priceSlider').value=Math.max(100000,Math.min(1500000,n('price')));update()};ids.filter(i=>i!=='price').forEach(i=>$(i).addEventListener('input',update));$('hoaOn').onchange=()=>{$('hoaFields').classList.toggle('hide',!$('hoaOn').checked);update()};$('location').onchange=()=>{let custom=$('location').value==='custom';$('customLocation').disabled=!custom;if(!custom)refresh()};$('refresh').onclick=refresh;$('cash').onclick=()=>{$('downPct').value=100;update()};document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installbar').classList.add('show')});$('installBtn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;$('installbar').classList.remove('show')}else alert('On iPhone, tap Share and then Add to Home Screen.')};if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));$('customLocation').disabled=true;update();refresh();
+const $=id=>document.getElementById(id);
+const ids=['price','downPct','rate','term','rent','rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
+const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
+let locations={}, currentLocation='mammoth';
+
+function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
+function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
+function model(o={}){
+ let v={};ids.forEach(i=>v[i]=i in o?o[i]:n(i));
+ v.hoa=$('hoaOn').checked?v.hoa:0;v.storage=$('storageOn').checked?v.storage:0;
+ let M=Math.round(v.years*12),dp=v.price*v.downPct/100,loan=v.price-dp,mp=pmt(loan,v.rate,v.term),rtrn=v.stockReturn/1200,rent=v.rent,cap=v.rentCap,renter=dp+v.price*v.buyClose/100,buyerInv=0,rec=[];
+ for(let m=0;m<=M;m++){let y=m/12,home=v.price*(1+v.appreciation/100)**y,hoa=v.hoa*(1+v.hoaGrowth/100)**y,tax=v.price*v.taxRate/100/12*(1.03**y),ins=v.insurance*(1.03**y),maint=home*v.maintRate/100/12,storage=v.storage*(1.03**y),owner=mp+hoa+tax+ins+maint+storage+v.assessment,loanBal=bal(loan,v.rate,v.term,m),buyWealth=home*(1-v.sellCost/100)-loanBal+buyerInv;rec.push({m,y,rent,owner,home,loanBal,renter,buyWealth});if(m===M)break;renter*=1+rtrn;buyerInv*=1+rtrn;let d=owner-rent;if(d>0)renter+=d;else buyerInv+=-d;cap*=Math.pow(1+v.marketGrowth/100,1/12);rent=Math.min(rent*Math.pow(1+v.rentGrowth/100,1/12),cap)}
+ let z=rec.at(-1);return {v,rec,first:rec[0],last:z,dp,mp,adv:z.buyWealth-z.renter}
+}
+function root(field,lo,hi,extra={}){let a=model({...extra,[field]:lo}).adv,b=model({...extra,[field]:hi}).adv;if(a===0)return lo;if(b===0)return hi;if(a*b>0)return null;for(let i=0;i<60;i++){let mid=(lo+hi)/2,c=model({...extra,[field]:mid}).adv;if(a*c<=0){hi=mid;b=c}else{lo=mid;a=c}}return (lo+hi)/2}
+function score(x){let s=50+Math.max(-32,Math.min(32,x.adv/Math.max(x.v.price,1)*80));s+=Math.max(-15,Math.min(12,(500-(x.first.owner-x.first.rent))/70));s+=Math.max(-8,Math.min(8,(x.v.years-7)*1.1));s-=Math.max(0,(x.v.hoa-550)/45);s-=Math.max(0,x.v.storage/100);return Math.max(0,Math.min(100,Math.round(s)))}
+function noRootMessage(field,lo,hi,extra={}){
+ const low=model({...extra,[field]:lo}).adv, high=model({...extra,[field]:hi}).adv;
+ if(low>0&&high>0)return 'buying wins throughout the tested range';
+ if(low<0&&high<0)return field==='rent'?`buying still loses even at ${money(hi)}/mo rent`:`buying still loses even at ${field==='price'?money(lo):lo}`;
+ return 'no stable crossing found';
+}
+function updatePriceVisual(bp){
+ const slider=$('priceSlider'),min=+slider.min,max=+slider.max;
+ const markerPct=Math.max(0,Math.min(100,(bp-min)/(max-min)*100));
+ $('beMarker').style.left=markerPct+'%';
+ const yellowWidth=Math.max(25000,(max-min)*.06), y1=Math.max(min,bp-yellowWidth),y2=Math.min(max,bp+yellowWidth);
+ const p1=(y1-min)/(max-min)*100,p2=(y2-min)/(max-min)*100;
+ slider.style.background=`linear-gradient(90deg,var(--green) 0%,var(--green) ${p1}%,var(--amber) ${p1}%,var(--amber) ${p2}%,var(--red) ${p2}%,var(--red) 100%)`;
+}
+function update(){
+ let x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
+ $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
+ $('score').style.background=c;$('score').textContent=s;$('scorebox').style.background=s>=70?'#eaf9f3':s>=50?'#fff7e7':'#fff0f0';
+ $('verdict').textContent=s>=75?'Strong buy candidate':s>=60?'Worth serious consideration':s>=45?'Close call':'Renting remains stronger';
+ $('explain').textContent=x.adv>=0?`Buying finishes ${money(x.adv)} ahead after ${x.v.years} years.`:`Renting and investing finishes ${money(-x.adv)} ahead after ${x.v.years} years.`;
+ $('owner').textContent=money(x.first.owner);$('rentNow').textContent=money(x.first.rent);$('gap').textContent=money(x.first.owner-x.first.rent);
+ $('rentWealth').textContent=money(x.last.renter);$('buyWealth').textContent=money(x.last.buyWealth);$('adv').textContent=(x.adv>=0?'+':'')+money(x.adv);$('adv').className=x.adv>=0?'good':'bad';
+ let bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',.01,20):null,rr=root('rent',250,20000);
+ updatePriceVisual(bp||50000);
+ const bpText=bp?money(bp):noRootMessage('price',50000,1500000);
+ const brText=br?br.toFixed(2)+'%':(x.v.downPct>=100?'not applicable for cash':noRootMessage('rate',.01,20));
+ const rrText=rr?money(rr)+'/mo':noRootMessage('rent',250,20000);
+ $('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the purchase-price break-even is <b>${bpText}</b>. Mortgage-rate break-even: <b>${brText}</b>. Current-rent break-even: <b>${rrText}</b>.`;
+ $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{let r=x.rec[Math.round(y*12)];return `<tr><td>${y}</td><td>${money(r.rent)}</td><td>${money(r.owner)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(r.renter)}</td><td>${money(r.buyWealth)}</td></tr>`}).join('');
+ updateDp()
+}
+function updateDp(){let dps=[0,5,10,15,20,25,30,40,50,75,100,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)==i);$('dpRows').innerHTML=dps.map(dp=>{let x=model({downPct:dp}),bp=root('price',50000,1500000,{downPct:dp}),rr=root('rent',250,20000,{downPct:dp});return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">custom</span>':''}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(x.first.owner)}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`}).join('')}
+function applyPropertyDefaults(){
+ const condo=$('propertyType').value==='condo';
+ $('hoaOn').checked=condo;$('storageOn').checked=condo;
+ $('assessment').value=condo?100:0;update()
+}
+async function loadLocations(){
+ locations=await fetch('/api/locations').then(r=>r.json());
+ $('location').innerHTML=Object.entries(locations).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('');
+ $('location').value='mammoth';applyLocation('mammoth',false)
+}
+async function applyLocation(key,live=true){
+ currentLocation=key;let d;
+ try{d=live?await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now()).then(r=>r.json()):locations[key]}catch(e){d=locations[key]}
+ if(!d)return;
+ $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;$('insurance').value=d.insurance;$('storage').value=d.storage;
+ if(d.mortgage_rate)$('rate').value=d.mortgage_rate;
+ $('updated').textContent=`${d.name}: ${d.note||''}`;
+ const src=d.sources||{rent:d.source||''};
+ $('sources').innerHTML=[
+  ['Location',d.name,d.note||''],
+  ['1BR current-rent default',money(d.rent)+'/mo',d.status?.rent||'Editable location benchmark',src.rent],
+  ['Condo HOA default',money(d.hoa)+'/mo',d.status?.hoa||'Editable location-specific benchmark'],
+  ['One-car garage/storage',money(d.storage)+'/mo',d.status?.storage||'Editable planning estimate'],
+  ['Home insurance',money(d.insurance)+'/mo',d.status?.insurance||'Editable planning estimate'],
+  ['Property tax',d.tax+'%','Editable location benchmark'],
+  ['30-year mortgage',d.mortgage_rate?d.mortgage_rate+'%':n('rate')+'%',d.status?.mortgage||'Current app value',src.mortgage]
+ ].map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:7px"><a href="${a[3]}" target="_blank">Open source</a></div>`:''}</div>`).join('');
+ update()
+}
+ids.forEach(i=>$(i).addEventListener('input',update));
+$('priceSlider').addEventListener('input',e=>{$('price').value=e.target.value;update()});
+$('price').addEventListener('input',update);
+$('hoaOn').addEventListener('change',update);$('storageOn').addEventListener('change',update);
+$('propertyType').addEventListener('change',applyPropertyDefaults);
+$('location').addEventListener('change',e=>applyLocation(e.target.value,true));
+$('refresh').onclick=()=>applyLocation(currentLocation,true);$('cash').onclick=()=>{$('downPct').value=100;update()};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
+let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installbar').classList.add('show')});$('installBtn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;$('installbar').classList.remove('show')}else alert('On iPhone: Share → Add to Home Screen. On Android: browser menu → Install app.')};
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
+loadLocations();
 </script></body></html>

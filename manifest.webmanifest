@@ -1,14 +1,1 @@
-{
-  "name": "House Alpha Calculator",
-  "short_name": "House Alpha",
-  "description": "Compare renting, financing, and cash purchases with Mammoth Lakes market assumptions and exact modeled break-even thresholds.",
-  "start_url": "/",
-  "scope": "/",
-  "display": "standalone",
-  "background_color": "#f4f6f8",
-  "theme_color": "#2457d6",
-  "icons": [
-    {"src":"/icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"/icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
-  ]
-}
+{"name": "House Alpha \u2014 Rent vs Buy", "short_name": "House Alpha", "description": "Location-aware rent-vs-buy break-even analysis with price discovery.", "start_url": "/", "display": "standalone", "background_color": "#eef3f8", "theme_color": "#10243f", "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png"}]}
