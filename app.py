@@ -1,103 +1,82 @@
 #!/usr/bin/env python3
-import json, re, threading, webbrowser, os
+import json, os, re, threading, webbrowser
 from datetime import datetime, timezone
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from urllib.request import Request, urlopen
+from urllib.parse import urlparse, parse_qs
 
-ROOT = Path(__file__).resolve().parent
-PORT = int(os.environ.get('PORT', '8765'))
+ROOT=Path(__file__).resolve().parent
+PORT=int(os.environ.get('PORT','8765'))
 
-SOURCES = {
-    'mortgage': 'https://www.freddiemac.com/pmms',
-    'rent': 'https://www.zillow.com/rental-manager/market-trends/mammoth-lakes-ca/',
-    'hoa': 'https://www.mammothlakesresortrealty.com/mammoth-lakes-condos-for-sale/',
-    'tax': 'https://monocounty.ca.gov/tax/page/property-tax-rates',
-    'tax_benchmark': 'https://www.ownwell.com/trends/california/mono-county/mammoth-lakes'
+LOCATIONS={
+ 'mammoth': {'name':'Mammoth Lakes, CA','slug':'mammoth-lakes-ca','rent':2985,'overall':4000,'tax':1.16,'hoa':900,'insurance':125,'source':'https://www.zillow.com/rental-manager/market-trends/mammoth-lakes-ca/','note':'1-bedroom benchmark; small mountain-market samples can be volatile.'},
+ 'bishop': {'name':'Bishop, CA','slug':'bishop-ca','rent':1950,'overall':2100,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/bishop-ca/','note':'1-bedroom benchmark.'},
+ 'big-pine': {'name':'Big Pine, CA','slug':'big-pine-ca','rent':1300,'overall':1300,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/big-pine-ca/','note':'Very small rental sample; treat as a rough benchmark.'},
+ 'crowley-lake': {'name':'Crowley Lake, CA','slug':'crowley-lake-ca','rent':2250,'overall':3750,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/crowley-lake-ca/','note':'Very small rental sample; treat as a rough benchmark.'},
+ 'lone-pine': {'name':'Lone Pine, CA','slug':'lone-pine-ca','rent':1800,'overall':2100,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/lone-pine-ca/','note':'Sparse listings; the app uses the published planning fallback when bedroom data are unavailable.'},
+ 'independence': {'name':'Independence, CA','slug':'independence-ca','rent':1595,'overall':1595,'tax':1.12,'hoa':0,'insurance':145,'source':'https://www.zillow.com/rental-manager/market-trends/independence-ca/','note':'Extremely small rental sample; use caution.'},
+ 'south-lake-tahoe': {'name':'South Lake Tahoe, CA','slug':'south-lake-tahoe-ca','rent':1575,'overall':3000,'tax':1.10,'hoa':650,'insurance':175,'source':'https://www.zillow.com/rental-manager/market-trends/south-lake-tahoe-ca/','note':'1-bedroom benchmark; HOA varies widely by property.'},
+ 'incline-village': {'name':'Incline Village, NV','slug':'incline-village-nv','rent':2400,'overall':4000,'tax':0.65,'hoa':700,'insurance':160,'source':'https://www.zillow.com/rental-manager/market-trends/incline-village-nv/','note':'1-bedroom benchmark; Nevada taxes and HOA structures differ by property.'},
+ 'stateline': {'name':'Stateline, NV','slug':'stateline-nv','rent':2133,'overall':4500,'tax':0.65,'hoa':700,'insurance':160,'source':'https://www.zillow.com/rental-manager/market-trends/stateline-nv/','note':'1-bedroom benchmark; small and vacation-heavy market.'},
+ 'zephyr-cove': {'name':'Zephyr Cove, NV','slug':'zephyr-cove-nv','rent':1900,'overall':1900,'tax':0.65,'hoa':650,'insurance':160,'source':'https://www.zillow.com/rental-manager/market-trends/zephyr-cove-nv/','note':'Small sample; treat as a planning benchmark.'},
 }
 
-def fetch(url):
-    req = Request(url, headers={'User-Agent':'Mozilla/5.0 MammothRentBuyDashboard/2.0'})
-    with urlopen(req, timeout=15) as r:
-        return r.read().decode('utf-8', errors='ignore')
+MORTGAGE_URL='https://www.freddiemac.com/pmms'
 
-def first_float(patterns, text):
+def fetch(url):
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/3.0'})
+    with urlopen(req,timeout=15) as r:
+        return r.read().decode('utf-8',errors='ignore')
+
+def first_float(patterns,text):
     for p in patterns:
-        m = re.search(p, text, re.I|re.S)
-        if m:
-            return float(m.group(1).replace(',',''))
+        m=re.search(p,text,re.I|re.S)
+        if m:return float(m.group(1).replace(',',''))
     return None
 
-def live_market_data():
-    now = datetime.now(timezone.utc).isoformat()
-    out = {
-      'updated_at': now,
-      'mortgage_rate': 6.55,
-      'one_bed_rent': 2985,
-      'overall_rent': 3980,
-      'hoa_benchmark': 900,
-      'hoa_range_low': 550,
-      'hoa_range_high': 2000,
-      'property_tax_rate': 1.16,
-      'insurance_monthly': 125,
-      'insurance_note': 'Editable planning estimate; no authoritative live Mammoth condo-policy average is published.',
-      'sources': SOURCES,
-      'status': {}
-    }
+def market(location='mammoth'):
+    loc=LOCATIONS.get(location,LOCATIONS['mammoth']).copy()
+    out={'updated_at':datetime.now(timezone.utc).isoformat(),'mortgage_rate':6.55,'location_key':location,**loc,'status':{}}
     try:
-        t=fetch(SOURCES['mortgage'])
+        t=fetch(MORTGAGE_URL)
         x=first_float([r'30-year fixed-rate mortgage averaged\s*([0-9.]+)%',r'30-Yr FRM[^0-9]+([0-9.]+)%'],t)
-        if x: out['mortgage_rate']=x
-        out['status']['mortgage']='live'
-    except Exception as e: out['status']['mortgage']='fallback: '+str(e)[:90]
+        if x:out['mortgage_rate']=x
+        out['status']['mortgage']='Updated from Freddie Mac PMMS'
+    except Exception:
+        out['status']['mortgage']='Using saved weekly benchmark'
     try:
-        t=fetch(SOURCES['rent'])
-        x=first_float([r'one-bedroom apartment[^$]{0,150}\$([0-9,]+)',r'one bedroom[^$]{0,150}\$([0-9,]+)'],t)
-        y=first_float([r'average rent in Mammoth Lakes[^$]{0,100}\$([0-9,]+)'],t)
-        if x: out['one_bed_rent']=x
-        if y: out['overall_rent']=y
-        out['status']['rent']='live'
-    except Exception as e: out['status']['rent']='fallback: '+str(e)[:90]
-    try:
-        t=fetch(SOURCES['hoa'])
-        lo=first_float([r'HOA averages are approximately\s*\$([0-9,]+)'],t)
-        hi=first_float([r'up to\s*\$([0-9,]+)'],t)
-        if lo: out['hoa_range_low']=lo
-        if hi: out['hoa_range_high']=hi
-        # A conservative central planning benchmark, not a published statistical average.
-        out['hoa_benchmark']=round((out['hoa_range_low']+min(out['hoa_range_high'],1250))/2)
-        out['status']['hoa']='live range; benchmark estimated'
-    except Exception as e: out['status']['hoa']='fallback: '+str(e)[:90]
-    try:
-        t=fetch(SOURCES['tax_benchmark'])
-        x=first_float([r'median effective property tax rate of\s*([0-9.]+)%'],t)
-        if x: out['property_tax_rate']=x
-        out['status']['tax']='live benchmark'
-    except Exception as e: out['status']['tax']='fallback: '+str(e)[:90]
-    out['status']['insurance']='editable estimate'
+        t=fetch(loc['source'])
+        one=first_float([r'one-bedroom apartment[^$]{0,180}\$([0-9,]+)',r'one bedroom[^$]{0,180}\$([0-9,]+)'],t)
+        overall=first_float([r'average rent(?: for all bedrooms and all property types)?[^$]{0,180}\$([0-9,]+)'],t)
+        if one:out['rent']=one
+        if overall:out['overall']=overall
+        out['status']['rent']='Updated from public rental-market page'
+    except Exception:
+        out['status']['rent']='Saved benchmark — live source unavailable'
+    out['status']['hoa']='Editable planning benchmark; no complete live HOA census'
+    out['status']['insurance']='Editable home-insurance planning estimate'
+    out['sources']={'mortgage':MORTGAGE_URL,'rent':loc['source']}
     return out
 
 class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path.startswith('/api/market'):
-            data=json.dumps(live_market_data()).encode()
-            self.send_response(200); self.send_header('Content-Type','application/json'); self.send_header('Cache-Control','no-store'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data); return
-        if self.path=='/': self.path='/index.html'
-        if self.path.startswith('/share/'):
-            self.path='/index.html'
+        u=urlparse(self.path)
+        if u.path=='/api/market':
+            q=parse_qs(u.query); location=q.get('location',['mammoth'])[0]
+            data=json.dumps(market(location)).encode()
+            self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
+        if u.path=='/api/locations':
+            data=json.dumps({k:{'name':v['name']} for k,v in LOCATIONS.items()}).encode()
+            self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
+        if self.path=='/':self.path='/index.html'
         return super().do_GET()
-    def log_message(self, fmt, *args):
-        pass
+    def log_message(self,fmt,*args):pass
 
 def main():
-    os.chdir(ROOT)
-    host = os.environ.get('HOST', '0.0.0.0')
-    server=ThreadingHTTPServer((host,PORT),Handler)
-    url=f'http://127.0.0.1:{PORT}'
-    print(f'Ryan Mammoth Dashboard running at {url}')
-    if os.environ.get('OPEN_BROWSER', '1') == '1' and not os.environ.get('RENDER'):
-        threading.Timer(0.8, lambda:webbrowser.open(url)).start()
-    try: server.serve_forever()
-    except KeyboardInterrupt: pass
-
-if __name__=='__main__': main()
+    os.chdir(ROOT);host=os.environ.get('HOST','0.0.0.0');server=ThreadingHTTPServer((host,PORT),Handler)
+    url=f'http://127.0.0.1:{PORT}';print('House Alpha running at',url)
+    if os.environ.get('OPEN_BROWSER','1')=='1' and not os.environ.get('RENDER'):threading.Timer(.8,lambda:webbrowser.open(url)).start()
+    try:server.serve_forever()
+    except KeyboardInterrupt:pass
+if __name__=='__main__':main()
