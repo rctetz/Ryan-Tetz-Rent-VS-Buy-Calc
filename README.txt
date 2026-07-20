@@ -117,3 +117,19 @@ HOUSE ALPHA V14
 - The return input remains fully editable for custom assumptions.
 - Adds a side-by-side 10% versus 7% sensitivity section to every result.
 - Sensitivity values recalculate for both primary-residence and rental-investment modes.
+
+HOUSE ALPHA V15
+- Adds a Shared Housing / Income Offsets module to Primary Residence mode.
+- Models a renter receiving a roommate contribution.
+- Models an owner receiving income from a roommate, existing ADU, owner-occupied duplex unit, or custom space.
+- Includes vacancy, management, repairs/capex, utilities, other expenses, and income growth.
+- Uses local rent benchmarks for roommate, ADU, and duplex income estimates.
+- Calculates effective renter cost after roommate contribution.
+- Calculates effective owner cost after net housing income.
+- Invests monthly savings on the appropriate side for a fair wealth comparison.
+- Adds shared-housing result cards and owner-income break-even analysis.
+- Keeps the pure Rental / Investment Property versus S&P 500 calculator separate.
+- Fixes a duplicate JavaScript helper declaration present in an earlier package.
+
+HOUSE ALPHA V16
+- Investment Property mode now defaults to 0% property management.
