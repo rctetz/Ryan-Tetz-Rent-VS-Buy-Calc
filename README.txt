@@ -235,3 +235,13 @@ HOUSE ALPHA V27
 
 HOUSE ALPHA V28
 - Shortens the USDA eligibility link label to “Check exact address.”
+
+HOUSE ALPHA V29
+- Adds a dedicated Live-In Rental / Owner in ADU strategy mode.
+- Models an owner living in the main home before moving into an ADU, or living elsewhere while the property begins as a full rental.
+- Supports an existing ADU or construction of a new ADU with cash/loan funding, completion delay, and value-added assumptions.
+- Models renting the main home after the owner moves into the ADU.
+- Optionally models renting the ADU before owner move-in when an available ADU precedes the move date.
+- Compares the strategy against renting a comparable ADU/apartment elsewhere and investing the same initial cash and monthly differences in the S&P 500.
+- Adds live-in strategy result labels, timeline metrics, milestones, break-even main-home rent, comparable-rent crossing, price/rate thresholds, sensitivity results, and down-payment comparisons.
+- Keeps owner-occupied loan-program planning controls available, with a clear delayed-occupancy financing warning.

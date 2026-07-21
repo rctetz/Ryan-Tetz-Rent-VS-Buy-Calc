@@ -31,7 +31,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 .usdaLimitGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
 .usdaLimitItem{border:1px solid var(--line);border-radius:11px;background:#fff;padding:10px}
 .usdaLimitItem b{display:block;font-size:17px;margin-top:3px}
-@media(max-width:700px){.usdaLimitGrid{grid-template-columns:1fr 1fr}}.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:12px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eaf0ff;color:#234bb8;font-size:11px;font-weight:800}
+@media(max-width:700px){.usdaLimitGrid{grid-template-columns:1fr 1fr}}.timelineGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}.timelineItem{border:1px solid var(--line);border-radius:11px;background:#fff;padding:10px}.timelineItem b{display:block;margin-top:4px;font-size:17px}@media(max-width:700px){.timelineGrid{grid-template-columns:1fr}}.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:12px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eaf0ff;color:#234bb8;font-size:11px;font-weight:800}
 .installbar{position:sticky;bottom:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px;display:none}.installbar.show{display:block}.installinner{max-width:1220px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body>
 <header><div class="wrap"><h1>House Alpha</h1><div class="tag">Find the price where owning starts building more wealth than renting.</div></div></header>
@@ -42,9 +42,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div class="card left"><h2>Home and location</h2>
 <div class="form">
 <div><label>Location</label><select id="location"></select></div>
-<div><label>Property use</label><select id="useMode"><option value="primary">Primary residence</option><option value="rental">Rental / investment property</option></select></div>
+<div><label>Property use</label><select id="useMode"><option value="primary">Primary residence</option><option value="livein">Live-in rental / owner in ADU</option><option value="rental">Rental / investment property</option></select></div>
 <div><label>Property type</label><select id="propertyType"><option value="condo">Condo / townhome</option><option value="single">Single-family home</option></select></div>
-<div id="investmentBedroomsField" style="display:none"><label>Investment-property bedrooms</label><select id="bedrooms"><option value="1">1 bedroom</option><option value="2">2 bedrooms</option><option value="3">3 bedrooms</option><option value="4">4 bedrooms</option></select></div>
+<div id="investmentBedroomsField" style="display:none"><label id="propertyBedroomsLabel">Investment-property bedrooms</label><select id="bedrooms"><option value="1">1 bedroom</option><option value="2">2 bedrooms</option><option value="3">3 bedrooms</option><option value="4">4 bedrooms</option></select></div>
 </div>
 <h3>Price discovery</h3>
 <div class="pricebox"><div class="pricevalue"><span>Purchase price</span><b id="priceDisplay">$385,000</b></div>
@@ -270,13 +270,91 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 </div>
 </div>
 
+<div id="liveInSection" style="display:none">
+<div class="status" style="margin-top:16px;border-left-color:var(--green)">
+<b>Live-in rental / owner in ADU</b><br>
+Compare owning the property, occupying its ADU, and renting the main home against renting a comparable ADU or apartment elsewhere and investing the same cash in the S&amp;P 500.
+</div>
+
+<h3>Occupancy timeline</h3>
+<div class="form">
+<div><label>ADU situation</label><select id="liveAduType"><option value="existing">Existing ADU included in purchase</option><option value="build">Build a new ADU</option></select></div>
+<div><label>Before moving into the ADU</label><select id="liveBeforeMove"><option value="main">Live in the main home</option><option value="elsewhere">Live elsewhere and rent the main home</option></select></div>
+<div><label>Owner moves into ADU in month</label><input id="liveMoveMonth" type="number" value="0" min="0" step="1"></div>
+<div><label>Comparable rent elsewhere / month</label><input id="liveAltRent" type="number" value="2500" step="25"></div>
+<div><label>Comparable-rent cap today</label><input id="liveAltRentCap" type="number" value="2500" step="25"></div>
+<div><label>Annual comparable-rent increase %</label><input id="liveAltRentGrowth" type="number" value="3" step=".25"></div>
+</div>
+<div class="row" style="margin-top:9px"><button class="btn secondary" id="useEarliestLiveMove" type="button" style="padding:8px 10px">Use earliest move-in</button><button class="btn secondary" id="useLiveAltRentEstimate" type="button" style="padding:8px 10px">Use local comparable-rent estimate</button></div>
+<div class="muted" id="liveMoveNote" style="margin-top:7px"></div>
+
+<h3>Main-home rental</h3>
+<div class="form">
+<div><label>Gross main-home rent / month</label><input id="liveMainRent" type="number" value="3500" step="25"></div>
+<div><label>Main-home market-rent cap today</label><input id="liveMainRentCap" type="number" value="3500" step="25"></div>
+<div><label>Vacancy %</label><input id="liveMainVacancy" type="number" value="5" step=".5"></div>
+<div><label>Repairs / capex reserve %</label><input id="liveMainReserve" type="number" value="8" step=".5"></div>
+<div><label>Utilities / other / month</label><input id="liveMainOther" type="number" value="0" step="25"></div>
+<div><label>Annual rent increase %</label><input id="liveMainRentGrowth" type="number" value="3" step=".25"></div>
+</div>
+<div class="switchrow" style="margin-top:10px"><div><b>Professional management for main home</b><div class="muted">Off by default.</div></div><label class="switch"><input id="liveMainManagementOn" type="checkbox"><span class="sliderSwitch"></span></label></div>
+<div id="liveMainManagementRateWrap" style="display:none;margin-top:8px"><label>Main-home management fee %</label><input id="liveMainManagementRate" type="number" value="8" step=".5"></div>
+<div class="row" style="margin-top:9px"><button class="btn secondary" id="useLiveMainRentEstimate" type="button" style="padding:8px 10px">Use local main-home rent estimate</button></div>
+
+<h3>ADU occupancy</h3>
+<div class="form"><div><label>ADU bedrooms</label><select id="liveAduBedrooms"><option value="1">1 bedroom</option><option value="2">2 bedrooms</option><option value="3">3 bedrooms</option><option value="4">4 bedrooms</option></select></div></div>
+
+<div id="liveAduBuildProject" style="display:none;margin-top:12px">
+<h4 style="margin:0 0 8px">New ADU project</h4>
+<div class="form">
+<div><label>ADU finished square feet</label><input id="liveAduSize" type="number" value="600" step="25"></div>
+<div><label>Planning build cost / sq ft</label><input id="liveAduBuildPsf" type="number" value="350" step="25"></div>
+<div><label>Total construction cost</label><input id="liveAduBuildCost" type="number" value="" step="5000" placeholder="Calculated planning estimate"></div>
+<div><label>Months until completed</label><input id="liveAduBuildMonths" type="number" value="12" min="0" step="1"></div>
+<div><label>Pay for construction</label><select id="liveAduFunding"><option value="cash">Cash</option><option value="loan">Loan</option></select></div>
+<div id="liveAduLoanRateWrap" style="display:none"><label>Construction loan rate %</label><input id="liveAduLoanRate" type="number" value="7" step=".25"></div>
+<div id="liveAduLoanTermWrap" style="display:none"><label>Loan term (years)</label><input id="liveAduLoanTerm" type="number" value="20" step="1"></div>
+</div>
+<button class="btn secondary" id="useLiveAduBuildEstimate" type="button" style="margin-top:9px;padding:8px 10px">Use local build estimate</button>
+<div class="muted" id="liveAduBuildEstimateNote" style="margin-top:7px"></div>
+
+<h4 style="margin:14px 0 8px">Estimated value added at completion</h4>
+<div class="form">
+<div><label>Value assumption</label><select id="liveAduValueMethod"><option value="conservative" selected>75% of cost — conservative</option><option value="cost">100% of cost — cost basis</option><option value="local">Local market proxy</option><option value="custom">Custom / appraisal estimate</option></select></div>
+<div><label>Modeled value added</label><input id="liveAduValueAdded" type="number" value="0" disabled></div>
+<div id="liveAduLocalPsfWrap" style="display:none"><label>Local market $ / sq ft</label><input id="liveAduLocalPsf" type="number" value="300" step="5"></div>
+<div id="liveAduCustomValueWrap" style="display:none"><label>Custom / appraisal value</label><input id="liveAduCustomValue" type="number" value="200000" step="5000"></div>
+</div>
+<div id="liveAduLocalProxyNote" class="muted" style="display:none;margin-top:7px">Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planning proxy, not an appraisal.<span id="liveAduPsfSourceWrap"> <a id="liveAduPsfSource" target="_blank" rel="noopener">View market source</a>.</span><div id="liveAduPsfNote"></div></div>
+</div>
+
+<div class="sharedCard" id="livePreAduCard" style="margin-top:12px">
+<div class="switchrow" style="border:0;padding:0;background:transparent"><div><b>Rent the ADU before moving into it</b><div class="muted">Useful when an existing ADU is rented first or construction finishes before the planned move.</div></div><label class="switch"><input id="liveRentAduBeforeMove" type="checkbox"><span class="sliderSwitch"></span></label></div>
+<div id="livePreAduFields" style="display:none;margin-top:10px">
+<div class="form">
+<div><label>Gross ADU rent / month</label><input id="livePreAduRent" type="number" value="2500" step="25"></div>
+<div><label>ADU market-rent cap today</label><input id="livePreAduRentCap" type="number" value="2500" step="25"></div>
+<div><label>Vacancy %</label><input id="livePreAduVacancy" type="number" value="5" step=".5"></div>
+<div><label>Repairs / capex reserve %</label><input id="livePreAduReserve" type="number" value="7" step=".5"></div>
+<div><label>Utilities / other / month</label><input id="livePreAduOther" type="number" value="0" step="25"></div>
+<div><label>Annual rent increase %</label><input id="livePreAduRentGrowth" type="number" value="3" step=".25"></div>
+</div>
+<div class="switchrow" style="margin-top:10px"><div><b>Professional management for pre-move ADU rental</b><div class="muted">Off by default.</div></div><label class="switch"><input id="livePreAduManagementOn" type="checkbox"><span class="sliderSwitch"></span></label></div>
+<div id="livePreAduManagementRateWrap" style="display:none;margin-top:8px"><label>ADU management fee %</label><input id="livePreAduManagementRate" type="number" value="8" step=".5"></div>
+<button class="btn secondary" id="useLivePreAduRentEstimate" type="button" style="margin-top:9px;padding:8px 10px">Use local ADU rent estimate</button>
+</div>
+</div>
+
+<div class="status" style="margin-top:12px"><b>Important financing note.</b> This is a pre-tax planning model. Owner-occupied loan programs generally require timely occupancy; a delayed move-in or a property initially operated entirely as a rental may require different financing. Confirm occupancy rules with a lender.</div>
+</div>
+
 <h3 id="propertyCostsHeading">Purchased-property expenses</h3>
 <div class="switchrow" style="margin-top:10px"><div><b>Include HOA</b><div class="muted">On by default for condos and townhomes.</div></div><label class="switch"><input id="hoaOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
 <div class="form" style="margin-top:10px"><div><label>HOA / month</label><input id="hoa" type="number"></div><div><label>HOA growth %</label><input id="hoaGrowth" type="number" value="4"></div></div>
 
 <div id="ownerGarageBlock" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff">
 <b>Property being purchased garage/storage</b>
-<div class="muted" style="margin:3px 0 9px">Used only in the primary-residence comparison.</div>
+<div class="muted" style="margin:3px 0 9px">Used in owner-occupied primary-residence and live-in-rental comparisons.</div>
 <label>Owner garage/storage situation</label>
 <select id="ownerGarageSituation">
 <option value="included">Included with purchased property</option>
@@ -436,6 +514,20 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 </div>
 <div class="status" id="sharedHousingBreakEven" style="margin-top:10px"></div>
 </div>
+<div id="liveInMetrics" style="display:none">
+<h3>Live-in rental timeline</h3>
+<div class="timelineGrid">
+<div class="timelineItem"><span class="muted">Owner moves into ADU</span><b id="liveMoveResult"></b></div>
+<div class="timelineItem"><span class="muted">Main-home rent after move</span><b id="liveMainRentResult"></b></div>
+<div class="timelineItem"><span class="muted">Effective housing cost after move</span><b id="liveHousingCostResult"></b></div>
+</div>
+<div class="metrics" style="margin-top:10px">
+<div class="metric"><span class="muted">Net rental income after move</span><b id="liveNetIncomeResult"></b></div>
+<div class="metric"><span class="muted">Comparable rent elsewhere</span><b id="liveAltRentResult"></b></div>
+<div class="metric"><span class="muted">Monthly advantage after move</span><b id="liveMonthlyAdvResult"></b></div>
+</div>
+<div class="status" id="liveInBreakEven" style="margin-top:10px"></div>
+</div>
 <div id="rentalMetrics" style="display:none">
 <h3>Landlord economics</h3>
 <div class="metrics">
@@ -477,9 +569,12 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'rentCollected','rentCollectedCap','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','collectedRentGrowth',
 'invAduBuildCost','invAduBuildPsf','invAduValueAdded','invAduBuildMonths','invAduLoanRate','invAduLoanTerm','invAduSize','invAduLocalPsf','invAduCustomValue',
 'invAduRent','invAduRentCap','invAduVacancy','invAduReserve','invAduOther','invAduRentGrowth','invAduManagementRate',
+'liveMoveMonth','liveAltRent','liveAltRentCap','liveAltRentGrowth','liveMainRent','liveMainRentCap','liveMainVacancy','liveMainReserve','liveMainOther','liveMainRentGrowth','liveMainManagementRate',
+'liveAduBuildCost','liveAduBuildPsf','liveAduValueAdded','liveAduBuildMonths','liveAduLoanRate','liveAduLoanTerm','liveAduSize','liveAduLocalPsf','liveAduCustomValue',
+'livePreAduRent','livePreAduRentCap','livePreAduVacancy','livePreAduReserve','livePreAduOther','livePreAduRentGrowth','livePreAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.55, mortgageBenchmarkDate='July 16, 2026', rateAuto=true, currentUsdaLimits=null;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.55, mortgageBenchmarkDate='July 16, 2026', rateAuto=true, currentUsdaLimits=null, liveAltRentAuto=true, liveMainRentAuto=true, livePreAduRentAuto=true, liveMoveAuto=true, liveAduPsfAuto=true, liveAduBuildCostAuto=true, liveAduBuildPsfAuto=true, liveAduSizeAuto=true;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -568,7 +663,7 @@ function mortgageInsuranceName(program){
  return 'conventional PMI'
 }
 function updateUsdaIncomeBox(){
- const visible=$('useMode').value==='primary'
+ const visible=$('useMode').value!=='rental'
    && $('loanProgram').value==='usda'
    && $('loanProgramBlock').style.display!=='none';
  $('usdaIncomeBox').style.display=visible?'block':'none';
@@ -649,9 +744,13 @@ function model(o={}){
  let v={};ids.forEach(i=>v[i]=i in o?o[i]:n(i));
  v.hoa=$('hoaOn').checked?v.hoa:0;
 
- const rentalMode=$('useMode').value==='rental';
- const renterShareEnabled=!rentalMode&&$('renterShareOn').checked;
- const ownerIncomeEnabled=!rentalMode&&$('ownerIncomeOn').checked;
+ const mode=$('useMode').value;
+ const primaryMode=mode==='primary';
+ const liveInMode=mode==='livein';
+ const rentalMode=mode==='rental';
+
+ const renterShareEnabled=primaryMode&&$('renterShareOn').checked;
+ const ownerIncomeEnabled=primaryMode&&$('ownerIncomeOn').checked;
  const ownerIncomeType=$('ownerIncomeType').value;
  const newAduEnabled=ownerIncomeEnabled&&ownerIncomeType==='newadu';
  const ownerManagementEnabled=ownerIncomeEnabled&&$('ownerManagementOn').checked;
@@ -661,66 +760,67 @@ function model(o={}){
  const invAduFunding=$('invAduFunding').value;
  const invAduManagementEnabled=investmentAduEnabled&&$('invAduManagementOn').checked;
 
- const ownerAduValueMethod=$('aduValueMethod').value;
- const invAduValueMethod=$('invAduValueMethod').value;
+ const liveAduType=$('liveAduType').value;
+ const liveAduBuildEnabled=liveInMode&&liveAduType==='build';
+ const liveBeforeMove=$('liveBeforeMove').value;
+ const liveMainManagementEnabled=liveInMode&&$('liveMainManagementOn').checked;
+ const livePreAduManagementEnabled=liveInMode&&$('livePreAduManagementOn').checked;
+ const liveRentAduBeforeMove=liveInMode&&$('liveRentAduBeforeMove').checked;
+ const liveAduFunding=$('liveAduFunding').value;
+
  const deriveAduValue=(method,cost,size,psf,custom)=>{
    if(method==='cost')return Math.max(0,cost);
    if(method==='local')return Math.max(0,size*psf*.75);
    if(method==='custom')return Math.max(0,custom);
    return Math.max(0,cost*.75);
  };
- v.aduValueAdded=deriveAduValue(ownerAduValueMethod,v.aduBuildCost,v.aduSize,v.aduLocalPsf,v.aduCustomValue);
- v.invAduValueAdded=deriveAduValue(invAduValueMethod,v.invAduBuildCost,v.invAduSize,v.invAduLocalPsf,v.invAduCustomValue);
+ v.aduValueAdded=deriveAduValue($('aduValueMethod').value,v.aduBuildCost,v.aduSize,v.aduLocalPsf,v.aduCustomValue);
+ v.invAduValueAdded=deriveAduValue($('invAduValueMethod').value,v.invAduBuildCost,v.invAduSize,v.invAduLocalPsf,v.invAduCustomValue);
+ v.liveAduValueAdded=liveAduBuildEnabled
+   ? deriveAduValue($('liveAduValueMethod').value,v.liveAduBuildCost,v.liveAduSize,v.liveAduLocalPsf,v.liveAduCustomValue)
+   : 0;
 
  v.storage=rentalMode?0:($('storageOn').checked?v.storage:0);
- v.renterStorage=rentalMode?0:($('renterStorageOn').checked?v.renterStorage:0);
+ v.renterStorage=primaryMode&&$('renterStorageOn').checked?v.renterStorage:0;
 
  const loanProgram=rentalMode?'conventional':validLoanProgramForDown(o.loanProgram||$('loanProgram').value,v.downPct,false);
  const baseLoan=Math.max(0,v.price-v.price*v.downPct/100);
  const upfrontFeeRate=programUpfrontFeeRate(loanProgram,v.downPct);
  const upfrontFee=baseLoan*upfrontFeeRate/100;
 
- let M=Math.round(v.years*12),
-     dp=v.price*v.downPct/100,
-     loan=baseLoan+upfrontFee,
-     mp=pmt(loan,v.rate,v.term),
-     rtrn=v.stockReturn/1200;
-
- let rent=v.rent,
-     cap=v.rentCap,
-     renter=dp+v.price*v.buyClose/100,
-     buyerInv=0,
-     rec=[],
+ let M=Math.round(v.years*12),dp=v.price*v.downPct/100,loan=baseLoan+upfrontFee,
+     mp=pmt(loan,v.rate,v.term),rtrn=v.stockReturn/1200;
+ let rent=v.rent,cap=v.rentCap,renter=dp+v.price*v.buyClose/100,
+     rentalAlternative=dp+v.price*v.buyClose/100,
+     liveAlternative=dp+v.price*v.buyClose/100,buyerInv=0,rec=[],
      pmiEnabled=loanProgram==='conventional'&&$('pmiOn').checked&&v.downPct<20;
 
- let rentalAlternative=dp+v.price*v.buyClose/100;
- let grossCollected=v.rentCollected;
- let collectedCap=Math.max(v.rentCollectedCap||v.rentCollected,v.rentCollected);
-
+ let grossCollected=v.rentCollected,collectedCap=Math.max(v.rentCollectedCap||v.rentCollected,v.rentCollected);
  let renterShareGross=v.renterShareContribution;
- let ownerIncomeGross=v.ownerIncomeGross;
- let ownerIncomeCap=Math.max(v.ownerIncomeCap||v.ownerIncomeGross,v.ownerIncomeGross);
+ let ownerIncomeGross=v.ownerIncomeGross,ownerIncomeCap=Math.max(v.ownerIncomeCap||v.ownerIncomeGross,v.ownerIncomeGross);
 
  const aduCompletionMonth=Math.max(0,Math.round(v.aduBuildMonths));
  const aduCashCost=newAduEnabled&&aduFunding==='cash'?v.aduBuildCost:0;
  const aduLoanPrincipal=newAduEnabled&&aduFunding==='loan'?v.aduBuildCost:0;
  const aduLoanPayment=aduLoanPrincipal>0?pmt(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm):0;
-
- // The renter/index alternative receives the same cash the owner spends
- // building the ADU. The buyer receives the ADU asset instead.
  if(aduCashCost>0)renter+=aduCashCost;
 
  const invAduCompletionMonth=Math.max(0,Math.round(v.invAduBuildMonths));
  const invAduCashCost=investmentAduEnabled&&invAduFunding==='cash'?v.invAduBuildCost:0;
  const invAduLoanPrincipal=investmentAduEnabled&&invAduFunding==='loan'?v.invAduBuildCost:0;
  const invAduLoanPayment=invAduLoanPrincipal>0?pmt(invAduLoanPrincipal,v.invAduLoanRate,v.invAduLoanTerm):0;
-
- // Same-capital comparison: cash used for the rental ADU is invested in
- // the S&P alternative.
  if(invAduCashCost>0)rentalAlternative+=invAduCashCost;
+ let invAduGrossRent=v.invAduRent,invAduRentCap=Math.max(v.invAduRentCap||v.invAduRent,v.invAduRent);
 
- let invAduGrossRent=v.invAduRent;
- let invAduRentCap=Math.max(v.invAduRentCap||v.invAduRent,v.invAduRent);
+ const liveAduCompletionMonth=liveAduBuildEnabled?Math.max(0,Math.round(v.liveAduBuildMonths)):0;
+ const liveMoveMonth=Math.max(liveAduCompletionMonth,Math.max(0,Math.round(v.liveMoveMonth)));
+ const liveAduCashCost=liveAduBuildEnabled&&liveAduFunding==='cash'?v.liveAduBuildCost:0;
+ const liveAduLoanPrincipal=liveAduBuildEnabled&&liveAduFunding==='loan'?v.liveAduBuildCost:0;
+ const liveAduLoanPayment=liveAduLoanPrincipal>0?pmt(liveAduLoanPrincipal,v.liveAduLoanRate,v.liveAduLoanTerm):0;
+ if(liveAduCashCost>0)liveAlternative+=liveAduCashCost;
+ let liveAltRent=v.liveAltRent,liveAltCap=Math.max(v.liveAltRentCap||v.liveAltRent,v.liveAltRent);
+ let liveMainGross=v.liveMainRent,liveMainCap=Math.max(v.liveMainRentCap||v.liveMainRent,v.liveMainRent);
+ let livePreAduGross=v.livePreAduRent,livePreAduCap=Math.max(v.livePreAduRentCap||v.livePreAduRent,v.livePreAduRent);
 
  for(let m=0;m<=M;m++){
    let y=m/12,
@@ -741,145 +841,112 @@ function model(o={}){
        ownerBase=mp+mortgageInsurance+hoa+tax+ins+maint+storage+v.assessment,
 
        renterGarage=v.renterStorage*(1.03**y),
-       renterShareNet=renterShareEnabled
-         ? renterShareGross*Math.max(0,1-v.renterShareVacancy/100)
-         : 0,
+       renterShareNet=renterShareEnabled?renterShareGross*Math.max(0,1-v.renterShareVacancy/100):0,
        totalRenterCost=Math.max(0,rent+renterGarage-renterShareNet),
 
        aduAvailable=!newAduEnabled||m>=aduCompletionMonth,
-       ownerIncomeEffective=ownerIncomeEnabled&&aduAvailable
-         ? ownerIncomeGross*Math.max(0,1-v.ownerIncomeVacancy/100)
-         : 0,
-       ownerIncomeManagement=ownerManagementEnabled&&aduAvailable
-         ? ownerIncomeEffective*v.ownerIncomeManagement/100
-         : 0,
-       ownerIncomeReserve=ownerIncomeEnabled&&aduAvailable
-         ? ownerIncomeEffective*v.ownerIncomeReserve/100
-         : 0,
-       ownerIncomeNet=ownerIncomeEnabled&&aduAvailable
-         ? ownerIncomeEffective-ownerIncomeManagement-ownerIncomeReserve-v.ownerIncomeOther
-         : 0,
-       activeAduLoanPayment=newAduEnabled&&aduFunding==='loan'&&m<Math.round(v.aduLoanTerm*12)
-         ? aduLoanPayment
-         : 0,
+       ownerIncomeEffective=ownerIncomeEnabled&&aduAvailable?ownerIncomeGross*Math.max(0,1-v.ownerIncomeVacancy/100):0,
+       ownerIncomeManagement=ownerManagementEnabled&&aduAvailable?ownerIncomeEffective*v.ownerIncomeManagement/100:0,
+       ownerIncomeReserve=ownerIncomeEnabled&&aduAvailable?ownerIncomeEffective*v.ownerIncomeReserve/100:0,
+       ownerIncomeNet=ownerIncomeEnabled&&aduAvailable?ownerIncomeEffective-ownerIncomeManagement-ownerIncomeReserve-v.ownerIncomeOther:0,
+       activeAduLoanPayment=newAduEnabled&&aduFunding==='loan'&&m<Math.round(v.aduLoanTerm*12)?aduLoanPayment:0,
        effectiveOwnerCost=ownerBase+activeAduLoanPayment-ownerIncomeNet,
-
-       aduLoanBalance=newAduEnabled&&aduFunding==='loan'
-         ? bal(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm,m)
-         : 0,
-       aduValueAdded=newAduEnabled&&m>=aduCompletionMonth
-         ? v.aduValueAdded*(1+v.appreciation/100)**((m-aduCompletionMonth)/12)
-         : 0,
+       aduLoanBalance=newAduEnabled&&aduFunding==='loan'?bal(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm,m):0,
+       aduValueAdded=newAduEnabled&&m>=aduCompletionMonth?v.aduValueAdded*(1+v.appreciation/100)**((m-aduCompletionMonth)/12):0,
 
        effectiveCollected=grossCollected*(1-v.vacancyRate/100),
        management=$('managementOn').checked?effectiveCollected*v.managementRate/100:0,
        rentalReserve=effectiveCollected*v.rentalReserveRate/100,
        baseLandlordCosts=ownerBase+management+rentalReserve+v.landlordUtilities+v.landlordOther,
        baseRentalCashFlow=effectiveCollected-baseLandlordCosts,
-
        investmentAduAvailable=investmentAduEnabled&&m>=invAduCompletionMonth,
-       invAduEffectiveRent=investmentAduAvailable
-         ? invAduGrossRent*Math.max(0,1-v.invAduVacancy/100)
-         : 0,
-       invAduManagement=invAduManagementEnabled&&investmentAduAvailable
-         ? invAduEffectiveRent*v.invAduManagementRate/100
-         : 0,
-       invAduReserve=investmentAduAvailable
-         ? invAduEffectiveRent*v.invAduReserve/100
-         : 0,
-       activeInvAduLoanPayment=investmentAduEnabled&&invAduFunding==='loan'&&m<Math.round(v.invAduLoanTerm*12)
-         ? invAduLoanPayment
-         : 0,
-       invAduCashFlow=investmentAduEnabled
-         ? invAduEffectiveRent-invAduManagement-invAduReserve-(investmentAduAvailable?v.invAduOther:0)-activeInvAduLoanPayment
-         : 0,
-       invAduLoanBalance=investmentAduEnabled&&invAduFunding==='loan'
-         ? bal(invAduLoanPrincipal,v.invAduLoanRate,v.invAduLoanTerm,m)
-         : 0,
-       invAduValue=investmentAduAvailable
-         ? v.invAduValueAdded*(1+v.appreciation/100)**((m-invAduCompletionMonth)/12)
-         : 0,
-
+       invAduEffectiveRent=investmentAduAvailable?invAduGrossRent*Math.max(0,1-v.invAduVacancy/100):0,
+       invAduManagement=invAduManagementEnabled&&investmentAduAvailable?invAduEffectiveRent*v.invAduManagementRate/100:0,
+       invAduReserve=investmentAduAvailable?invAduEffectiveRent*v.invAduReserve/100:0,
+       activeInvAduLoanPayment=investmentAduEnabled&&invAduFunding==='loan'&&m<Math.round(v.invAduLoanTerm*12)?invAduLoanPayment:0,
+       invAduCashFlow=investmentAduEnabled?invAduEffectiveRent-invAduManagement-invAduReserve-(investmentAduAvailable?v.invAduOther:0)-activeInvAduLoanPayment:0,
+       invAduLoanBalance=investmentAduEnabled&&invAduFunding==='loan'?bal(invAduLoanPrincipal,v.invAduLoanRate,v.invAduLoanTerm,m):0,
+       invAduValue=investmentAduAvailable?v.invAduValueAdded*(1+v.appreciation/100)**((m-invAduCompletionMonth)/12):0,
        totalGrossCollected=grossCollected+(investmentAduAvailable?invAduGrossRent:0),
        totalEffectiveCollected=effectiveCollected+invAduEffectiveRent,
        totalLandlordCosts=baseLandlordCosts+invAduManagement+invAduReserve+(investmentAduAvailable?v.invAduOther:0)+activeInvAduLoanPayment,
        rentalCashFlow=baseRentalCashFlow+invAduCashFlow,
 
-       buyWealth=(home+aduValueAdded)*(1-v.sellCost/100)-loanBal-aduLoanBalance+buyerInv,
-       rentalOwnerWealth=(home+invAduValue)*(1-v.sellCost/100)-loanBal-invAduLoanBalance+buyerInv;
+       liveAduAvailable=liveInMode&&m>=liveAduCompletionMonth,
+       liveOwnerInAdu=liveInMode&&liveAduAvailable&&m>=liveMoveMonth,
+       liveMainRented=liveInMode&&(liveOwnerInAdu||(m<liveMoveMonth&&liveBeforeMove==='elsewhere')),
+       livePreAduRented=liveInMode&&liveRentAduBeforeMove&&liveAduAvailable&&m<liveMoveMonth,
+       liveOutsideRent=liveInMode&&m<liveMoveMonth&&liveBeforeMove==='elsewhere'?liveAltRent:0,
+       liveMainEffective=liveMainRented?liveMainGross*Math.max(0,1-v.liveMainVacancy/100):0,
+       liveMainManagement=liveMainManagementEnabled&&liveMainRented?liveMainEffective*v.liveMainManagementRate/100:0,
+       liveMainReserve=liveMainRented?liveMainEffective*v.liveMainReserve/100:0,
+       liveMainNet=liveMainRented?liveMainEffective-liveMainManagement-liveMainReserve-v.liveMainOther:0,
+       livePreAduEffective=livePreAduRented?livePreAduGross*Math.max(0,1-v.livePreAduVacancy/100):0,
+       livePreAduManagement=livePreAduManagementEnabled&&livePreAduRented?livePreAduEffective*v.livePreAduManagementRate/100:0,
+       livePreAduReserve=livePreAduRented?livePreAduEffective*v.livePreAduReserve/100:0,
+       livePreAduNet=livePreAduRented?livePreAduEffective-livePreAduManagement-livePreAduReserve-v.livePreAduOther:0,
+       activeLiveAduLoanPayment=liveAduBuildEnabled&&liveAduFunding==='loan'&&m<Math.round(v.liveAduLoanTerm*12)?liveAduLoanPayment:0,
+       liveAduLoanBalance=liveAduBuildEnabled&&liveAduFunding==='loan'?bal(liveAduLoanPrincipal,v.liveAduLoanRate,v.liveAduLoanTerm,m):0,
+       liveAduValue=liveAduBuildEnabled&&liveAduAvailable?v.liveAduValueAdded*(1+v.appreciation/100)**((m-liveAduCompletionMonth)/12):0,
+       liveNetRentalIncome=liveMainNet+livePreAduNet,
+       livePropertyCost=ownerBase+activeLiveAduLoanPayment+liveOutsideRent-liveNetRentalIncome,
+       liveAlternativeCost=liveAltRent,
+       liveGrossRent=(liveMainRented?liveMainGross:0)+(livePreAduRented?livePreAduGross:0),
 
-   rec.push({
-     m,y,rent,renterGarage,renterShareGross,renterShareNet,totalRenterCost,
-     owner:ownerBase,ownerBase,ownerIncomeGross,ownerIncomeEffective,
-     ownerIncomeManagement,ownerIncomeReserve,ownerIncomeNet,effectiveOwnerCost,
-     activeAduLoanPayment,aduLoanBalance,aduValueAdded,aduAvailable,
-     home,loanBal,renter,buyWealth,pmi,ltv,
-     grossCollected,effectiveCollected,management,rentalReserve,
-     baseLandlordCosts,baseRentalCashFlow,
-     investmentAduAvailable,invAduGrossRent,invAduEffectiveRent,invAduManagement,
-     invAduReserve,activeInvAduLoanPayment,invAduCashFlow,invAduLoanBalance,invAduValue,
-     totalGrossCollected,totalEffectiveCollected,totalLandlordCosts,
-     rentalCashFlow,rentalAlternative,rentalOwnerWealth
-   });
+       buyWealth=(home+aduValueAdded)*(1-v.sellCost/100)-loanBal-aduLoanBalance+buyerInv,
+       rentalOwnerWealth=(home+invAduValue)*(1-v.sellCost/100)-loanBal-invAduLoanBalance+buyerInv,
+       livePropertyWealth=(home+liveAduValue)*(1-v.sellCost/100)-loanBal-liveAduLoanBalance+buyerInv;
+
+   rec.push({m,y,rent,renterGarage,renterShareGross,renterShareNet,totalRenterCost,
+     owner:ownerBase,ownerBase,ownerIncomeGross,ownerIncomeEffective,ownerIncomeManagement,ownerIncomeReserve,ownerIncomeNet,effectiveOwnerCost,
+     activeAduLoanPayment,aduLoanBalance,aduValueAdded,aduAvailable,home,loanBal,renter,buyWealth,pmi,ltv,
+     grossCollected,effectiveCollected,management,rentalReserve,baseLandlordCosts,baseRentalCashFlow,
+     investmentAduAvailable,invAduGrossRent,invAduEffectiveRent,invAduManagement,invAduReserve,activeInvAduLoanPayment,invAduCashFlow,invAduLoanBalance,invAduValue,
+     totalGrossCollected,totalEffectiveCollected,totalLandlordCosts,rentalCashFlow,rentalAlternative,rentalOwnerWealth,
+     liveAduAvailable,liveOwnerInAdu,liveMainRented,livePreAduRented,liveOutsideRent,liveMainGross,liveMainEffective,liveMainManagement,liveMainReserve,liveMainNet,
+     livePreAduGross,livePreAduEffective,livePreAduManagement,livePreAduReserve,livePreAduNet,activeLiveAduLoanPayment,liveAduLoanBalance,liveAduValue,
+     liveNetRentalIncome,livePropertyCost,liveAlternativeCost,liveGrossRent,liveAlternative,livePropertyWealth});
 
    if(m===M)break;
-
-   renter*=1+rtrn;
-   buyerInv*=1+rtrn;
-   rentalAlternative*=1+rtrn;
+   renter*=1+rtrn; rentalAlternative*=1+rtrn; liveAlternative*=1+rtrn; buyerInv*=1+rtrn;
 
    if(rentalMode){
-     if(rentalCashFlow>=0)buyerInv+=rentalCashFlow;
-     else rentalAlternative+=-rentalCashFlow;
-
+     if(rentalCashFlow>=0)buyerInv+=rentalCashFlow; else rentalAlternative+=-rentalCashFlow;
      collectedCap*=Math.pow(1+v.marketGrowth/100,1/12);
-     grossCollected=Math.min(
-       grossCollected*Math.pow(1+v.collectedRentGrowth/100,1/12),
-       collectedCap
-     );
-
+     grossCollected=Math.min(grossCollected*Math.pow(1+v.collectedRentGrowth/100,1/12),collectedCap);
      if(investmentAduEnabled&&m>=invAduCompletionMonth-1){
        invAduRentCap*=Math.pow(1+v.marketGrowth/100,1/12);
-       invAduGrossRent=Math.min(
-         invAduGrossRent*Math.pow(1+v.invAduRentGrowth/100,1/12),
-         invAduRentCap
-       );
+       invAduGrossRent=Math.min(invAduGrossRent*Math.pow(1+v.invAduRentGrowth/100,1/12),invAduRentCap);
      }
+   }else if(liveInMode){
+     const d=livePropertyCost-liveAlternativeCost;
+     if(d>0)liveAlternative+=d; else buyerInv+=-d;
+     liveAltCap*=Math.pow(1+v.marketGrowth/100,1/12);
+     liveAltRent=Math.min(liveAltRent*Math.pow(1+v.liveAltRentGrowth/100,1/12),liveAltCap);
+     liveMainCap*=Math.pow(1+v.marketGrowth/100,1/12);
+     liveMainGross=Math.min(liveMainGross*Math.pow(1+v.liveMainRentGrowth/100,1/12),liveMainCap);
+     livePreAduCap*=Math.pow(1+v.marketGrowth/100,1/12);
+     livePreAduGross=Math.min(livePreAduGross*Math.pow(1+v.livePreAduRentGrowth/100,1/12),livePreAduCap);
    }else{
-     let d=effectiveOwnerCost-totalRenterCost;
-     if(d>0)renter+=d;
-     else buyerInv+=-d;
-
+     const d=effectiveOwnerCost-totalRenterCost;
+     if(d>0)renter+=d; else buyerInv+=-d;
      cap*=Math.pow(1+v.marketGrowth/100,1/12);
      rent=Math.min(rent*Math.pow(1+v.rentGrowth/100,1/12),cap);
-
-     if(renterShareEnabled){
-       renterShareGross*=Math.pow(1+v.renterShareGrowth/100,1/12);
-     }
-
+     if(renterShareEnabled)renterShareGross*=Math.pow(1+v.renterShareGrowth/100,1/12);
      if(ownerIncomeEnabled&&(!newAduEnabled||m>=aduCompletionMonth-1)){
        ownerIncomeCap*=Math.pow(1+v.marketGrowth/100,1/12);
-       ownerIncomeGross=Math.min(
-         ownerIncomeGross*Math.pow(1+v.ownerIncomeGrowth/100,1/12),
-         ownerIncomeCap
-       );
+       ownerIncomeGross=Math.min(ownerIncomeGross*Math.pow(1+v.ownerIncomeGrowth/100,1/12),ownerIncomeCap);
      }
    }
  }
 
- let z=rec.at(-1);
- let adv=rentalMode
-   ? z.rentalOwnerWealth-z.rentalAlternative
-   : z.buyWealth-z.renter;
-
- return {
-   v,rec,first:rec[0],last:z,dp,mp,pmi0:rec[0].pmi,adv,rentalMode,
-   loanProgram,baseLoan,loan,upfrontFeeRate,upfrontFee,
-   renterShareEnabled,ownerIncomeEnabled,ownerIncomeType,newAduEnabled,
-   ownerManagementEnabled,aduFunding,aduCompletionMonth,aduLoanPayment,
-   investmentAduEnabled,invAduFunding,invAduManagementEnabled,
-   invAduCompletionMonth,invAduLoanPayment
- }
+ const z=rec.at(-1);
+ const adv=rentalMode?z.rentalOwnerWealth-z.rentalAlternative:liveInMode?z.livePropertyWealth-z.liveAlternative:z.buyWealth-z.renter;
+ return {v,rec,first:rec[0],last:z,dp,mp,pmi0:rec[0].pmi,adv,mode,primaryMode,liveInMode,rentalMode,
+   loanProgram,baseLoan,loan,upfrontFeeRate,upfrontFee,renterShareEnabled,ownerIncomeEnabled,ownerIncomeType,newAduEnabled,
+   ownerManagementEnabled,aduFunding,aduCompletionMonth,aduLoanPayment,investmentAduEnabled,invAduFunding,invAduManagementEnabled,
+   invAduCompletionMonth,invAduLoanPayment,liveAduType,liveAduBuildEnabled,liveBeforeMove,liveMoveMonth,liveAduCompletionMonth,
+   liveAduFunding,liveAduLoanPayment,liveRentAduBeforeMove,liveMainManagementEnabled,livePreAduManagementEnabled};
 }
 function scenarioForRoot(field,value,extra={}){
  let o={...extra,[field]:value};
@@ -898,6 +965,18 @@ function scenarioForRoot(field,value,extra={}){
    o.invAduRent=value;
    o.invAduRentCap=Math.max(value,extra.invAduRentCap||value);
  }
+ if(field==='liveAltRent'){
+   o.liveAltRent=value;
+   o.liveAltRentCap=Math.max(value,extra.liveAltRentCap||value);
+ }
+ if(field==='liveMainRent'){
+   o.liveMainRent=value;
+   o.liveMainRentCap=Math.max(value,extra.liveMainRentCap||value);
+ }
+ if(field==='livePreAduRent'){
+   o.livePreAduRent=value;
+   o.livePreAduRentCap=Math.max(value,extra.livePreAduRentCap||value);
+ }
  return o
 }
 function bisectRoot(field,lo,hi,extra={}){
@@ -909,7 +988,7 @@ function bisectRoot(field,lo,hi,extra={}){
  }
  return (lo+hi)/2
 }
-function roots(field,lo,hi,extra={},segments=160){
+function roots(field,lo,hi,extra={},segments=80){
  const found=[];
  let x0=lo,y0=model(scenarioForRoot(field,x0,extra)).adv;
  for(let i=1;i<=segments;i++){
@@ -935,33 +1014,18 @@ function root(field,lo,hi,extra={}){
 }
 function rootDirection(field,rootValue,extra={}){
  if(rootValue===null)return '';
- const current=(field in extra)?extra[field]:currentFieldValue(field);
- const now=model(extra).adv;
- if(field==='rate'){
-   return now>=0
-     ? `maximum mortgage rate before renting wins`
-     : `mortgage rate needed for buying to catch up`;
- }
- if(field==='price'){
-   return now>=0
-     ? `maximum purchase price before renting wins`
-     : `purchase price needed for buying to catch up`;
- }
- if(field==='rent'||field==='rentCollected'){
-   return now>=0
-     ? `minimum rent at which buying remains ahead`
-     : `rent needed for buying to catch up`;
- }
- if(field==='invAduRent'){
-   return now>=0
-     ? `minimum ADU rent before the S&P 500 catches up`
-     : `ADU rent needed for the property strategy to catch up`;
- }
- if(field==='invAduBuildCost'){
-   return now>=0
-     ? `maximum ADU construction cost before the S&P 500 wins`
-     : `lower ADU cost needed for the property strategy to catch up`;
- }
+ const now=model(extra),live=now.liveInMode,rental=now.rentalMode;
+ if(field==='rate')return now.adv>=0
+   ? `maximum mortgage rate before ${rental?'the S&P 500':live?'renting elsewhere wins':'renting wins'}`
+   : `mortgage rate needed for ${rental?'the property strategy':live?'the live-in strategy':'buying'} to catch up`;
+ if(field==='price')return now.adv>=0
+   ? `maximum purchase price before ${rental?'the S&P 500':live?'rent + S&P wins':'renting wins'}`
+   : `purchase price needed for ${rental?'the property strategy':live?'the live-in strategy':'buying'} to catch up`;
+ if(field==='rent'||field==='rentCollected')return now.adv>=0?'minimum rent at which the property strategy remains ahead':'rent needed for the property strategy to catch up';
+ if(field==='liveAltRent')return now.adv>=0?'maximum comparable rent advantage tested':'comparable rent where the live-in strategy catches up';
+ if(field==='liveMainRent')return now.adv>=0?'minimum main-home rent before rent + S&P catches up':'main-home rent needed for the live-in strategy to catch up';
+ if(field==='invAduRent')return now.adv>=0?'minimum ADU rent before the S&P 500 catches up':'ADU rent needed for the property strategy to catch up';
+ if(field==='invAduBuildCost')return now.adv>=0?'maximum ADU construction cost before the S&P 500 wins':'lower ADU cost needed for the property strategy to catch up';
  return '';
 }
 function cashFlowBreakEven(x){
@@ -978,57 +1042,47 @@ function score(x){
    s+=Math.max(-15,Math.min(15,x.first.rentalCashFlow/75));
    const cfbe=cashFlowBreakEven(x);
    s+=Math.max(-10,Math.min(10,(x.v.rentCollected-cfbe)/Math.max(cfbe,1)*35));
+ }else if(x.liveInMode){
+   const r=x.rec[Math.min(x.liveMoveMonth,x.rec.length-1)];
+   s+=Math.max(-16,Math.min(16,(r.liveAlternativeCost-r.livePropertyCost)/75));
+   s+=Math.max(-7,Math.min(7,r.liveNetRentalIncome/300));
  }else{
    s+=Math.max(-15,Math.min(12,(500-(x.first.effectiveOwnerCost-x.first.totalRenterCost))/70));
    s-=Math.max(0,x.v.storage/100);
  }
  s+=Math.max(-8,Math.min(8,(x.v.years-7)*1.1));
  s-=Math.max(0,(x.v.hoa-650)/55);
- return Math.max(0,Math.min(100,Math.round(s)))
+ return Math.max(0,Math.min(100,Math.round(s)));
 }
 function noRootMessage(field,lo,hi,extra={}){
- const lowModel=model(scenarioForRoot(field,lo,extra));
- const highModel=model(scenarioForRoot(field,hi,extra));
- const low=lowModel.adv,high=highModel.adv;
- const rental=lowModel.rentalMode;
+ const lowModel=model(scenarioForRoot(field,lo,extra)),highModel=model(scenarioForRoot(field,hi,extra));
+ const low=lowModel.adv,high=highModel.adv,rental=lowModel.rentalMode,live=lowModel.liveInMode;
  if(field==='rate'){
-   if(low<0&&high<0){
-     return rental
-       ? 'even a 0% mortgage rate would not make the rental property beat the S&P 500'
-       : 'even a 0% mortgage rate would not make buying catch up';
-   }
-   if(low>0&&high>0){
-     return rental
-       ? `the rental property remains ahead throughout the tested 0%–${hi}% mortgage-rate range`
-       : `buying remains ahead throughout the tested 0%–${hi}% mortgage-rate range`;
-   }
+   if(low<0&&high<0)return rental?'even a 0% mortgage rate would not make the rental property beat the S&P 500':live?'even a 0% mortgage rate would not make the live-in strategy catch up':'even a 0% mortgage rate would not make buying catch up';
+   if(low>0&&high>0)return rental?`the rental property remains ahead throughout the tested 0%–${hi}% range`:live?`the live-in strategy remains ahead throughout the tested 0%–${hi}% range`:`buying remains ahead throughout the tested 0%–${hi}% range`;
    return 'no reliable mortgage-rate crossing was found';
  }
- if(low>0&&high>0)return rental
-   ? 'the rental property wins throughout the tested range'
-   : 'buying wins throughout the tested range';
+ if(low>0&&high>0)return rental?'the rental property wins throughout the tested range':live?'the live-in strategy wins throughout the tested range':'buying wins throughout the tested range';
  if(low<0&&high<0){
-   if(field==='rent') return `no break-even below ${money(hi)}/mo under these assumptions`;
-   if(field==='rentCollected') return `the rental still trails the S&P 500 at ${money(hi)}/mo gross rent`;
-   if(field==='ownerIncomeGross') return `buying still trails even at ${money(hi)}/mo gross housing income`;
-   if(field==='invAduRent') return `the rental strategy still trails even at ${money(hi)}/mo of ADU rent`;
-   if(field==='invAduBuildCost') return `the rental strategy does not cross the S&P 500 within the tested ADU-cost range`;
-   return rental
-     ? `the rental still trails the S&P 500 even at ${field==='price'?money(lo):lo}`
-     : `buying still loses even at ${field==='price'?money(lo):lo}`;
+   if(field==='rent')return `no break-even below ${money(hi)}/mo under these assumptions`;
+   if(field==='rentCollected')return `the rental still trails the S&P 500 at ${money(hi)}/mo gross rent`;
+   if(field==='liveMainRent')return `the live-in strategy still trails at ${money(hi)}/mo main-home rent`;
+   if(field==='liveAltRent')return `rent + S&P remains ahead throughout the tested comparable-rent range`;
+   if(field==='ownerIncomeGross')return `buying still trails even at ${money(hi)}/mo gross housing income`;
+   if(field==='invAduRent')return `the rental strategy still trails even at ${money(hi)}/mo of ADU rent`;
+   if(field==='invAduBuildCost')return `the rental strategy does not cross the S&P 500 within the tested ADU-cost range`;
+   return rental?`the rental still trails the S&P 500 even at ${field==='price'?money(lo):lo}`:live?`the live-in strategy still trails even at ${field==='price'?money(lo):lo}`:`buying still loses even at ${field==='price'?money(lo):lo}`;
  }
  return 'no stable crossing found';
 }
-let currentBreakEvenPrice=null;
 function localPurchaseEstimate(){
- const loc=locations[currentLocation]||{};
- const type=$('propertyType').value||'condo';
- if($('useMode').value==='rental'){
+ const loc=locations[currentLocation]||{},type=$('propertyType').value||'condo',mode=$('useMode').value;
+ if(mode==='rental'||mode==='livein'){
    const br=$('bedrooms').value||'1';
-   return +(loc.bedroom_prices?.[type]?.[br]||loc.home_value||n('price')||385000)
+   return +(loc.bedroom_prices?.[type]?.[br]||loc.home_value||n('price')||385000);
  }
  const base=+(loc.home_value||n('price')||385000);
- return Math.round(base*(type==='condo'?.72:1)/1000)*1000
+ return Math.round(base*(type==='condo'?.72:1)/1000)*1000;
 }
 function setDynamicSliderRange(estimate,current){
  const slider=$('priceSlider');
@@ -1040,17 +1094,14 @@ function setDynamicSliderRange(estimate,current){
  $('sliderRangeText').textContent=`${money(min)} to ${money(max)}`;
 }
 function applyLocalPurchaseEstimate(force=true){
- const estimate=localPurchaseEstimate();
+ const estimate=localPurchaseEstimate(),mode=$('useMode').value;
  $('bedroomPriceEstimate')&&($('bedroomPriceEstimate').value=Math.round(estimate));
- $('priceEstimateNote').textContent=$('useMode').value==='rental'
-   ? `${$('bedrooms').value}BR ${$('propertyType').value==='condo'?'condo':'house'} planning estimate: ${money(estimate)}`
+ $('priceEstimateNote').textContent=mode==='rental'
+   ? `${$('bedrooms').value}BR ${$('propertyType').value==='condo'?'condo':'house'} investment planning estimate: ${money(estimate)}`
+   : mode==='livein'
+   ? `${$('bedrooms').value}BR main-home planning estimate: ${money(estimate)}`
    : `Local ${$('propertyType').value==='condo'?'condo':'home'} planning estimate: ${money(estimate)}`;
- if(force||priceAuto){
-   priceAuto=true;
-   $('price').value=Math.round(estimate);
-   insuranceUserEditing=false;
-   syncInsuranceToPrice();
- }
+ if(force||priceAuto){priceAuto=true;$('price').value=Math.round(estimate);insuranceUserEditing=false;syncInsuranceToPrice();}
  setDynamicSliderRange(estimate,n('price'));
 }
 function updatePriceVisual(bp){
@@ -1105,19 +1156,11 @@ function updateReturnPresetState(){
  $('return7').classList.toggle('active',Math.abs(r-7)<.001);
 }
 function updateSensitivity(){
- const base10=model({stockReturn:10});
- const conservative7=model({stockReturn:7});
- const labelFor=(x)=>{
-   if(x.rentalMode)return x.adv>=0?'Rental property ahead':'S&P 500 ahead';
-   return x.adv>=0?'Buying ahead':'Renting ahead';
- };
- const noteFor=(x)=>`${labelFor(x)} after ${x.v.years} years`;
- $('sensitivity10').textContent=(base10.adv>=0?'+':'')+money(base10.adv);
- $('sensitivity10').className=base10.adv>=0?'good':'bad';
- $('sensitivity10note').textContent=noteFor(base10);
- $('sensitivity7').textContent=(conservative7.adv>=0?'+':'')+money(conservative7.adv);
- $('sensitivity7').className=conservative7.adv>=0?'good':'bad';
- $('sensitivity7note').textContent=noteFor(conservative7);
+ const base10=model({stockReturn:10}),conservative7=model({stockReturn:7});
+ const labelFor=x=>x.rentalMode?(x.adv>=0?'Rental property ahead':'S&P 500 ahead'):x.liveInMode?(x.adv>=0?'Live-in strategy ahead':'Rent + S&P ahead'):(x.adv>=0?'Buying ahead':'Renting ahead');
+ const noteFor=x=>`${labelFor(x)} after ${x.v.years} years`;
+ $('sensitivity10').textContent=(base10.adv>=0?'+':'')+money(base10.adv);$('sensitivity10').className=base10.adv>=0?'good':'bad';$('sensitivity10note').textContent=noteFor(base10);
+ $('sensitivity7').textContent=(conservative7.adv>=0?'+':'')+money(conservative7.adv);$('sensitivity7').className=conservative7.adv>=0?'good':'bad';$('sensitivity7note').textContent=noteFor(conservative7);
 }
 function mortgageInsuranceDescription(x){
  if(!x.pmi0)return '';
@@ -1133,142 +1176,68 @@ function update(){
  syncInsuranceToPrice();
  applyLoanProgramRules();
  if(rateAuto)applyEstimatedRate(false);else updateLoanProgramDetails();
- applyPmiVisibility();
- updateReturnPresetState();
- updateAppreciationPresetState();
- updateAllAduBuildEstimates(false);
- updateAllAduValues(false);
- let x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
+ applyPmiVisibility();updateReturnPresetState();updateAppreciationPresetState();
+ updateAllAduBuildEstimates(false);updateAllAduValues(false);updateLiveInControls(false);
+ const x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
  setDynamicSliderRange(localPurchaseEstimate(),n('price'));
  $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
  $('score').style.background=c;$('score').textContent=s;$('scorebox').style.background=s>=70?'#eaf9f3':s>=50?'#fff7e7':'#fff0f0';
- $('verdict').textContent=x.rentalMode?(s>=75?'Rental property beats the index':s>=60?'Competitive rental investment':s>=45?'Close versus the S&P 500':'S&P 500 remains stronger'):(s>=75?'Strong buy candidate':s>=60?'Worth serious consideration':s>=45?'Close call':'Renting remains stronger');
- $('explain').textContent=x.rentalMode?(x.adv>=0?`The rental-property strategy finishes ${money(x.adv)} ahead of the S&P 500 alternative after ${x.v.years} years.`:`The S&P 500 alternative finishes ${money(-x.adv)} ahead of the rental-property strategy after ${x.v.years} years.`):(x.adv>=0?`Buying finishes ${money(x.adv)} ahead after ${x.v.years} years.`:`Renting and investing finishes ${money(-x.adv)} ahead after ${x.v.years} years.`);
  if(x.rentalMode){
-   $('resultHeading').textContent='Rental property vs S&P 500';
-   $('metricLabelOwner').textContent='Property costs, month 1';
-   $('metricLabelRent').textContent='Gross scheduled rent';
-   $('metricLabelGap').textContent='Monthly property cash flow';
-   $('metricLabelAlt').textContent='S&P 500 portfolio';
-   $('metricLabelProperty').textContent='Rental-property wealth';
-   $('metricLabelAdv').textContent='Rental advantage';
-   $('owner').innerHTML=money(x.first.totalLandlordCosts)+mortgageInsuranceDescription(x)+upfrontFeeDescription(x);
-   $('rentNow').textContent=money(x.first.totalGrossCollected);
-   $('gap').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);
-   $('gap').className=x.first.rentalCashFlow>=0?'good':'bad';
-   $('rentWealth').textContent=money(x.last.rentalAlternative);
-   $('buyWealth').textContent=money(x.last.rentalOwnerWealth);
-   $('milestoneIncome').textContent='Gross rent';
-   $('milestoneCost').textContent='Property costs';
-   $('milestoneAlt').textContent='S&P 500';
-   $('milestoneProperty').textContent='Rental wealth';
+   $('verdict').textContent=s>=75?'Rental property beats the index':s>=60?'Competitive rental investment':s>=45?'Close versus the S&P 500':'S&P 500 remains stronger';
+   $('explain').textContent=x.adv>=0?`The rental-property strategy finishes ${money(x.adv)} ahead of the S&P 500 alternative after ${x.v.years} years.`:`The S&P 500 alternative finishes ${money(-x.adv)} ahead after ${x.v.years} years.`;
+   $('resultHeading').textContent='Rental property vs S&P 500';$('metricLabelOwner').textContent='Property costs, month 1';$('metricLabelRent').textContent='Gross scheduled rent';$('metricLabelGap').textContent='Monthly property cash flow';$('metricLabelAlt').textContent='S&P 500 portfolio';$('metricLabelProperty').textContent='Rental-property wealth';$('metricLabelAdv').textContent='Rental advantage';
+   $('owner').innerHTML=money(x.first.totalLandlordCosts)+mortgageInsuranceDescription(x)+upfrontFeeDescription(x);$('rentNow').textContent=money(x.first.totalGrossCollected);$('gap').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);$('gap').className=x.first.rentalCashFlow>=0?'good':'bad';$('rentWealth').textContent=money(x.last.rentalAlternative);$('buyWealth').textContent=money(x.last.rentalOwnerWealth);
+   $('milestoneIncome').textContent='Gross rent';$('milestoneCost').textContent='Property costs';$('milestoneAlt').textContent='S&P 500';$('milestoneProperty').textContent='Rental wealth';
+ }else if(x.liveInMode){
+   $('verdict').textContent=s>=75?'Strong live-in rental strategy':s>=60?'Promising house-hack strategy':s>=45?'Close versus rent + S&P':'Rent + S&P remains stronger';
+   $('explain').textContent=x.adv>=0?`The live-in rental strategy finishes ${money(x.adv)} ahead of renting elsewhere and investing after ${x.v.years} years.`:`Renting elsewhere and investing finishes ${money(-x.adv)} ahead after ${x.v.years} years.`;
+   $('resultHeading').textContent='Live-in rental vs rent + S&P 500';$('metricLabelOwner').textContent='Live-in strategy cost, month 1';$('metricLabelRent').textContent='Comparable rent, month 1';$('metricLabelGap').textContent='Initial monthly difference';$('metricLabelAlt').textContent='Rent + S&P wealth';$('metricLabelProperty').textContent='Live-in property wealth';$('metricLabelAdv').textContent='Live-in strategy advantage';
+   $('owner').innerHTML=money(x.first.livePropertyCost)+mortgageInsuranceDescription(x)+upfrontFeeDescription(x);$('rentNow').textContent=money(x.first.liveAlternativeCost);$('gap').textContent=money(x.first.livePropertyCost-x.first.liveAlternativeCost);$('gap').className=x.first.livePropertyCost<=x.first.liveAlternativeCost?'good':'bad';$('rentWealth').textContent=money(x.last.liveAlternative);$('buyWealth').textContent=money(x.last.livePropertyWealth);
+   $('milestoneIncome').textContent='Property rent';$('milestoneCost').textContent='Live-in cost';$('milestoneAlt').textContent='Rent + S&P';$('milestoneProperty').textContent='Live-in wealth';
  }else{
-   $('resultHeading').textContent='Rent versus own';
-   $('metricLabelOwner').textContent='Owner cost, month 1';
-   $('metricLabelRent').textContent='Renter cost, month 1';
-   $('metricLabelGap').textContent='Initial premium';
-   $('metricLabelAlt').textContent='Renter wealth';
-   $('metricLabelProperty').textContent='Buyer wealth';
-   $('metricLabelAdv').textContent='Buyer advantage';
-   $('owner').innerHTML=money(x.first.effectiveOwnerCost)
-     +`<span class="muted" style="display:block">${money(x.first.ownerBase)} before housing income${x.first.ownerIncomeNet!==0?` − ${money(x.first.ownerIncomeNet)} net income`:''}</span>`
-     +mortgageInsuranceDescription(x)+upfrontFeeDescription(x);
-   $('rentNow').innerHTML=money(x.first.totalRenterCost)
-     +`<span class="muted" style="display:block">${money(x.first.rent)} base rent${x.first.renterGarage>0?` + ${money(x.first.renterGarage)} garage`:''}${x.first.renterShareNet>0?` − ${money(x.first.renterShareNet)} roommate contribution`:''}</span>`;
-   $('gap').textContent=money(x.first.effectiveOwnerCost-x.first.totalRenterCost);
-   $('gap').className='';
-   $('rentWealth').textContent=money(x.last.renter);
-   $('buyWealth').textContent=money(x.last.buyWealth);
-   $('milestoneIncome').textContent='Renter cost';
-   $('milestoneCost').textContent='Owner cost';
-   $('milestoneAlt').textContent='Renter wealth';
-   $('milestoneProperty').textContent='Buyer wealth';
+   $('verdict').textContent=s>=75?'Strong buy candidate':s>=60?'Worth serious consideration':s>=45?'Close call':'Renting remains stronger';
+   $('explain').textContent=x.adv>=0?`Buying finishes ${money(x.adv)} ahead after ${x.v.years} years.`:`Renting and investing finishes ${money(-x.adv)} ahead after ${x.v.years} years.`;
+   $('resultHeading').textContent='Rent versus own';$('metricLabelOwner').textContent='Owner cost, month 1';$('metricLabelRent').textContent='Renter cost, month 1';$('metricLabelGap').textContent='Initial premium';$('metricLabelAlt').textContent='Renter wealth';$('metricLabelProperty').textContent='Buyer wealth';$('metricLabelAdv').textContent='Buyer advantage';
+   $('owner').innerHTML=money(x.first.effectiveOwnerCost)+`<span class="muted" style="display:block">${money(x.first.ownerBase)} before housing income${x.first.ownerIncomeNet!==0?` − ${money(x.first.ownerIncomeNet)} net income`:''}</span>`+mortgageInsuranceDescription(x)+upfrontFeeDescription(x);
+   $('rentNow').innerHTML=money(x.first.totalRenterCost)+`<span class="muted" style="display:block">${money(x.first.rent)} base rent${x.first.renterGarage>0?` + ${money(x.first.renterGarage)} garage`:''}${x.first.renterShareNet>0?` − ${money(x.first.renterShareNet)} roommate contribution`:''}</span>`;
+   $('gap').textContent=money(x.first.effectiveOwnerCost-x.first.totalRenterCost);$('gap').className='';$('rentWealth').textContent=money(x.last.renter);$('buyWealth').textContent=money(x.last.buyWealth);
+   $('milestoneIncome').textContent='Renter cost';$('milestoneCost').textContent='Owner cost';$('milestoneAlt').textContent='Renter wealth';$('milestoneProperty').textContent='Buyer wealth';
  }
  $('adv').textContent=(x.adv>=0?'+':'')+money(x.adv);$('adv').className=x.adv>=0?'good':'bad';
- const sharedActive=!x.rentalMode&&(x.renterShareEnabled||x.ownerIncomeEnabled);
- $('sharedHousingMetrics').style.display=sharedActive?'block':'none';
+
+ const sharedActive=x.primaryMode&&(x.renterShareEnabled||x.ownerIncomeEnabled);$('sharedHousingMetrics').style.display=sharedActive?'block':'none';
  if(sharedActive){
-   $('renterShareNetResult').textContent=x.renterShareEnabled?money(x.first.renterShareNet)+'/mo':'Off';
-   const displayOwnerIncome=x.newAduEnabled?x.rec[Math.min(x.aduCompletionMonth,x.rec.length-1)].ownerIncomeNet:x.first.ownerIncomeNet;
-   $('ownerIncomeNetResult').textContent=x.ownerIncomeEnabled?money(displayOwnerIncome)+'/mo':'Off';
-   const shift=x.first.ownerIncomeNet-x.first.renterShareNet;
-   $('sharedHousingShift').textContent=(shift>=0?'+':'')+money(shift)+'/mo';
-   $('sharedHousingShift').className=shift>=0?'good':'bad';
-
-   if(x.ownerIncomeEnabled){
-     const incomeRoot=root('ownerIncomeGross',0,20000);
-     const incomeText=incomeRoot
-       ? `${money(incomeRoot)}/mo gross owner income`
-       : noRootMessage('ownerIncomeGross',0,20000);
-     const aduText=x.newAduEnabled
-       ? ` The ADU begins producing rent after month ${x.aduCompletionMonth}.`
-       : '';
-     $('sharedHousingBreakEven').innerHTML=`Modeled owner housing income needed for buying to match renting: <b>${incomeText}</b>.${aduText}`;
-   }else{
-     $('sharedHousingBreakEven').innerHTML='Enable owner housing income to calculate the house-hacking income needed for buying to catch up.';
-   }
+   $('renterShareNetResult').textContent=x.renterShareEnabled?money(x.first.renterShareNet)+'/mo':'Off';const displayOwnerIncome=x.newAduEnabled?x.rec[Math.min(x.aduCompletionMonth,x.rec.length-1)].ownerIncomeNet:x.first.ownerIncomeNet;$('ownerIncomeNetResult').textContent=x.ownerIncomeEnabled?money(displayOwnerIncome)+'/mo':'Off';const shift=x.first.ownerIncomeNet-x.first.renterShareNet;$('sharedHousingShift').textContent=(shift>=0?'+':'')+money(shift)+'/mo';$('sharedHousingShift').className=shift>=0?'good':'bad';
+   if(x.ownerIncomeEnabled){const incomeRoot=root('ownerIncomeGross',0,20000),incomeText=incomeRoot?`${money(incomeRoot)}/mo gross owner income`:noRootMessage('ownerIncomeGross',0,20000),aduText=x.newAduEnabled?` The ADU begins producing rent after month ${x.aduCompletionMonth}.`:'';$('sharedHousingBreakEven').innerHTML=`Modeled owner housing income needed for buying to match renting: <b>${incomeText}</b>.${aduText}`;}else $('sharedHousingBreakEven').innerHTML='Enable owner housing income to calculate the house-hacking income needed for buying to catch up.';
  }
 
- $('rentalMetrics').style.display=x.rentalMode?'block':'none';
- if(x.rentalMode){
-   $('effectiveRent').textContent=money(x.first.totalEffectiveCollected);
-   $('landlordCashFlow').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);
-   $('landlordCashFlow').className=x.first.rentalCashFlow>=0?'good':'bad';
-   $('cashFlowBreakEven').textContent=money(cashFlowBreakEven(x))+'/mo';
- }
- $('investmentAduMetrics').style.display=x.investmentAduEnabled?'block':'none';
- if(x.investmentAduEnabled){
-   const completionIndex=Math.min(x.invAduCompletionMonth,x.rec.length-1);
-   const ar=x.rec[completionIndex];
-   const completed=x.invAduCompletionMonth<=Math.round(x.v.years*12);
-   $('invAduRentResult').textContent=completed?money(ar.invAduGrossRent)+'/mo':'Not completed';
-   $('invAduCashFlowResult').textContent=completed?(ar.invAduCashFlow>=0?'+':'')+money(ar.invAduCashFlow)+'/mo':'—';
-   $('invAduCashFlowResult').className=completed?(ar.invAduCashFlow>=0?'good':'bad'):'';
-   $('invAduValueResult').textContent=completed?money(ar.invAduValue):'—';
-
-   const aduRentRoot=root('invAduRent',0,12000);
-   const aduCostRoot=root('invAduBuildCost',0,1500000);
-   const rentText=aduRentRoot?money(aduRentRoot)+'/mo':noRootMessage('invAduRent',0,12000);
-   const costText=aduCostRoot?money(aduCostRoot):noRootMessage('invAduBuildCost',0,1500000);
-   $('investmentAduBreakEven').innerHTML=
-     `The ADU begins producing rent after month <b>${x.invAduCompletionMonth}</b>. `+
-     `Modeled ADU-rent break-even: <b>${rentText}</b>. `+
-     `Modeled construction-cost break-even: <b>${costText}</b>.`;
+ $('liveInMetrics').style.display=x.liveInMode?'block':'none';
+ if(x.liveInMode){
+   const moveIndex=Math.min(x.liveMoveMonth,x.rec.length-1),mr=x.rec[moveIndex];
+   $('liveMoveResult').textContent=x.liveMoveMonth===0?'Immediately':`Month ${x.liveMoveMonth}`;$('liveMainRentResult').textContent=money(mr.liveMainGross)+'/mo';$('liveHousingCostResult').textContent=money(mr.livePropertyCost)+'/mo';$('liveNetIncomeResult').textContent=money(mr.liveNetRentalIncome)+'/mo';$('liveAltRentResult').textContent=money(mr.liveAlternativeCost)+'/mo';const ma=mr.liveAlternativeCost-mr.livePropertyCost;$('liveMonthlyAdvResult').textContent=(ma>=0?'+':'')+money(ma)+'/mo';$('liveMonthlyAdvResult').className=ma>=0?'good':'bad';
+   const mainRoot=root('liveMainRent',0,20000),altRoot=root('liveAltRent',250,12000);$('liveInBreakEven').innerHTML=`Effective ADU move-in is <b>month ${x.liveMoveMonth}</b>. Main-home rent break-even: <b>${mainRoot?money(mainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)}</b>. Comparable-rent crossing: <b>${altRoot?money(altRoot)+'/mo':noRootMessage('liveAltRent',250,12000)}</b>.`;
  }
 
- let bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):root('rent',250,12000);
- updatePriceVisual(bp||50000);
- const bpText=bp?money(bp):noRootMessage('price',50000,1500000);
- const brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`));
- const rrText=rr?money(rr)+'/mo':(x.rentalMode?noRootMessage('rentCollected',250,20000):noRootMessage('rent',250,12000));
- const bpLabel=bp?rootDirection('price',bp):'Purchase-price result';
- const brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result';
- const rrLabel=rr!==null?rootDirection(x.rentalMode?'rentCollected':'rent',rr):(x.rentalMode?'Collected-rent result':'Current-rent result');
- $('thresholds').innerHTML=x.rentalMode
- ? `At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`
- : `At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;
- $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{let r=x.rec[Math.round(y*12)];return `<tr><td>${y}</td><td>${money(x.rentalMode?r.totalGrossCollected:r.totalRenterCost)}</td><td>${money(x.rentalMode?r.totalLandlordCosts:r.effectiveOwnerCost)}</td><td>${money(r.home+(x.rentalMode?r.invAduValue:0))}</td><td>${money(r.loanBal+(x.rentalMode?r.invAduLoanBalance:0))}</td><td>${money(x.rentalMode?r.rentalAlternative:r.renter)}</td><td>${money(x.rentalMode?r.rentalOwnerWealth:r.buyWealth)}</td></tr>`}).join('');
- updateSensitivity();
- updateDp()
+ $('rentalMetrics').style.display=x.rentalMode?'block':'none';if(x.rentalMode){$('effectiveRent').textContent=money(x.first.totalEffectiveCollected);$('landlordCashFlow').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);$('landlordCashFlow').className=x.first.rentalCashFlow>=0?'good':'bad';$('cashFlowBreakEven').textContent=money(cashFlowBreakEven(x))+'/mo';}
+ $('investmentAduMetrics').style.display=x.investmentAduEnabled?'block':'none';if(x.investmentAduEnabled){const completionIndex=Math.min(x.invAduCompletionMonth,x.rec.length-1),ar=x.rec[completionIndex],completed=x.invAduCompletionMonth<=Math.round(x.v.years*12);$('invAduRentResult').textContent=completed?money(ar.invAduGrossRent)+'/mo':'Not completed';$('invAduCashFlowResult').textContent=completed?(ar.invAduCashFlow>=0?'+':'')+money(ar.invAduCashFlow)+'/mo':'—';$('invAduCashFlowResult').className=completed?(ar.invAduCashFlow>=0?'good':'bad'):'';$('invAduValueResult').textContent=completed?money(ar.invAduValue):'—';const aduRentRoot=root('invAduRent',0,12000),aduCostRoot=root('invAduBuildCost',0,1500000);$('investmentAduBreakEven').innerHTML=`The ADU begins producing rent after month <b>${x.invAduCompletionMonth}</b>. Modeled ADU-rent break-even: <b>${aduRentRoot?money(aduRentRoot)+'/mo':noRootMessage('invAduRent',0,12000)}</b>. Modeled construction-cost break-even: <b>${aduCostRoot?money(aduCostRoot):noRootMessage('invAduBuildCost',0,1500000)}</b>.`;}
+
+ const bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):x.liveInMode?root('liveAltRent',250,12000):root('rent',250,12000);
+ updatePriceVisual(bp||50000);const bpText=bp?money(bp):noRootMessage('price',50000,1500000),brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`)),rrText=rr?money(rr)+'/mo':noRootMessage(x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',250,x.rentalMode?20000:12000);
+ if(x.rentalMode)$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`;
+ else if(x.liveInMode){const mainRoot=root('liveMainRent',0,20000);$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the live-in strategy matches rent + S&amp;P near <b>${bpText}</b> purchase price. Mortgage-rate crossing: <b>${brText}</b>. Comparable-rent crossing: <b>${rrText}</b>. Main-home rent needed: <b>${mainRoot?money(mainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)}</b>.`;}
+ else{const bpLabel=bp?rootDirection('price',bp):'Purchase-price result',brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result',rrLabel=rr!==null?rootDirection('rent',rr):'Current-rent result';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;}
+
+ $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{const r=x.rec[Math.round(y*12)];if(x.rentalMode)return `<tr><td>${y}</td><td>${money(r.totalGrossCollected)}</td><td>${money(r.totalLandlordCosts)}</td><td>${money(r.home+r.invAduValue)}</td><td>${money(r.loanBal+r.invAduLoanBalance)}</td><td>${money(r.rentalAlternative)}</td><td>${money(r.rentalOwnerWealth)}</td></tr>`;if(x.liveInMode)return `<tr><td>${y}</td><td>${money(r.liveGrossRent)}</td><td>${money(r.livePropertyCost)}</td><td>${money(r.home+r.liveAduValue)}</td><td>${money(r.loanBal+r.liveAduLoanBalance)}</td><td>${money(r.liveAlternative)}</td><td>${money(r.livePropertyWealth)}</td></tr>`;return `<tr><td>${y}</td><td>${money(r.totalRenterCost)}</td><td>${money(r.effectiveOwnerCost)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(r.renter)}</td><td>${money(r.buyWealth)}</td></tr>`;}).join('');
+ updateSensitivity();updateDp();
 }
 function updateDp(){
- const rental=$('useMode').value==='rental';
- $('dpCostLabel').textContent=rental?'Property costs/mo':'Owner/mo';
- $('dpRentLabel').textContent=rental?'S&P break-even gross rent':'Break-even base rent';
- $('dpAdvLabel').textContent=rental?'Rental advantage':'Buyer advantage';
- let baseDps=rental?[15,20,25,30,40,50,75,100]:[0,3,3.5,5,10,15,20,25,30,40,50,75,100];
- let dps=[...baseDps,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)==i);
- $('dpRows').innerHTML=dps.map(dp=>{
-   const chosen=$('loanProgram').value;
-   const program=rental?'conventional':validLoanProgramForDown(chosen,dp,false);
-   let extra={downPct:dp,loanProgram:program},
-       x=model(extra),
-       bp=root('price',50000,1500000,extra),
-       rr=x.rentalMode?root('rentCollected',250,20000,extra):root('rent',250,12000,extra),
-       monthlyCost=x.rentalMode?x.first.totalLandlordCosts:x.first.effectiveOwnerCost;
-   const programLabel=!rental&&dp<20?`<div class="muted">${program.toUpperCase()}</div>`:'';
-   return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">current</span>':''}${programLabel}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`
- }).join('')
+ const mode=$('useMode').value,rental=mode==='rental',live=mode==='livein';
+ $('dpCostLabel').textContent=rental?'Property costs/mo':live?'Live-in cost/mo':'Owner/mo';
+ $('dpRentLabel').textContent=rental?'S&P break-even gross rent':live?'Break-even comparable rent':'Break-even base rent';
+ $('dpAdvLabel').textContent=rental?'Rental advantage':live?'Live-in advantage':'Buyer advantage';
+ const baseDps=rental?[15,20,25,30,40,50,75,100]:[0,3,3.5,5,10,15,20,25,30,40,50,75,100];
+ const dps=[...baseDps,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)==i);
+ $('dpRows').innerHTML=dps.map(dp=>{const chosen=$('loanProgram').value,program=rental?'conventional':validLoanProgramForDown(chosen,dp,false),extra={downPct:dp,loanProgram:program},x=model(extra),bp=root('price',50000,1500000,extra),rr=rental?root('rentCollected',250,20000,extra):live?root('liveAltRent',250,12000,extra):root('rent',250,12000,extra),monthlyCost=rental?x.first.totalLandlordCosts:live?x.first.livePropertyCost:x.first.effectiveOwnerCost,programLabel=!rental&&dp<20?`<div class="muted">${program.toUpperCase()}</div>`:'';return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">current</span>':''}${programLabel}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`;}).join('');
 }
 function currentPropertyRentEstimate(){
  const loc=locations[currentLocation]||{};
@@ -1309,23 +1278,17 @@ function setAduBuildEstimateNote(prefix){
  note.innerHTML=`Planning estimate: ${Math.round(size).toLocaleString()} sq ft × ${money(psf)}/sq ft. ${locationNote}${link} Replace this with a contractor bid and site-specific soft costs when available.`;
 }
 function updateAduBuildEstimate(prefix,force=false){
- const owner=prefix==='adu';
- const bedrooms=owner?$('ownerIncomeBedrooms').value:$('invAduBedrooms').value;
- const sizeAuto=owner?ownerAduSizeAuto:invAduSizeAuto;
- const psfAuto=owner?ownerAduBuildPsfAuto:invAduBuildPsfAuto;
- const costAuto=owner?ownerAduBuildCostAuto:invAduBuildCostAuto;
-
- if(force||sizeAuto)$(prefix+'Size').value=defaultAduSizeForBedrooms(bedrooms);
- if(force||psfAuto)$(prefix+'BuildPsf').value=currentAduBuildPsf();
- if(force||costAuto){
-   $(prefix+'BuildCost').value=Math.round(n(prefix+'Size')*n(prefix+'BuildPsf')/5000)*5000;
- }
+ const config=prefix==='adu'
+   ? {bedrooms:$('ownerIncomeBedrooms').value,sizeAuto:ownerAduSizeAuto,psfAuto:ownerAduBuildPsfAuto,costAuto:ownerAduBuildCostAuto}
+   : prefix==='liveAdu'
+   ? {bedrooms:$('liveAduBedrooms').value,sizeAuto:liveAduSizeAuto,psfAuto:liveAduBuildPsfAuto,costAuto:liveAduBuildCostAuto}
+   : {bedrooms:$('invAduBedrooms').value,sizeAuto:invAduSizeAuto,psfAuto:invAduBuildPsfAuto,costAuto:invAduBuildCostAuto};
+ if(force||config.sizeAuto)$(prefix+'Size').value=defaultAduSizeForBedrooms(config.bedrooms);
+ if(force||config.psfAuto)$(prefix+'BuildPsf').value=currentAduBuildPsf();
+ if(force||config.costAuto)$(prefix+'BuildCost').value=Math.round(n(prefix+'Size')*n(prefix+'BuildPsf')/5000)*5000;
  setAduBuildEstimateNote(prefix);
 }
-function updateAllAduBuildEstimates(force=false){
- updateAduBuildEstimate('adu',force);
- updateAduBuildEstimate('invAdu',force);
-}
+function updateAllAduBuildEstimates(force=false){updateAduBuildEstimate('adu',force);updateAduBuildEstimate('invAdu',force);updateAduBuildEstimate('liveAdu',force);}
 function currentAduMarketPsf(){
  const loc=locations[currentLocation]||{};
  return +(loc.adu_market_psf||300)
@@ -1354,24 +1317,13 @@ function calculatedAduValue(prefix){
  return Math.max(0,cost*.75);
 }
 function updateAduValueControls(prefix,forceLocalPsf=false){
- const method=$(prefix+'ValueMethod').value;
- const local=method==='local';
- const custom=method==='custom';
- $(prefix+'LocalPsfWrap').style.display=local?'block':'none';
- $(prefix+'CustomValueWrap').style.display=custom?'block':'none';
- $(prefix+'LocalProxyNote').style.display=local?'block':'none';
-
- const psfAuto=prefix==='adu'?ownerAduPsfAuto:invAduPsfAuto;
- if(local&&(forceLocalPsf||psfAuto)){
-   $(prefix+'LocalPsf').value=currentAduMarketPsf();
- }
- setAduPsfSource(prefix);
- $(prefix+'ValueAdded').value=Math.round(calculatedAduValue(prefix));
+ const method=$(prefix+'ValueMethod').value,local=method==='local',custom=method==='custom';
+ $(prefix+'LocalPsfWrap').style.display=local?'block':'none';$(prefix+'CustomValueWrap').style.display=custom?'block':'none';$(prefix+'LocalProxyNote').style.display=local?'block':'none';
+ const psfAuto=prefix==='adu'?ownerAduPsfAuto:prefix==='liveAdu'?liveAduPsfAuto:invAduPsfAuto;
+ if(local&&(forceLocalPsf||psfAuto))$(prefix+'LocalPsf').value=currentAduMarketPsf();
+ setAduPsfSource(prefix);$(prefix+'ValueAdded').value=Math.round(calculatedAduValue(prefix));
 }
-function updateAllAduValues(forceLocalPsf=false){
- updateAduValueControls('adu',forceLocalPsf);
- updateAduValueControls('invAdu',forceLocalPsf);
-}
+function updateAllAduValues(forceLocalPsf=false){updateAduValueControls('adu',forceLocalPsf);updateAduValueControls('invAdu',forceLocalPsf);updateAduValueControls('liveAdu',forceLocalPsf);}
 function localOneBedroomRent(){
  const loc=locations[currentLocation]||{};
  return +(loc.property_rents?.condo?.['1']||loc.rent||n('rent')||2000)
@@ -1471,8 +1423,32 @@ function applyInvestmentAduFundingToggle(){
  $('invAduLoanTermWrap').style.display=loan?'block':'none';
  update()
 }
+function currentLiveAduRentEstimate(){const loc=locations[currentLocation]||{},br=$('liveAduBedrooms').value||'1';return +(loc.property_rents?.condo?.[br]||loc.bedroom_rents?.[br]||loc.rent||2500);}
+function currentLiveMainRentEstimate(){return currentPropertyRentEstimate();}
+function applyLiveRentEstimates(force=false){
+ const adu=Math.round(currentLiveAduRentEstimate()),main=Math.round(currentLiveMainRentEstimate());
+ if(force||liveAltRentAuto){liveAltRentAuto=true;$('liveAltRent').value=adu;$('liveAltRentCap').value=adu;}
+ if(force||livePreAduRentAuto){livePreAduRentAuto=true;$('livePreAduRent').value=adu;$('livePreAduRentCap').value=adu;}
+ if(force||liveMainRentAuto){liveMainRentAuto=true;$('liveMainRent').value=main;$('liveMainRentCap').value=main;}
+}
+function applyLiveManagementToggle(prefix){
+ const enabled=$(prefix+'ManagementOn').checked;$(prefix+'ManagementRateWrap').style.display=enabled?'block':'none';if(enabled&&n(prefix+'ManagementRate')<=0)$(prefix+'ManagementRate').value=8;
+}
+function applyLiveAduFundingToggle(){const loan=$('liveAduFunding').value==='loan';$('liveAduLoanRateWrap').style.display=loan?'block':'none';$('liveAduLoanTermWrap').style.display=loan?'block':'none';}
+function earliestLiveMoveMonth(){return $('liveAduType').value==='build'?Math.max(0,Math.round(n('liveAduBuildMonths'))):0;}
+function updateLiveInControls(force=false){
+ const live=$('useMode').value==='livein',build=$('liveAduType').value==='build';if(!live)return;
+ $('liveAduBuildProject').style.display=build?'block':'none';
+ if(force||liveMoveAuto)$('liveMoveMonth').value=earliestLiveMoveMonth();
+ const effective=Math.max(earliestLiveMoveMonth(),Math.round(n('liveMoveMonth')));if(n('liveMoveMonth')<effective&&liveMoveAuto)$('liveMoveMonth').value=effective;
+ $('liveMoveNote').textContent=build?`ADU completion is modeled at month ${Math.round(n('liveAduBuildMonths'))}; effective owner move-in cannot occur before completion and is month ${effective}.`:`Existing ADU is available immediately; effective owner move-in is month ${effective}.`;
+ const canPreRent=effective>earliestLiveMoveMonth();$('livePreAduCard').style.display=canPreRent?'block':'none';if(!canPreRent)$('liveRentAduBeforeMove').checked=false;
+ $('livePreAduFields').style.display=$('liveRentAduBeforeMove').checked&&canPreRent?'block':'none';$('livePreAduCard').classList.toggle('active',$('liveRentAduBeforeMove').checked&&canPreRent);
+ applyLiveAduFundingToggle();applyLiveManagementToggle('liveMain');applyLiveManagementToggle('livePreAdu');
+ if(build){updateAduBuildEstimate('liveAdu',false);updateAduValueControls('liveAdu',false);}
+}
 function applyPmiVisibility(){
- const conventional=$('useMode').value==='primary'&&$('loanProgram').value==='conventional';
+ const conventional=$('useMode').value!=='rental'&&$('loanProgram').value==='conventional';
  const belowTwenty=n('downPct')<20;
  const enabled=conventional&&belowTwenty&&$('pmiOn').checked;
  $('pmiToggleWrap').style.display=conventional&&belowTwenty?'flex':'none';
@@ -1503,25 +1479,13 @@ function applyInvestmentAduToggle(){
  update()
 }
 function applyUseMode(){
- const rental=$('useMode').value==='rental';
- $('rentalSection').style.display=rental?'block':'none';
- $('investmentBedroomsField').style.display=rental?'block':'none';
- $('primaryRentSection').style.display=rental?'none':'block';
- $('primaryRentHeading').style.display=rental?'none':'block';
- $('ownerGarageBlock').style.display=rental?'none':'block';
- $('propertyCostsHeading').textContent=rental?'Investment-property expenses':'Purchased-property expenses';
- $('priceLowWinner').textContent=rental?'PROPERTY WINS':'BUYING WINS';
- $('priceHighWinner').textContent=rental?'S&P 500 WINS':'RENTING WINS';
- if(rental){
-   applyPropertyRentEstimate(false);
-   applyLocalPurchaseEstimate(priceAuto);
- }else{
-   applyOwnerGarageSituation();
- }
- applyLoanProgramRules();
- applyEstimatedRate(false);
- applyPmiVisibility();
- update()
+ const mode=$('useMode').value,rental=mode==='rental',live=mode==='livein',primary=mode==='primary';
+ $('rentalSection').style.display=rental?'block':'none';$('liveInSection').style.display=live?'block':'none';$('investmentBedroomsField').style.display=(rental||live)?'block':'none';$('propertyBedroomsLabel').textContent=live?'Main-home bedrooms':'Investment-property bedrooms';
+ $('primaryRentSection').style.display=primary?'block':'none';$('primaryRentHeading').style.display=primary?'block':'none';$('ownerGarageBlock').style.display=rental?'none':'block';
+ $('propertyCostsHeading').textContent=rental?'Investment-property expenses':live?'Live-in property expenses':'Purchased-property expenses';
+ $('priceLowWinner').textContent=rental?'PROPERTY WINS':live?'LIVE-IN STRATEGY WINS':'BUYING WINS';$('priceHighWinner').textContent=rental?'S&P 500 WINS':live?'RENT + S&P WINS':'RENTING WINS';
+ if(rental){applyPropertyRentEstimate(false);applyLocalPurchaseEstimate(priceAuto);}else if(live){applyLiveRentEstimates(false);applyLocalPurchaseEstimate(priceAuto);applyOwnerGarageSituation();updateLiveInControls(true);}else applyOwnerGarageSituation();
+ applyLoanProgramRules();applyEstimatedRate(false);applyPmiVisibility();update();
 }
 function applyOwnerGarageSituation(){
  const selected=$('ownerGarageSituation').value;
@@ -1577,6 +1541,8 @@ async function loadLocations(){
    applyPmiVisibility();
    updateAllAduBuildEstimates(true);
    updateAllAduValues(true);
+   applyLiveRentEstimates(true);
+   updateLiveInControls(true);
    applyInvestmentAduToggle();
  })
 }
@@ -1591,18 +1557,15 @@ async function applyLocation(key,live=true){
  if(d.mortgage_rate_date)mortgageBenchmarkDate=d.mortgage_rate_date;
  if(rateAuto)applyEstimatedRate(true);
  $('updated').textContent=`${d.name}: ${d.note||''}`;
- if($('useMode').value==='rental'){
-   applyPropertyRentEstimate(true);
-   applyLocalPurchaseEstimate(true);
- }else applyLocalPurchaseEstimate(true);
+ if($('useMode').value==='rental'){applyPropertyRentEstimate(true);applyLocalPurchaseEstimate(true);}else if($('useMode').value==='livein'){applyLiveRentEstimates(true);applyLocalPurchaseEstimate(true);}else applyLocalPurchaseEstimate(true);
  applyOwnerGarageSituation();
  applyRenterStorageToggle();
  updateSharedHousingEstimates(false,false);
  applyInvestmentAduRentEstimate(false);
  if(ownerAduPsfAuto)$('aduLocalPsf').value=d.adu_market_psf||300;
- if(invAduPsfAuto)$('invAduLocalPsf').value=d.adu_market_psf||300;
+ if(invAduPsfAuto)$('invAduLocalPsf').value=d.adu_market_psf||300;if(liveAduPsfAuto)$('liveAduLocalPsf').value=d.adu_market_psf||300;
  if(ownerAduBuildPsfAuto)$('aduBuildPsf').value=d.adu_build_psf||350;
- if(invAduBuildPsfAuto)$('invAduBuildPsf').value=d.adu_build_psf||350;
+ if(invAduBuildPsfAuto)$('invAduBuildPsf').value=d.adu_build_psf||350;if(liveAduBuildPsfAuto)$('liveAduBuildPsf').value=d.adu_build_psf||350;
  updateAllAduBuildEstimates(false);
  updateAllAduValues(false);
  updateUsdaIncomeBox();
@@ -1623,7 +1586,8 @@ async function applyLocation(key,live=true){
  ].map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:7px"><a href="${a[3]}" target="_blank">Open source</a></div>`:''}</div>`).join('');
  update()
 }
-ids.forEach(i=>$(i).addEventListener('input',update));
+const customInputIds=new Set(['price','insurance','liveMoveMonth','aduBuildCost','aduBuildPsf','aduSize','aduLocalPsf','invAduBuildCost','invAduBuildPsf','invAduSize','invAduLocalPsf','liveAduBuildCost','liveAduBuildPsf','liveAduSize','liveAduLocalPsf']);
+ids.forEach(i=>{if(!customInputIds.has(i))$(i).addEventListener('input',update)});
 $('priceSlider').addEventListener('input',e=>{
  let val=+e.target.value;
  const snapDistance=Math.max(2500,(+e.target.max-+e.target.min)*.006);
@@ -1643,11 +1607,11 @@ $('insuranceAuto').addEventListener('change',()=>{insuranceUserEditing=false;syn
 $('insurance').addEventListener('input',()=>{if(!$('insuranceAuto').checked){insuranceAnchorMonthly=n('insurance');insuranceAnchorPrice=n('price')}else{insuranceUserEditing=true}update()});
 $('propertyType').addEventListener('change',()=>{
  applyPropertyDefaults();insuranceUserEditing=false;
- if($('useMode').value==='rental')applyPropertyRentEstimate(false);
+ if($('useMode').value==='rental')applyPropertyRentEstimate(false);if($('useMode').value==='livein')applyLiveRentEstimates(false);
  applyLocalPurchaseEstimate(priceAuto);syncInsuranceToPrice();update()
 });
 $('useMode').addEventListener('change',applyUseMode);
-$('bedrooms').addEventListener('change',()=>{if($('useMode').value==='rental')applyBedroomRent();else update()});
+$('bedrooms').addEventListener('change',()=>{if($('useMode').value==='rental')applyBedroomRent();else if($('useMode').value==='livein'){liveMainRentAuto=true;applyLiveRentEstimates(false);applyLocalPurchaseEstimate(priceAuto);update();}else update()});
 $('managementOn').addEventListener('change',applyRentalManagementToggle);
 $('investmentAduOn').addEventListener('change',applyInvestmentAduToggle);
 $('invAduFunding').addEventListener('change',applyInvestmentAduFundingToggle);
@@ -1693,6 +1657,23 @@ $('invAduLocalPsf').addEventListener('input',()=>{invAduPsfAuto=false;update()})
 $('invAduCustomValue').addEventListener('input',update);
 $('useRenterShareEstimate').onclick=()=>{updateSharedHousingEstimates(true,false);update()};
 $('useOwnerIncomeEstimate').onclick=()=>{updateSharedHousingEstimates(false,true);update()};
+$('liveAduType').addEventListener('change',()=>{liveMoveAuto=true;liveAduSizeAuto=true;liveAduBuildCostAuto=true;updateLiveInControls(true);update()});
+$('liveBeforeMove').addEventListener('change',update);
+$('liveMoveMonth').addEventListener('input',()=>{liveMoveAuto=false;update()});
+$('useEarliestLiveMove').onclick=()=>{liveMoveAuto=true;updateLiveInControls(true);update()};
+$('useLiveAltRentEstimate').onclick=()=>{liveAltRentAuto=true;applyLiveRentEstimates(false);update()};
+$('useLiveMainRentEstimate').onclick=()=>{liveMainRentAuto=true;applyLiveRentEstimates(false);update()};
+$('useLivePreAduRentEstimate').onclick=()=>{livePreAduRentAuto=true;applyLiveRentEstimates(false);update()};
+$('liveAltRent').addEventListener('input',()=>{liveAltRentAuto=false;update()});$('liveAltRentCap').addEventListener('input',()=>{liveAltRentAuto=false;update()});
+$('liveMainRent').addEventListener('input',()=>{liveMainRentAuto=false;update()});$('liveMainRentCap').addEventListener('input',()=>{liveMainRentAuto=false;update()});
+$('livePreAduRent').addEventListener('input',()=>{livePreAduRentAuto=false;update()});$('livePreAduRentCap').addEventListener('input',()=>{livePreAduRentAuto=false;update()});
+$('liveMainManagementOn').addEventListener('change',()=>{applyLiveManagementToggle('liveMain');update()});$('livePreAduManagementOn').addEventListener('change',()=>{applyLiveManagementToggle('livePreAdu');update()});
+$('liveRentAduBeforeMove').addEventListener('change',()=>{updateLiveInControls(false);update()});$('liveAduFunding').addEventListener('change',()=>{applyLiveAduFundingToggle();update()});
+$('liveAduBedrooms').addEventListener('change',()=>{liveAltRentAuto=true;livePreAduRentAuto=true;liveAduSizeAuto=true;liveAduBuildCostAuto=true;applyLiveRentEstimates(false);updateAduBuildEstimate('liveAdu',false);update()});
+$('liveAduValueMethod').addEventListener('change',()=>{if($('liveAduValueMethod').value==='local'){liveAduPsfAuto=true;$('liveAduLocalPsf').value=currentAduMarketPsf()}update()});
+$('liveAduBuildCost').addEventListener('input',()=>{liveAduBuildCostAuto=false;update()});$('liveAduBuildPsf').addEventListener('input',()=>{liveAduBuildPsfAuto=false;liveAduBuildCostAuto=true;update()});$('liveAduSize').addEventListener('input',()=>{liveAduSizeAuto=false;liveAduBuildCostAuto=true;update()});
+$('liveAduBuildMonths').addEventListener('input',()=>{if(liveMoveAuto)$('liveMoveMonth').value=n('liveAduBuildMonths');update()});$('useLiveAduBuildEstimate').onclick=()=>{liveAduSizeAuto=true;liveAduBuildPsfAuto=true;liveAduBuildCostAuto=true;updateAduBuildEstimate('liveAdu',true);update()};
+$('liveAduLocalPsf').addEventListener('input',()=>{liveAduPsfAuto=false;update()});$('liveAduCustomValue').addEventListener('input',update);
 $('location').addEventListener('change',e=>applyLocation(e.target.value,true));
 $('refresh').onclick=()=>applyLocation(currentLocation,true);
 document.querySelectorAll('.downPreset,.rentalDownPreset').forEach(btn=>{
