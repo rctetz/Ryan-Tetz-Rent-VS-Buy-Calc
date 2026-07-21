@@ -101,6 +101,106 @@ ADU_BUILD_PSF={
 }
 ADU_BUILD_COST_SOURCE='https://ternercenter.berkeley.edu/blog/cci-adu-survey/'
 
+
+# USDA Single Family Housing Guaranteed Loan Program FY 2026 adjusted
+# income limits, effective 07-13-2026. USDA groups household sizes 1-4
+# together and 5-8 together for the moderate-income guaranteed-loan limit.
+USDA_GUARANTEED_LIMIT_SOURCE='https://www.rd.usda.gov/files/rd-grhlimitmap.pdf'
+USDA_ELIGIBILITY_CHECKER='https://eligibility.sc.egov.usda.gov/eligibility/welcomeAction.do?pageAction=sfp'
+USDA_INCOME_CHECKER='https://eligibility.sc.egov.usda.gov/eligibility/incomeEligibilityAction.do?pageAction=state'
+
+USDA_AREAS={
+ 'mono-ca': {
+   'area':'Mono County, CA',
+   'one_four':129150,
+   'five_eight':170500,
+ },
+ 'inyo-ca': {
+   'area':'Inyo County, CA',
+   'one_four':124900,
+   'five_eight':164900,
+ },
+ 'fresno-ca': {
+   'area':'Fresno, CA HUD Metro FMR Area',
+   'one_four':124900,
+   'five_eight':164900,
+ },
+ 'nevada-ca': {
+   'area':'Nevada County, CA',
+   'one_four':143850,
+   'five_eight':189950,
+ },
+ 'tuolumne-ca': {
+   'area':'Tuolumne County, CA',
+   'one_four':124900,
+   'five_eight':164900,
+ },
+ 'el-dorado-ca': {
+   'area':'El Dorado County / Sacramento HUD Metro area, CA',
+   'one_four':151100,
+   'five_eight':199500,
+ },
+ 'carson-city-nv': {
+   'area':'Carson City, NV MSA',
+   'one_four':122800,
+   'five_eight':162100,
+ },
+ 'douglas-nv': {
+   'area':'Douglas County, NV',
+   'one_four':128250,
+   'five_eight':169300,
+ },
+ 'washoe-nv': {
+   'area':'Reno, NV HUD Metro FMR Area (Washoe County)',
+   'one_four':134350,
+   'five_eight':177350,
+ },
+ 'custom': {
+   'area':'Select or enter a location',
+   'one_four':None,
+   'five_eight':None,
+ },
+}
+
+USDA_LOCATION_AREA={
+ 'mammoth':'mono-ca',
+ 'june-lake':'mono-ca',
+ 'crowley-lake':'mono-ca',
+ 'toms-place':'mono-ca',
+ 'lee-vining':'mono-ca',
+ 'bridgeport':'mono-ca',
+ 'benton':'mono-ca',
+ 'paradise-sunny-slopes':'mono-ca',
+ 'swall-meadows':'mono-ca',
+ 'chalfant':'mono-ca',
+ 'bishop':'inyo-ca',
+ 'big-pine':'inyo-ca',
+ 'independence':'inyo-ca',
+ 'lone-pine':'inyo-ca',
+ 'carson-city':'carson-city-nv',
+ 'gardnerville':'douglas-nv',
+ 'truckee':'nevada-ca',
+ 'sonora':'tuolumne-ca',
+ 'fresno':'fresno-ca',
+ 'south-lake-tahoe':'el-dorado-ca',
+ 'incline-village':'washoe-nv',
+ 'stateline':'douglas-nv',
+ 'zephyr-cove':'douglas-nv',
+ 'custom':'custom',
+}
+
+def usda_limits_for_location(location):
+    key=USDA_LOCATION_AREA.get(location,'custom')
+    data=USDA_AREAS[key].copy()
+    data.update({
+        'effective_date':'July 13, 2026',
+        'fiscal_year':2026,
+        'source':USDA_GUARANTEED_LIMIT_SOURCE,
+        'eligibility_checker':USDA_ELIGIBILITY_CHECKER,
+        'income_checker':USDA_INCOME_CHECKER,
+    })
+    return data
+
 MORTGAGE_URL='https://www.freddiemac.com/pmms'
 
 def fetch(url):
@@ -186,6 +286,7 @@ def market(location='mammoth'):
     out['adu_build_psf']=adu_build['value']
     out['adu_build_psf_note']=adu_build['note']
     out['adu_build_cost_source']=ADU_BUILD_COST_SOURCE
+    out['usda_limits']=usda_limits_for_location(location)
     out['property_rents']=property_rents(out['rent'])
     out['bedroom_rents']=out['property_rents']['condo']
     out['bedroom_prices']={
@@ -216,6 +317,7 @@ class Handler(SimpleHTTPRequestHandler):
                 'adu_build_psf':ADU_BUILD_PSF.get(k,ADU_BUILD_PSF['custom'])['value'],
                 'adu_build_psf_note':ADU_BUILD_PSF.get(k,ADU_BUILD_PSF['custom'])['note'],
                 'adu_build_cost_source':ADU_BUILD_COST_SOURCE,
+                'usda_limits':usda_limits_for_location(k),
                 'property_rents':property_rents(v['rent']),
                 'bedroom_rents':property_rents(v['rent'])['condo'],
                 'bedroom_prices':{

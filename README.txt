@@ -221,3 +221,14 @@ HOUSE ALPHA V26
 - USDA Guaranteed models a 1% financed upfront fee and 0.35% annual fee.
 - Conventional PMI remains editable and is shown only below 20% down.
 - Cash purchases hide mortgage-program, rate, term, and mortgage-insurance controls.
+
+HOUSE ALPHA V27
+- Adds a USDA Guaranteed income-limit information box when USDA is selected.
+- Limits update with the selected House Alpha location and its USDA county/HUD area.
+- Displays separate individual, couple, 3–4 person, and 5–8 person cards.
+- Clarifies that USDA officially uses the same limit for all 1–4 person households.
+- Adds a household-size selector and highlights the applicable limit.
+- Uses USDA FY 2026 adjusted income limits effective July 13, 2026.
+- Clarifies that limits apply to adjusted annual household income, not only borrower income.
+- Links to USDA’s official limit table and exact property/income eligibility checker.
+- Notes that address eligibility must still be checked separately.

@@ -27,7 +27,11 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 .range.snap::-webkit-slider-thumb{background:var(--green);box-shadow:0 0 0 5px #138a6130,0 2px 7px #0005}.range.snap::-moz-range-thumb{background:var(--green)}
 .sliderMeta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;font-size:11px;color:var(--muted)}.snapText{font-weight:850;color:var(--green);min-height:14px}
 .legend{display:flex;justify-content:space-between;font-size:11px;font-weight:800;margin-top:2px}.legend .buy{color:var(--green)}.legend .close{color:var(--amber)}.legend .rentwin{color:var(--red)}
-.sharedGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}@media(max-width:700px){.sharedGrid{grid-template-columns:1fr}}.sharedCard{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafcff}.sharedCard.active{border-color:#8eb3ee;background:#f4f8ff}.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:12px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eaf0ff;color:#234bb8;font-size:11px;font-weight:800}
+.sharedGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}@media(max-width:700px){.sharedGrid{grid-template-columns:1fr}}.sharedCard{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafcff}.sharedCard.active{border-color:#8eb3ee;background:#f4f8ff}
+.usdaLimitGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.usdaLimitItem{border:1px solid var(--line);border-radius:11px;background:#fff;padding:10px}
+.usdaLimitItem b{display:block;font-size:17px;margin-top:3px}
+@media(max-width:700px){.usdaLimitGrid{grid-template-columns:1fr 1fr}}.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:12px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eaf0ff;color:#234bb8;font-size:11px;font-weight:800}
 .installbar{position:sticky;bottom:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px;display:none}.installbar.show{display:block}.installinner{max-width:1220px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
 </style></head><body>
 <header><div class="wrap"><h1>House Alpha</h1><div class="tag">Find the price where owning starts building more wealth than renting.</div></div></header>
@@ -92,6 +96,45 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 </div>
 
 <div class="status" id="loanProgramDetails" style="margin-top:9px"></div>
+
+<div id="usdaIncomeBox" class="sharedCard" style="display:none;margin-top:10px">
+<div><b>USDA Guaranteed income limits — FY 2026</b></div>
+<div class="muted" id="usdaAreaName"></div>
+
+<div class="usdaLimitGrid">
+<div class="usdaLimitItem"><span class="muted">Individual · 1 person</span><b id="usdaLimit1"></b></div>
+<div class="usdaLimitItem"><span class="muted">Couple · 2 people</span><b id="usdaLimit2"></b></div>
+<div class="usdaLimitItem"><span class="muted">Household · 3–4 people</span><b id="usdaLimit34"></b></div>
+<div class="usdaLimitItem"><span class="muted">Household · 5–8 people</span><b id="usdaLimit58"></b></div>
+</div>
+
+<div class="form" style="margin-top:10px">
+<div>
+<label>Your household size</label>
+<select id="usdaHouseholdSize">
+<option value="1">1 person</option>
+<option value="2">2 people</option>
+<option value="3">3 people</option>
+<option value="4">4 people</option>
+<option value="5">5 people</option>
+<option value="6">6 people</option>
+<option value="7">7 people</option>
+<option value="8">8 people</option>
+</select>
+</div>
+<div>
+<label>Selected household limit</label>
+<input id="usdaSelectedLimit" type="text" disabled>
+</div>
+</div>
+
+<div class="muted" id="usdaIncomeNote" style="margin-top:8px"></div>
+<div style="margin-top:8px">
+<a id="usdaLimitSource" target="_blank" rel="noopener">Official USDA FY 2026 limits</a>
+&nbsp;·&nbsp;
+<a id="usdaEligibilityLink" target="_blank" rel="noopener">Check exact address and income</a>
+</div>
+</div>
 </div>
 
 <div id="rateFieldWrap">
@@ -436,7 +479,7 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'invAduRent','invAduRentCap','invAduVacancy','invAduReserve','invAduOther','invAduRentGrowth','invAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.55, mortgageBenchmarkDate='July 16, 2026', rateAuto=true;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.55, mortgageBenchmarkDate='July 16, 2026', rateAuto=true, currentUsdaLimits=null;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -524,6 +567,37 @@ function mortgageInsuranceName(program){
  if(program==='va')return 'VA monthly mortgage insurance';
  return 'conventional PMI'
 }
+function updateUsdaIncomeBox(){
+ const visible=$('useMode').value==='primary'
+   && $('loanProgram').value==='usda'
+   && $('loanProgramBlock').style.display!=='none';
+ $('usdaIncomeBox').style.display=visible?'block':'none';
+ if(!visible)return;
+
+ const data=currentUsdaLimits||locations[currentLocation]?.usda_limits||null;
+ if(!data||!data.one_four){
+   $('usdaAreaName').textContent='No saved location-specific limit is available for this custom location.';
+   ['usdaLimit1','usdaLimit2','usdaLimit34','usdaLimit58'].forEach(id=>$(id).textContent='Enter/check');
+   $('usdaSelectedLimit').value='Check USDA';
+   $('usdaIncomeNote').textContent='Use USDA’s official eligibility tool for the exact property area and adjusted household income.';
+   return
+ }
+
+ const oneFour=+data.one_four;
+ const fiveEight=+data.five_eight;
+ $('usdaAreaName').textContent=`${data.area} · effective ${data.effective_date}`;
+ $('usdaLimit1').textContent=money(oneFour);
+ $('usdaLimit2').textContent=money(oneFour);
+ $('usdaLimit34').textContent=money(oneFour);
+ $('usdaLimit58').textContent=money(fiveEight);
+
+ const size=+$('usdaHouseholdSize').value;
+ $('usdaSelectedLimit').value=money(size<=4?oneFour:fiveEight);
+ $('usdaIncomeNote').textContent=
+   'USDA’s official schedule groups 1–4 household members at the same limit, so the individual and couple limits are identical. Eligibility uses adjusted annual household income—not only the borrower’s income—and the exact property address must also be USDA-eligible.';
+ $('usdaLimitSource').href=data.source||'https://www.rd.usda.gov/files/rd-grhlimitmap.pdf';
+ $('usdaEligibilityLink').href=data.eligibility_checker||'https://eligibility.sc.egov.usda.gov/';
+}
 function updateLoanProgramDetails(){
  const rental=$('useMode').value==='rental';
  const down=n('downPct');
@@ -553,6 +627,7 @@ function updateLoanProgramDetails(){
    ? `${estimated.toFixed(2)}% estimated from the ${mortgageBenchmark.toFixed(2)}% Freddie Mac benchmark (${mortgageBenchmarkDate}) with ${adjustmentText}.`
    : `Custom rate entered. Current program estimate is ${estimated.toFixed(2)}% from the ${mortgageBenchmark.toFixed(2)}% Freddie Mac benchmark (${mortgageBenchmarkDate}).`;
  $('rateEstimateNote').textContent=note;
+ updateUsdaIncomeBox();
 }
 function applyEstimatedRate(force=false){
  if(force)rateAuto=true;
@@ -1510,6 +1585,7 @@ async function applyLocation(key,live=true){
  try{d=live?await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now()).then(r=>r.json()):locations[key]}catch(e){d=locations[key]}
  if(!d)return;
  locations[key]={...(locations[key]||{}),...d};
+ currentUsdaLimits=d.usda_limits||locations[key]?.usda_limits||null;
  $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;ownerStorageMarketEstimate=+(d.storage||0);$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true;
  if(d.mortgage_rate)mortgageBenchmark=+d.mortgage_rate;
  if(d.mortgage_rate_date)mortgageBenchmarkDate=d.mortgage_rate_date;
@@ -1529,6 +1605,7 @@ async function applyLocation(key,live=true){
  if(invAduBuildPsfAuto)$('invAduBuildPsf').value=d.adu_build_psf||350;
  updateAllAduBuildEstimates(false);
  updateAllAduValues(false);
+ updateUsdaIncomeBox();
  const src=d.sources||{rent:d.source||'',home:d.home_source||''};
  $('sources').innerHTML=[
   ['Location',d.name,d.note||''],
@@ -1541,7 +1618,8 @@ async function applyLocation(key,live=true){
   ['Separate garage/storage estimate',money(d.storage)+'/mo','Used independently for renter-paid or owner-paid storage when selected'],
   ['Home insurance',money(d.insurance)+'/mo',d.status?.insurance||'Editable planning estimate'],
   ['Property tax',d.tax+'%','Editable location benchmark'],
-  ['30-year mortgage benchmark',mortgageBenchmark.toFixed(2)+'%',`${d.status?.mortgage||'Current app value'}${mortgageBenchmarkDate?' — '+mortgageBenchmarkDate:''}. Conventional conforming benchmark at 80% LTV or less.`,src.mortgage]
+  ['30-year mortgage benchmark',mortgageBenchmark.toFixed(2)+'%',`${d.status?.mortgage||'Current app value'}${mortgageBenchmarkDate?' — '+mortgageBenchmarkDate:''}. Conventional conforming benchmark at 80% LTV or less.`,src.mortgage],
+  ['USDA Guaranteed income limit',d.usda_limits?.one_four?`${money(d.usda_limits.one_four)} (1–4) / ${money(d.usda_limits.five_eight)} (5–8)`:'Check USDA',d.usda_limits?.area||'Exact area depends on property location',d.usda_limits?.source]
  ].map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:7px"><a href="${a[3]}" target="_blank">Open source</a></div>`:''}</div>`).join('');
  update()
 }
@@ -1625,6 +1703,7 @@ $('downPct').addEventListener('input',()=>{
  applyEstimatedRate(false);
  update()
 });
+$('usdaHouseholdSize').addEventListener('change',updateUsdaIncomeBox);
 $('loanProgram').addEventListener('change',()=>{
  const program=$('loanProgram').value;
  if(program==='fha'&&n('downPct')<3.5)$('downPct').value=3.5;
