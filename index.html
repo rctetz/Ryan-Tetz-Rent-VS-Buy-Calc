@@ -50,12 +50,66 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <div class="sliderMeta"><span id="sliderRangeText"></span><span class="snapText" id="snapText"></span><button class="btn secondary" id="useLocalPrice" style="padding:6px 9px;font-size:11px">Use local estimate</button></div></div>
 <div class="form" style="margin-top:10px">
 <div><label>Exact purchase price</label><input id="price" type="number" value="385000" step="1000"></div>
-<div><label>Down payment %</label><div class="row" style="flex-wrap:nowrap"><input id="downPct" type="number" value="20" min="0" max="100" step="1"><button class="btn secondary" id="cash" style="white-space:nowrap;padding:10px 11px">100% cash</button></div></div>
-<div><label>Mortgage rate %</label><input id="rate" type="number" value="6.55" step=".01"></div>
-<div><label>Mortgage term</label><input id="term" type="number" value="30"></div>
-<div class="switchrow" id="pmiToggleWrap" style="grid-column:1/-1"><div><b>Estimate PMI below 20% down</b><div class="muted">Uses an editable annual PMI rate and automatically stops when modeled loan-to-value reaches 80%.</div></div><label class="switch"><input id="pmiOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
+
+<div style="grid-column:1/-1">
+<label>Down payment %</label>
+<input id="downPct" type="number" value="20" min="0" max="100" step=".5">
+<div class="presetGroup" id="primaryDownPresets">
+<button type="button" class="presetBtn downPreset" data-down="0">0%</button>
+<button type="button" class="presetBtn downPreset" data-down="3">3%</button>
+<button type="button" class="presetBtn downPreset" data-down="3.5">3.5% FHA</button>
+<button type="button" class="presetBtn downPreset" data-down="5">5%</button>
+<button type="button" class="presetBtn downPreset" data-down="10">10%</button>
+<button type="button" class="presetBtn downPreset" data-down="15">15%</button>
+<button type="button" class="presetBtn downPreset active" data-down="20">20%</button>
+<button type="button" class="presetBtn downPreset" data-down="100">Cash</button>
+</div>
+<div class="presetGroup" id="rentalDownPresets" style="display:none">
+<button type="button" class="presetBtn rentalDownPreset" data-down="15">15%</button>
+<button type="button" class="presetBtn rentalDownPreset active" data-down="20">20%</button>
+<button type="button" class="presetBtn rentalDownPreset" data-down="25">25%</button>
+<button type="button" class="presetBtn rentalDownPreset" data-down="100">Cash</button>
+</div>
+</div>
+
+<div id="loanProgramBlock" style="grid-column:1/-1">
+<label>Loan program</label>
+<select id="loanProgram">
+<option value="conventional" selected>Conventional</option>
+<option value="fha">FHA</option>
+<option value="va">VA — eligibility required</option>
+<option value="usda">USDA Guaranteed — rural and income eligibility required</option>
+</select>
+
+<div id="vaProgramOptions" style="display:none;margin-top:9px">
+<div class="form">
+<div><label>VA benefit use</label><select id="vaUse">
+<option value="first">First use</option>
+<option value="subsequent">Subsequent use</option>
+</select></div>
+<div class="switchrow"><div><b>VA funding-fee exempt</b><div class="muted">For borrowers who qualify for an exemption.</div></div><label class="switch"><input id="vaFeeExempt" type="checkbox"><span class="sliderSwitch"></span></label></div>
+</div>
+</div>
+
+<div class="status" id="loanProgramDetails" style="margin-top:9px"></div>
+</div>
+
+<div id="rateFieldWrap">
+<label>Estimated mortgage rate %</label>
+<input id="rate" type="number" value="6.55" step=".01">
+<button class="btn secondary" id="useEstimatedRate" type="button" style="margin-top:7px;padding:8px 10px">Use current estimate</button>
+<div class="muted" id="rateEstimateNote" style="margin-top:6px"></div>
+</div>
+
+<div id="mortgageTermWrap"><label>Mortgage term</label><input id="term" type="number" value="30"></div>
+
+<div class="switchrow" id="pmiToggleWrap" style="grid-column:1/-1"><div><b>Estimate conventional PMI below 20% down</b><div class="muted">Uses an editable annual PMI rate and automatically stops when modeled loan-to-value reaches 80%.</div></div><label class="switch"><input id="pmiOn" type="checkbox" checked><span class="sliderSwitch"></span></label></div>
 <div id="pmiRateWrap"><label>Estimated annual PMI rate %</label><input id="pmiRate" type="number" value="0.50" step=".05" min="0"></div>
 <div id="pmiCancelWrap"><label>PMI cancellation LTV %</label><input id="pmiCancelLtv" type="number" value="80" step="1" min="70" max="100"></div>
+</div>
+
+<div class="status" id="mortgageDisclaimer" style="margin-top:10px">
+<b>Planning estimate—not a lender quote.</b> The live benchmark comes from Freddie Mac PMMS. Low-down-payment and government-program rate differences use editable-model planning assumptions; actual pricing depends on credit, points, loan size, occupancy, property type, lender, and eligibility.
 </div>
 
 <h3 id="primaryRentHeading">Rent-versus-own assumptions</h3>
@@ -366,7 +420,7 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 <h3>Milestones</h3><table><thead><tr><th>Year</th><th id="milestoneIncome">Rent</th><th id="milestoneCost">Owner</th><th>Property value</th><th>Loan</th><th id="milestoneAlt">Rent wealth</th><th id="milestoneProperty">Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table>
 </div></div></section>
 
-<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">Exact model results using the current property, location, and growth assumptions.</p><table><thead><tr><th>Down</th><th>Cash needed</th><th id="dpCostLabel">Owner/mo</th><th>PMI/mo</th><th>Break-even price</th><th id="dpRentLabel">Break-even rent</th><th id="dpAdvLabel">Advantage now</th></tr></thead><tbody id="dpRows"></tbody></table></div></section>
+<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">Exact model results using the current property, location, and growth assumptions.</p><table><thead><tr><th>Down</th><th>Cash needed</th><th id="dpCostLabel">Owner/mo</th><th>Mortgage insurance / fee</th><th>Break-even price</th><th id="dpRentLabel">Break-even rent</th><th id="dpAdvLabel">Advantage now</th></tr></thead><tbody id="dpRows"></tbody></table></div></section>
 <section id="market" class="panel"><div class="card"><h2>Location assumptions and sources</h2><div class="sourcegrid" id="sources"></div><p class="muted">HOA, garage/storage, and insurance are editable planning benchmarks. Small mountain communities often lack enough long-term listings for a statistically stable live average.</p></div></section>
 </main>
 <div class="installbar" id="installbar"><div class="installinner"><div><b>Install House Alpha</b><div class="muted">Add it to your home screen and share the same link.</div></div><button id="installBtn" class="btn">Install</button></div></div>
@@ -382,10 +436,140 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'invAduRent','invAduRentCap','invAduVacancy','invAduReserve','invAduOther','invAduRentGrowth','invAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350;
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.55, mortgageBenchmarkDate='July 16, 2026', rateAuto=true;
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
+function validLoanProgramForDown(program,down,rental=false){
+ if(rental)return 'conventional';
+ if(program==='conventional'&&down<3)return down<=0?'va':'conventional';
+ if(program==='fha'&&down<3.5)return down<=0?'va':'conventional';
+ return program
+}
+function selectedLoanProgram(override=null){
+ const rental=$('useMode').value==='rental';
+ const requested=override||$('loanProgram').value||'conventional';
+ return validLoanProgramForDown(requested,n('downPct'),rental)
+}
+function vaFundingFeeRate(down,useType,exempt){
+ if(exempt)return 0;
+ if(down>=10)return 1.25;
+ if(down>=5)return 1.50;
+ return useType==='subsequent'?3.30:2.15
+}
+function estimatedRateAdjustment(program,down,rental=false){
+ if(rental)return 0;
+ if(program==='conventional'){
+   if(down<5)return .375;
+   if(down<10)return .25;
+   if(down<20)return .125;
+   return 0;
+ }
+ if(program==='fha')return -.125;
+ if(program==='va')return -.25;
+ return 0;
+}
+function currentEstimatedRate(){
+ if(n('downPct')>=100)return 0;
+ const rental=$('useMode').value==='rental';
+ const program=rental?'conventional':$('loanProgram').value;
+ return Math.max(0,Math.round((mortgageBenchmark+estimatedRateAdjustment(program,n('downPct'),rental))*100)/100)
+}
+function programUpfrontFeeRate(program,down){
+ if(program==='fha')return 1.75;
+ if(program==='va')return vaFundingFeeRate(down,$('vaUse').value,$('vaFeeExempt').checked);
+ if(program==='usda')return 1.00;
+ return 0
+}
+function fhaAnnualMipRate(down){
+ const ltv=100-down;
+ return ltv>95?.55:.50
+}
+function applyLoanProgramRules(){
+ const rental=$('useMode').value==='rental';
+ const down=n('downPct');
+ const cash=down>=100;
+ $('primaryDownPresets').style.display=rental?'none':'flex';
+ $('rentalDownPresets').style.display=rental?'flex':'none';
+ $('loanProgramBlock').style.display=(!rental&&!cash&&down<20)?'block':'none';
+ $('mortgageDisclaimer').style.display=cash?'none':'block';
+ $('rateFieldWrap').style.display=cash?'none':'block';
+ $('mortgageTermWrap').style.display=cash?'none':'block';
+
+ const conventionalOption=$('loanProgram').querySelector('option[value="conventional"]');
+ const fhaOption=$('loanProgram').querySelector('option[value="fha"]');
+ conventionalOption.disabled=down<3;
+ fhaOption.disabled=down<3.5;
+
+ if(rental||cash||down>=20){
+   $('loanProgram').value='conventional';
+ }else{
+   const current=$('loanProgram').value;
+   const valid=validLoanProgramForDown(current,down,false);
+   if(valid!==current)$('loanProgram').value=valid;
+ }
+ $('vaProgramOptions').style.display=$('loanProgram').value==='va'&&$('loanProgramBlock').style.display!=='none'?'block':'none';
+ updateLoanProgramDetails();
+ updateDownPresetState();
+}
+function updateDownPresetState(){
+ const down=n('downPct');
+ document.querySelectorAll('.downPreset,.rentalDownPreset').forEach(btn=>{
+   btn.classList.toggle('active',Math.abs(+btn.dataset.down-down)<.001)
+ });
+}
+function mortgageInsuranceName(program){
+ if(program==='fha')return 'FHA annual MIP';
+ if(program==='usda')return 'USDA annual guarantee fee';
+ if(program==='va')return 'VA monthly mortgage insurance';
+ return 'conventional PMI'
+}
+function updateLoanProgramDetails(){
+ const rental=$('useMode').value==='rental';
+ const down=n('downPct');
+ const program=rental?'conventional':$('loanProgram').value;
+ const estimated=currentEstimatedRate();
+ const adjustment=estimatedRateAdjustment(program,down,rental);
+ const adjustmentText=adjustment===0?'no planning adjustment':`${adjustment>0?'+':''}${adjustment.toFixed(3)}% planning adjustment`;
+
+ if(rental){
+   $('loanProgramDetails').innerHTML='Investment-property financing remains modeled as conventional. The Freddie benchmark is owner-occupied, so an actual investment-property quote may be higher.';
+ }else if(program==='fha'){
+   const annual=fhaAnnualMipRate(down);
+   const duration=down>=10?'11 years':'the mortgage term';
+   $('loanProgramDetails').innerHTML=`<b>FHA planning model:</b> ${estimated.toFixed(2)}% estimated note rate, 1.75% upfront MIP financed, and approximately ${annual.toFixed(2)}% annual MIP for ${duration}. The 3.5% minimum assumes typical FHA eligibility; some lower-credit scenarios require 10% down.`;
+ }else if(program==='va'){
+   const fee=vaFundingFeeRate(down,$('vaUse').value,$('vaFeeExempt').checked);
+   $('loanProgramDetails').innerHTML=`<b>VA planning model:</b> ${estimated.toFixed(2)}% estimated note rate, no monthly mortgage insurance, and a ${fee.toFixed(2)}% financed funding fee${fee===0?' under the exemption assumption':''}. Eligibility is required.`;
+ }else if(program==='usda'){
+   $('loanProgramDetails').innerHTML=`<b>USDA Guaranteed planning model:</b> ${estimated.toFixed(2)}% estimated note rate, 1.00% upfront guarantee fee financed, and 0.35% annual fee. Rural-property and household-income eligibility are required.`;
+ }else{
+   $('loanProgramDetails').innerHTML=down<20
+     ? `<b>Conventional planning model:</b> ${estimated.toFixed(2)}% estimated note rate and editable PMI below 20% down. Some 3% programs have first-time-buyer, occupancy, income, education, or underwriting conditions.`
+     : '<b>Conventional planning model:</b> uses the live Freddie Mac 20%-down benchmark.';
+ }
+
+ const note=rateAuto
+   ? `${estimated.toFixed(2)}% estimated from the ${mortgageBenchmark.toFixed(2)}% Freddie Mac benchmark (${mortgageBenchmarkDate}) with ${adjustmentText}.`
+   : `Custom rate entered. Current program estimate is ${estimated.toFixed(2)}% from the ${mortgageBenchmark.toFixed(2)}% Freddie Mac benchmark (${mortgageBenchmarkDate}).`;
+ $('rateEstimateNote').textContent=note;
+}
+function applyEstimatedRate(force=false){
+ if(force)rateAuto=true;
+ if(rateAuto&&n('downPct')<100)$('rate').value=currentEstimatedRate().toFixed(2);
+ updateLoanProgramDetails()
+}
+function setDownPaymentPreset(value){
+ $('downPct').value=value;
+ if(value===0)$('loanProgram').value='va';
+ if(value===3)$('loanProgram').value='conventional';
+ if(value===3.5)$('loanProgram').value='fha';
+ if(value>=20&&value<100)$('loanProgram').value='conventional';
+ rateAuto=true;
+ applyLoanProgramRules();
+ applyEstimatedRate(true);
+ update()
+}
 function model(o={}){
  let v={};ids.forEach(i=>v[i]=i in o?o[i]:n(i));
  v.hoa=$('hoaOn').checked?v.hoa:0;
@@ -416,9 +600,14 @@ function model(o={}){
  v.storage=rentalMode?0:($('storageOn').checked?v.storage:0);
  v.renterStorage=rentalMode?0:($('renterStorageOn').checked?v.renterStorage:0);
 
+ const loanProgram=rentalMode?'conventional':validLoanProgramForDown(o.loanProgram||$('loanProgram').value,v.downPct,false);
+ const baseLoan=Math.max(0,v.price-v.price*v.downPct/100);
+ const upfrontFeeRate=programUpfrontFeeRate(loanProgram,v.downPct);
+ const upfrontFee=baseLoan*upfrontFeeRate/100;
+
  let M=Math.round(v.years*12),
      dp=v.price*v.downPct/100,
-     loan=v.price-dp,
+     loan=baseLoan+upfrontFee,
      mp=pmt(loan,v.rate,v.term),
      rtrn=v.stockReturn/1200;
 
@@ -427,7 +616,7 @@ function model(o={}){
      renter=dp+v.price*v.buyClose/100,
      buyerInv=0,
      rec=[],
-     pmiEnabled=$('pmiOn').checked&&v.downPct<20;
+     pmiEnabled=loanProgram==='conventional'&&$('pmiOn').checked&&v.downPct<20;
 
  let rentalAlternative=dp+v.price*v.buyClose/100;
  let grossCollected=v.rentCollected;
@@ -468,8 +657,13 @@ function model(o={}){
        storage=v.storage*(1.03**y),
        loanBal=bal(loan,v.rate,v.term,m),
        ltv=home>0?loanBal/home*100:0,
-       pmi=(pmiEnabled&&ltv>v.pmiCancelLtv)?loan*v.pmiRate/100/12:0,
-       ownerBase=mp+pmi+hoa+tax+ins+maint+storage+v.assessment,
+       conventionalPmi=(pmiEnabled&&ltv>v.pmiCancelLtv)?baseLoan*v.pmiRate/100/12:0,
+       fhaMipMonths=v.downPct>=10?Math.min(v.term*12,132):v.term*12,
+       fhaMip=(loanProgram==='fha'&&m<fhaMipMonths)?loanBal*fhaAnnualMipRate(v.downPct)/100/12:0,
+       usdaFee=loanProgram==='usda'?loanBal*.35/100/12:0,
+       mortgageInsurance=conventionalPmi+fhaMip+usdaFee,
+       pmi=mortgageInsurance,
+       ownerBase=mp+mortgageInsurance+hoa+tax+ins+maint+storage+v.assessment,
 
        renterGarage=v.renterStorage*(1.03**y),
        renterShareNet=renterShareEnabled
@@ -605,6 +799,7 @@ function model(o={}){
 
  return {
    v,rec,first:rec[0],last:z,dp,mp,pmi0:rec[0].pmi,adv,rentalMode,
+   loanProgram,baseLoan,loan,upfrontFeeRate,upfrontFee,
    renterShareEnabled,ownerIncomeEnabled,ownerIncomeType,newAduEnabled,
    ownerManagementEnabled,aduFunding,aduCompletionMonth,aduLoanPayment,
    investmentAduEnabled,invAduFunding,invAduManagementEnabled,
@@ -849,8 +1044,20 @@ function updateSensitivity(){
  $('sensitivity7').className=conservative7.adv>=0?'good':'bad';
  $('sensitivity7note').textContent=noteFor(conservative7);
 }
+function mortgageInsuranceDescription(x){
+ if(!x.pmi0)return '';
+ const label=mortgageInsuranceName(x.loanProgram);
+ return `<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated ${label}</span>`;
+}
+function upfrontFeeDescription(x){
+ if(!x.upfrontFee)return '';
+ const labels={fha:'FHA upfront MIP',va:'VA funding fee',usda:'USDA upfront guarantee fee'};
+ return `<span class="muted" style="display:block">${money(x.upfrontFee)} financed ${labels[x.loanProgram]||'upfront program fee'}</span>`;
+}
 function update(){
  syncInsuranceToPrice();
+ applyLoanProgramRules();
+ if(rateAuto)applyEstimatedRate(false);else updateLoanProgramDetails();
  applyPmiVisibility();
  updateReturnPresetState();
  updateAppreciationPresetState();
@@ -870,7 +1077,7 @@ function update(){
    $('metricLabelAlt').textContent='S&P 500 portfolio';
    $('metricLabelProperty').textContent='Rental-property wealth';
    $('metricLabelAdv').textContent='Rental advantage';
-   $('owner').innerHTML=money(x.first.totalLandlordCosts)+(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');
+   $('owner').innerHTML=money(x.first.totalLandlordCosts)+mortgageInsuranceDescription(x)+upfrontFeeDescription(x);
    $('rentNow').textContent=money(x.first.totalGrossCollected);
    $('gap').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);
    $('gap').className=x.first.rentalCashFlow>=0?'good':'bad';
@@ -890,7 +1097,7 @@ function update(){
    $('metricLabelAdv').textContent='Buyer advantage';
    $('owner').innerHTML=money(x.first.effectiveOwnerCost)
      +`<span class="muted" style="display:block">${money(x.first.ownerBase)} before housing income${x.first.ownerIncomeNet!==0?` − ${money(x.first.ownerIncomeNet)} net income`:''}</span>`
-     +(x.pmi0>0?`<span class="muted" style="display:block">Includes ${money(x.pmi0)}/mo estimated PMI</span>`:'');
+     +mortgageInsuranceDescription(x)+upfrontFeeDescription(x);
    $('rentNow').innerHTML=money(x.first.totalRenterCost)
      +`<span class="muted" style="display:block">${money(x.first.rent)} base rent${x.first.renterGarage>0?` + ${money(x.first.renterGarage)} garage`:''}${x.first.renterShareNet>0?` − ${money(x.first.renterShareNet)} roommate contribution`:''}</span>`;
    $('gap').textContent=money(x.first.effectiveOwnerCost-x.first.totalRenterCost);
@@ -974,13 +1181,18 @@ function updateDp(){
  $('dpCostLabel').textContent=rental?'Property costs/mo':'Owner/mo';
  $('dpRentLabel').textContent=rental?'S&P break-even gross rent':'Break-even base rent';
  $('dpAdvLabel').textContent=rental?'Rental advantage':'Buyer advantage';
- let dps=[0,5,10,15,20,25,30,40,50,75,100,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)==i);
+ let baseDps=rental?[15,20,25,30,40,50,75,100]:[0,3,3.5,5,10,15,20,25,30,40,50,75,100];
+ let dps=[...baseDps,n('downPct')].sort((a,b)=>a-b).filter((x,i,A)=>A.indexOf(x)==i);
  $('dpRows').innerHTML=dps.map(dp=>{
-   let x=model({downPct:dp}),
-       bp=root('price',50000,1500000,{downPct:dp}),
-       rr=x.rentalMode?root('rentCollected',250,20000,{downPct:dp}):root('rent',250,12000,{downPct:dp}),
+   const chosen=$('loanProgram').value;
+   const program=rental?'conventional':validLoanProgramForDown(chosen,dp,false);
+   let extra={downPct:dp,loanProgram:program},
+       x=model(extra),
+       bp=root('price',50000,1500000,extra),
+       rr=x.rentalMode?root('rentCollected',250,20000,extra):root('rent',250,12000,extra),
        monthlyCost=x.rentalMode?x.first.totalLandlordCosts:x.first.effectiveOwnerCost;
-   return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">custom</span>':''}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`
+   const programLabel=!rental&&dp<20?`<div class="muted">${program.toUpperCase()}</div>`:'';
+   return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">current</span>':''}${programLabel}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`
  }).join('')
 }
 function currentPropertyRentEstimate(){
@@ -1185,9 +1397,10 @@ function applyInvestmentAduFundingToggle(){
  update()
 }
 function applyPmiVisibility(){
+ const conventional=$('useMode').value==='primary'&&$('loanProgram').value==='conventional';
  const belowTwenty=n('downPct')<20;
- const enabled=belowTwenty&&$('pmiOn').checked;
- $('pmiToggleWrap').style.display=belowTwenty?'flex':'none';
+ const enabled=conventional&&belowTwenty&&$('pmiOn').checked;
+ $('pmiToggleWrap').style.display=conventional&&belowTwenty?'flex':'none';
  $('pmiRateWrap').style.display=enabled?'block':'none';
  $('pmiCancelWrap').style.display=enabled?'block':'none';
 }
@@ -1230,6 +1443,9 @@ function applyUseMode(){
  }else{
    applyOwnerGarageSituation();
  }
+ applyLoanProgramRules();
+ applyEstimatedRate(false);
+ applyPmiVisibility();
  update()
 }
 function applyOwnerGarageSituation(){
@@ -1270,7 +1486,7 @@ function applyPropertyDefaults(){
 async function loadLocations(){
  locations=await fetch('/api/locations').then(r=>r.json());
  $('location').innerHTML=Object.entries(locations).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('');
- $('location').value='mammoth';applyLocation('mammoth',false).then(()=>{
+ $('location').value='mammoth';applyLocation('mammoth',true).then(()=>{
    selectOwnerGarageFromPropertyType();
    updateSharedHousingEstimates(true,true);
    applyUseMode();
@@ -1281,6 +1497,8 @@ async function loadLocations(){
    applyInvestmentAduFundingToggle();
    applyInvestmentAduManagementToggle();
    applyRentalManagementToggle();
+   applyLoanProgramRules();
+   applyEstimatedRate(true);
    applyPmiVisibility();
    updateAllAduBuildEstimates(true);
    updateAllAduValues(true);
@@ -1293,7 +1511,9 @@ async function applyLocation(key,live=true){
  if(!d)return;
  locations[key]={...(locations[key]||{}),...d};
  $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;ownerStorageMarketEstimate=+(d.storage||0);$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true;
- if(d.mortgage_rate)$('rate').value=d.mortgage_rate;
+ if(d.mortgage_rate)mortgageBenchmark=+d.mortgage_rate;
+ if(d.mortgage_rate_date)mortgageBenchmarkDate=d.mortgage_rate_date;
+ if(rateAuto)applyEstimatedRate(true);
  $('updated').textContent=`${d.name}: ${d.note||''}`;
  if($('useMode').value==='rental'){
    applyPropertyRentEstimate(true);
@@ -1321,7 +1541,7 @@ async function applyLocation(key,live=true){
   ['Separate garage/storage estimate',money(d.storage)+'/mo','Used independently for renter-paid or owner-paid storage when selected'],
   ['Home insurance',money(d.insurance)+'/mo',d.status?.insurance||'Editable planning estimate'],
   ['Property tax',d.tax+'%','Editable location benchmark'],
-  ['30-year mortgage',d.mortgage_rate?d.mortgage_rate+'%':n('rate')+'%',d.status?.mortgage||'Current app value',src.mortgage]
+  ['30-year mortgage benchmark',mortgageBenchmark.toFixed(2)+'%',`${d.status?.mortgage||'Current app value'}${mortgageBenchmarkDate?' — '+mortgageBenchmarkDate:''}. Conventional conforming benchmark at 80% LTV or less.`,src.mortgage]
  ].map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:7px"><a href="${a[3]}" target="_blank">Open source</a></div>`:''}</div>`).join('');
  update()
 }
@@ -1397,7 +1617,28 @@ $('useRenterShareEstimate').onclick=()=>{updateSharedHousingEstimates(true,false
 $('useOwnerIncomeEstimate').onclick=()=>{updateSharedHousingEstimates(false,true);update()};
 $('location').addEventListener('change',e=>applyLocation(e.target.value,true));
 $('refresh').onclick=()=>applyLocation(currentLocation,true);
-$('cash').onclick=()=>{$('downPct').value=100;update()};
+document.querySelectorAll('.downPreset,.rentalDownPreset').forEach(btn=>{
+ btn.addEventListener('click',()=>setDownPaymentPreset(+btn.dataset.down))
+});
+$('downPct').addEventListener('input',()=>{
+ applyLoanProgramRules();
+ applyEstimatedRate(false);
+ update()
+});
+$('loanProgram').addEventListener('change',()=>{
+ const program=$('loanProgram').value;
+ if(program==='fha'&&n('downPct')<3.5)$('downPct').value=3.5;
+ if(program==='conventional'&&n('downPct')<3)$('downPct').value=3;
+ rateAuto=true;
+ applyLoanProgramRules();
+ applyEstimatedRate(true);
+ applyPmiVisibility();
+ update()
+});
+$('vaUse').addEventListener('change',()=>{rateAuto=true;applyLoanProgramRules();update()});
+$('vaFeeExempt').addEventListener('change',()=>{applyLoanProgramRules();update()});
+$('rate').addEventListener('input',()=>{rateAuto=false;updateLoanProgramDetails();update()});
+$('useEstimatedRate').onclick=()=>{rateAuto=true;applyEstimatedRate(true);update()};
 $('useLocalPrice').onclick=()=>{priceAuto=true;applyLocalPurchaseEstimate(true);update()};
 $('useLocalRent').onclick=()=>{rentAuto=true;applyPropertyRentEstimate(true);update()};
 $('return10').onclick=()=>setReturnPreset(10);

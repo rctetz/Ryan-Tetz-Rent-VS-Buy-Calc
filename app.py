@@ -140,14 +140,24 @@ def bedroom_prices(home_value, property_type='condo'):
 
 def market(location='mammoth'):
     loc=LOCATIONS.get(location,LOCATIONS['mammoth']).copy()
-    out={'updated_at':datetime.now(timezone.utc).isoformat(),'mortgage_rate':6.55,'location_key':location,**loc,'status':{}}
+    out={
+        'updated_at':datetime.now(timezone.utc).isoformat(),
+        'mortgage_rate':6.55,
+        'mortgage_rate_date':'July 16, 2026',
+        'mortgage_benchmark_note':'Freddie Mac PMMS conventional conforming benchmark at 80% LTV or less',
+        'location_key':location,
+        **loc,
+        'status':{}
+    }
     try:
         t=fetch(MORTGAGE_URL)
         x=first_float([r'30-year fixed-rate mortgage averaged\s*([0-9.]+)%',r'30-Yr FRM[^0-9]+([0-9.]+)%'],t)
+        date_match=re.search(r'as of\s+([A-Za-z]+\s+\d{1,2},\s+\d{4})',t,re.I)
         if x:out['mortgage_rate']=x
+        if date_match:out['mortgage_rate_date']=date_match.group(1)
         out['status']['mortgage']='Updated from Freddie Mac PMMS'
     except Exception:
-        out['status']['mortgage']='Using saved weekly benchmark'
+        out['status']['mortgage']='Using saved weekly Freddie Mac benchmark'
     try:
         if not loc.get('source'): raise ValueError('No live source')
         t=fetch(loc['source'])

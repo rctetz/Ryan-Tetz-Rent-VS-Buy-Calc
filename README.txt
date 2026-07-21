@@ -205,3 +205,19 @@ HOUSE ALPHA V25
 - Rent separately as an owner restores the selected location's garage/storage market estimate.
 - PMI controls are hidden whenever the down payment is 20% or greater.
 - Below 20% down, the PMI rate and cancellation fields appear only when Estimate PMI is enabled.
+
+HOUSE ALPHA V26
+- Adds primary-residence down-payment presets: 0%, 3%, 3.5% FHA, 5%, 10%, 15%, 20%, and Cash.
+- Keeps 20% as the primary-residence default.
+- Adds rental-property presets: 15%, 20%, 25%, and Cash.
+- Adds Conventional, FHA, VA, and USDA Guaranteed loan-program planning models.
+- Conventional remains selected by default.
+- Low-down-payment selections reveal program choices and eligibility disclaimers.
+- The app now refreshes the live Freddie Mac PMMS benchmark on initial load and location refresh.
+- Estimated rates update from the live benchmark using transparent planning adjustments.
+- A manual rate can still be entered and preserved; Use Current Estimate restores automatic pricing.
+- FHA models 1.75% financed upfront MIP and current typical annual MIP assumptions.
+- VA models current first-use/subsequent-use funding-fee tiers and an exemption toggle.
+- USDA Guaranteed models a 1% financed upfront fee and 0.35% annual fee.
+- Conventional PMI remains editable and is shown only below 20% down.
+- Cash purchases hide mortgage-program, rate, term, and mortgage-insurance controls.
