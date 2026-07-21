@@ -232,3 +232,6 @@ HOUSE ALPHA V27
 - Clarifies that limits apply to adjusted annual household income, not only borrower income.
 - Links to USDA’s official limit table and exact property/income eligibility checker.
 - Notes that address eligibility must still be checked separately.
+
+HOUSE ALPHA V28
+- Shortens the USDA eligibility link label to “Check exact address.”
