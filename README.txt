@@ -1,3 +1,19 @@
+HOUSE ALPHA V32
+
+This release restores the focused interaction of the original calculator while keeping the deeper v31 analysis tools.
+
+New in v32:
+- Restores a neutral gray purchase-price slider with a separate green/amber/red decision rail.
+- Keeps the modeled break-even label visible at the nearest edge when it falls outside the displayed price range.
+- Preserves the original near-break-even snap behavior.
+- Moves the duplicate hero price-position graphic behind a compact disclosure.
+- Hides unavailable conventional and FHA loan choices as down payment changes; the entire program selector still disappears when it is not relevant.
+- Collapses loan-model prose, lender notes, optional shared-housing/ADU income, and secondary growth/transaction inputs without removing any features.
+- Automatically reopens an active or invalid disclosure so hidden controls never conceal a modeled assumption or validation error.
+- Keeps round 10% stock and 4% home-price defaults, labels both as nominal planning assumptions, and retains the 7%/3% cautious stress presets.
+
+VERSION HISTORY
+
 HOUSE ALPHA V31
 
 This release turns House Alpha into a sharper, more visual decision instrument while preserving the transparent local model.
@@ -14,8 +30,6 @@ New in v31:
 - Live-in scoring and break-even copy now respect moves beyond the selected holding period.
 - Investment-ADU break-evens are suppressed when construction finishes beyond the holding period.
 - Modeled ADU added value now carries corresponding property-tax and maintenance costs after completion.
-
-VERSION HISTORY
 
 HOUSE ALPHA V30
 

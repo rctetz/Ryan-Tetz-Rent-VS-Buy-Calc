@@ -44,7 +44,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 @media(max-width:430px){.scenarioActions,.metrics{grid-template-columns:1fr}.scenarioActions .btn:first-child{grid-column:auto}.usdaLimitGrid{grid-template-columns:1fr}.scorebox{gap:10px}.score{width:74px;height:74px;font-size:26px}.verdict{font-size:20px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sliderSwitch,.sliderSwitch:before{transition:none}}
 
-/* House Alpha v31 — decision-instrument visual system */
+/* House Alpha v32 — decision-instrument visual system */
 :root{--bg:#f3f6fa;--card:#fff;--ink:#0b172a;--ink-soft:#33445c;--muted:#647187;--line:#d7e0eb;--navy:#153675;--blue:#2356c7;--green:#08775b;--amber:#916000;--red:#ae3644;--outcome:var(--blue);--positive-bg:#e9f6f1;--negative-bg:#faecee;--caution-bg:#fff5d9;--shadow:0 1px 2px #0b172a0a,0 12px 34px #17345b0b}
 body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(90deg,#2356c706 1px,transparent 1px),linear-gradient(#2356c706 1px,transparent 1px),radial-gradient(circle at 90% -10%,#dce7fb 0,transparent 34%),var(--bg);background-size:48px 48px,48px 48px,auto,auto;color:var(--ink)}
 .masthead{background:#0b172a;color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;border-bottom:1px solid #ffffff16;overflow:visible}.masthead:after{display:none}.mastheadInner{display:flex;align-items:center;justify-content:space-between;gap:18px}.brandLockup{display:flex;align-items:center;gap:12px;min-width:0}.brandMark{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:linear-gradient(145deg,#316bdf,#183f92);box-shadow:inset 0 1px 0 #ffffff42,0 8px 22px #0004;font:800 27px/1 Georgia,serif}.masthead h1{font-size:24px;letter-spacing:-.55px;margin:0;line-height:1.05}.masthead .tag{font-size:12px;color:#bac8dc;opacity:1;margin-top:3px;white-space:nowrap}.mastheadMeta{display:flex;align-items:center;gap:9px;color:#cbd6e8;font-size:11px}.mastheadMeta span{border:1px solid #ffffff28;border-radius:999px;padding:4px 7px;font-size:9px;letter-spacing:.1em;font-weight:750}.mastheadMeta b{font-weight:600}
@@ -55,13 +55,16 @@ main.wrap{padding:0 18px 70px}.workspaceBar{position:sticky;top:0;z-index:12;dis
 .analysisModule{margin-top:18px;padding:17px;border:1px solid #dde5ee;border-radius:15px;background:#fbfcfe}.moduleHeading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.moduleHeading h3{font-size:18px;letter-spacing:-.02em;margin:3px 0 0}.moduleHeading p{max-width:380px;text-align:right;color:var(--muted);font-size:11px;margin:0;line-height:1.45}.chartLegend{display:flex;gap:18px;align-items:center;margin:14px 0 7px;font-size:10px;color:var(--ink-soft)}.chartLegend span{display:flex;align-items:center;gap:6px}.legendSwatch{width:16px;height:3px;border-radius:99px;display:inline-block}.wealthChart{position:relative;min-height:270px;border-radius:12px;background:#fff;border:1px solid #e3e9f0;overflow:hidden;touch-action:pan-y}.wealthChart svg{display:block;width:100%;height:auto;min-height:250px}.wealthChart .chartGrid{stroke:#dfe6ee;stroke-width:1;vector-effect:non-scaling-stroke}.wealthChart .zeroLine{stroke:#aab6c5;stroke-width:1.2;stroke-dasharray:4 5;vector-effect:non-scaling-stroke}.wealthChart .axisLabel{font-size:10px;fill:#718096}.wealthChart .seriesPath{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}.wealthChart .seriesA{stroke:var(--outcome)}.wealthChart .seriesB{stroke:#8796aa}.wealthChart .chartCrosshair{stroke:#33445c;stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}.wealthChart .chartPoint{stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}.wealthChart .chartPoint.seriesA{fill:var(--outcome)}.wealthChart .chartPoint.seriesB{fill:#8796aa}.chartTooltip{position:absolute;z-index:3;min-width:150px;pointer-events:none;padding:9px 10px;border-radius:10px;background:#0b172aec;color:#fff;box-shadow:0 8px 30px #0b172a35;font-size:10px;line-height:1.5;transform:translate(-50%,-115%);font-variant-numeric:tabular-nums}.chartTooltip b{font-size:11px}.chartHint{font-size:9px;color:var(--muted);margin-top:7px}.leverGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.leverCard{position:relative;min-height:150px;display:flex;flex-direction:column;padding:13px;border:1px solid #dce4ed;border-radius:13px;background:#fff}.leverCard .leverIcon{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#edf3ff;color:var(--blue);font-size:14px;font-weight:800}.leverCard h4{font-size:13px;line-height:1.28;margin:10px 0 4px}.leverCard p{font-size:10px;color:var(--muted);margin:0 0 12px}.leverCard .btn{margin-top:auto;align-self:flex-start;min-height:32px;padding:6px 9px;font-size:10px}.leverCard.noCrossing{background:#f7f9fc}.leverCard.noCrossing .leverIcon{background:#edf0f4;color:#7b8798}.leverCard.noCrossing .btn{display:none}
 input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:inset 0 1px 1px #0b172a05}input:hover,select:hover{border-color:#aebdd0}input:focus,select:focus{border-color:#6c91d4;box-shadow:0 0 0 3px #2356c713}.pricebox{background:#f7faff;border-color:#d7e3f1}.presetBtn{font-weight:700}.presetBtn.active{background:var(--navy)}.status{border-left-width:3px;background:#f5f8fd}.source{background:#fbfcfe}.source b+div{font-variant-numeric:tabular-nums}h3{letter-spacing:-.01em}
 .tabShort{display:none}.strategyFill.negativeWealth{background-image:repeating-linear-gradient(135deg,#ffffff4a 0,#ffffff4a 3px,transparent 3px,transparent 7px)}.thresholdRail.reverse .thresholdZone.favorable{background:#e6a4ad}.thresholdRail.reverse .thresholdZone.unfavorable{background:#9ed4c4}.thresholdRail.noCrossing .thresholdZone{display:none}.thresholdRail.noCrossing{background:#e6a4ad}.thresholdRail.noCrossing.propertyAhead{background:#9ed4c4}.scoreNote{font-size:9px;color:var(--muted)}.srOnly{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}.printScenario{display:none}.printScenario>div{border-left:2px solid var(--line);padding-left:9px}.printScenario span{display:block;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.07em}.printScenario b{display:block;margin-top:2px;font-size:11px}
+/* v32 progressive disclosure + original decision-slider behavior */
+.pricebox{overflow:visible}.rangeWrap{padding:43px 2px 12px}.range{position:relative;z-index:3;display:block;background:#d9e1eb!important;border-color:#aebccc}.range::-webkit-slider-runnable-track{height:12px;border-radius:5px;background:#d9e1eb;border:1px solid #aebccc;box-shadow:inset 0 1px 2px #0001}.range::-moz-range-track{height:12px;border-radius:5px;background:#d9e1eb;border:1px solid #aebccc;box-shadow:inset 0 1px 2px #0001}.marker{top:2px;display:none;width:max-content;max-width:180px;height:auto;border:0;border-radius:7px;padding:5px 7px;background:#111827;color:#fff;font-size:9px;font-weight:750;line-height:1.15;white-space:nowrap;box-shadow:0 4px 12px #0b172a2f;transform:translateX(-50%)}.marker:after{content:"";position:absolute;left:50%;bottom:-6px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid #111827;transform:translateX(-50%)}.marker.edge-low{transform:none}.marker.edge-low:after{left:8px;transform:none}.marker.edge-high{transform:translateX(-100%)}.marker.edge-high:after{left:auto;right:8px;transform:none}.decisionZones{height:6px;margin:9px 1px 0;border-radius:999px;background:#d9e1eb;box-shadow:inset 0 0 0 1px #ffffff9c,0 0 0 1px #c7d1dd;overflow:hidden}.legend{margin-top:7px}.legend .sideWinner{font-size:10px}.legend .sideWinner.propertyAhead{color:var(--green)}.legend .sideWinner.alternativeAhead{color:var(--red)}.legend .close{color:var(--amber)}
+.compactDisclosure,.featureDisclosure,.heroThresholdDisclosure{border:1px solid #dce4ed;border-radius:12px;background:#f8fafc;margin-top:10px}.compactDisclosure>summary,.featureDisclosure>summary,.heroThresholdDisclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:10px 12px;color:var(--ink-soft);font-size:12px;font-weight:700;cursor:pointer;list-style:none}.compactDisclosure>summary::-webkit-details-marker,.featureDisclosure>summary::-webkit-details-marker,.heroThresholdDisclosure>summary::-webkit-details-marker{display:none}.compactDisclosure>summary:after,.featureDisclosure>summary:after,.heroThresholdDisclosure>summary:after{content:"+";width:22px;height:22px;display:grid;place-items:center;flex:none;border-radius:50%;background:#e7edf5;color:var(--navy);font-size:16px;line-height:1}.compactDisclosure[open]>summary:after,.featureDisclosure[open]>summary:after,.heroThresholdDisclosure[open]>summary:after{content:"−"}.compactDisclosure>summary small,.featureDisclosure>summary small{margin-left:auto;color:var(--muted);font-size:9px;font-weight:600}.compactDisclosure>.disclosureBody,.featureDisclosure>.disclosureBody{padding:0 12px 12px}.featureDisclosure{margin:16px 0 0;background:#fbfcfe}.featureDisclosure>summary{font-size:13px}.featureDisclosure .sharedGrid{margin-top:2px}.heroThresholdDisclosure{background:transparent;border:0;border-top:1px solid #e1e7ef;border-radius:0;margin-top:18px;padding-top:7px}.heroThresholdDisclosure>summary{padding:7px 0;min-height:36px;font-size:10px;color:var(--muted)}.heroThresholdDisclosure .thresholdBlock{margin:0;padding:12px 0 0;border-top:0}.assumptionLead{margin:-5px 0 10px;color:var(--muted);font-size:10px;line-height:1.45}.assumptionLead b{color:var(--ink-soft)}
 @media(max-width:980px){.workspaceBar{align-items:flex-start}.scenarioIdentity{display:none}.outcomeGrid{grid-template-columns:1fr 1fr;gap:24px}.savedComparison{grid-template-columns:1fr auto}.savedDeltas{grid-column:1/-1;grid-row:2}.savedActions{grid-column:2;grid-row:1}.leverGrid{grid-template-columns:1fr}}
 @media(max-width:760px){.masthead{padding:calc(10px + env(safe-area-inset-top)) 14px 10px}.brandMark{width:36px;height:36px;border-radius:10px;font-size:23px}.masthead h1{font-size:20px}.masthead .tag,.mastheadMeta{display:none}main.wrap{padding-inline:12px}.workspaceBar{gap:7px;margin-inline:-2px}.tabs{overflow-x:auto;min-width:0}.scenarioActions{display:flex;flex-wrap:nowrap}.scenarioActions .btn{padding-inline:8px}.scenarioActions #printBrief{display:none}.outcomeGrid{grid-template-columns:1fr}.quickResult.outcomeHero{border-radius:18px;padding:20px 17px}.outcomeGraphic{padding:14px}.heroActions{display:grid;grid-template-columns:1fr 1fr}.heroActions .btn{width:100%}.savedComparison{grid-template-columns:1fr}.savedDeltas{grid-template-columns:1fr 1fr 1fr;grid-column:auto;grid-row:auto}.savedActions{grid-column:auto;grid-row:auto}.resultIntro{flex-direction:column}.resultIntro .scorebox{max-width:none}.moduleHeading{flex-direction:column}.moduleHeading p{text-align:left}.wealthChart{min-height:230px}.wealthChart svg{min-height:220px}.leverGrid{grid-template-columns:1fr}.leverCard{min-height:0}.analysisModule{padding:14px}.metrics{grid-template-columns:1fr 1fr}.scenarioBar{flex-direction:row;align-items:center}.scenarioActions{display:flex}.scenarioActions .btn:first-child{grid-column:auto}}
 @media(max-width:480px){.tab{padding-inline:9px;font-size:12px}.tabLong{display:none}.tabShort{display:inline}.scenarioActions #resetScenario{display:none}.outcomeHero h2{font-size:27px}.outcomeValue{font-size:46px}.outcomeGraphic{margin-inline:-3px}.savedDeltas{grid-template-columns:1fr}.savedDeltas>div{padding:7px 0 0;border-left:0;border-top:1px solid var(--line)}.heroActions{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.metric b{font-size:18px}.chartLegend{align-items:flex-start;flex-direction:column;gap:5px}}
-@media(pointer:coarse){.tab,.btn.compact{min-height:44px}}
+@media(pointer:coarse){.tab,.btn.compact,.heroThresholdDisclosure>summary{min-height:44px}.marker{font-size:10px}}
 @media(prefers-reduced-motion:no-preference){.outcomeHero.is-updated .outcomeValue{animation:resultTick .25s ease-out}.chartTooltip{transition:left .08s linear,top .08s linear}@keyframes resultTick{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}}
 @media(prefers-reduced-motion:reduce){.btn,.strategyFill,.chartTooltip{transition:none!important}.btn:hover{transform:none}}
-@media print{body{background:#fff;font-size:12px}.masthead{background:#fff;color:var(--ink);padding:0 0 14px;border-bottom:2px solid var(--ink)}.brandMark{color:#fff}.masthead .tag{display:block;color:var(--muted)}.workspaceBar,.scenarioBar,.tabs,.validationStatus,.heroActions,.savedComparison,.left,.installbar,.chartHint,#undoLever,.leverCard .btn{display:none!important}main.wrap{max-width:none;padding:16px 0}#calculator{display:block!important}#downpayments,#market{display:none!important}.printScenario{display:grid!important;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 12px;padding:11px 0;border-bottom:1px solid var(--line)}.quickResult.outcomeHero{box-shadow:none;border:1px solid #aab6c5;break-inside:avoid}.grid{display:block}.resultCard{box-shadow:none;border:0;padding:18px 0}.resultIntro .scorebox{display:none}.analysisModule{break-inside:avoid}.wealthChart{min-height:220px}.wealthChart svg{height:220px}.leverGrid{grid-template-columns:repeat(3,1fr)}.leverCard{min-height:120px}@page{margin:.55in}}
+@media print{body{background:#fff;font-size:12px}.masthead{background:#fff;color:var(--ink);padding:0 0 14px;border-bottom:2px solid var(--ink)}.brandMark{color:#fff}.masthead .tag{display:block;color:var(--muted)}.workspaceBar,.scenarioBar,.tabs,.validationStatus,.heroActions,.savedComparison,.left,.installbar,.chartHint,#undoLever,.leverCard .btn,.heroThresholdDisclosure{display:none!important}main.wrap{max-width:none;padding:16px 0}#calculator{display:block!important}#downpayments,#market{display:none!important}.printScenario{display:grid!important;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 12px;padding:11px 0;border-bottom:1px solid var(--line)}.quickResult.outcomeHero{box-shadow:none;border:1px solid #aab6c5;break-inside:avoid}.grid{display:block}.resultCard{box-shadow:none;border:0;padding:18px 0}.resultIntro .scorebox{display:none}.analysisModule{break-inside:avoid}.wealthChart{min-height:220px}.wealthChart svg{height:220px}.leverGrid{grid-template-columns:repeat(3,1fr)}.leverCard{min-height:120px}@page{margin:.55in}}
 </style></head><body>
 <header class="masthead"><div class="wrap mastheadInner"><div class="brandLockup"><span class="brandMark" aria-hidden="true">α</span><div><h1>House Alpha</h1><div class="tag">A transparent decision engine for buying, renting, and property strategies.</div></div></div><div class="mastheadMeta"><span>LOCAL-FIRST</span><b>Planning model</b></div></div></header>
 <main class="wrap">
@@ -69,7 +72,7 @@ input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:i
 <section class="quickResult outcomeHero" id="quickResult" aria-busy="true" data-state="neutral">
 <div class="outcomeGrid"><div class="outcomeCopy"><span class="eyebrow" id="heroContext">Modeled outcome</span><h2 id="quickVerdict">Loading local assumptions…</h2><div class="outcomeValue" id="heroAdvantage">—</div><div class="outcomeUnit" id="heroWinner">wealth advantage</div><p id="quickExplain">House Alpha is preparing the comparison.</p><div class="outcomeMeta"><span class="alphaScore" title="Directional planning signal, not a probability or credit score."><b id="heroScore">—</b> Alpha signal</span><span class="scoreNote">Directional—not a probability</span><span class="quickBreakEven" id="quickBreakEven"></span></div></div>
 <div class="outcomeGraphic"><div class="graphicHeading"><span>Ending wealth</span><b id="heroHorizon">Holding period</b></div><div class="strategyCompare"><div class="strategyRow"><div class="strategyLine"><span id="heroStrategyALabel">Strategy A</span><b id="heroStrategyAValue">—</b></div><div class="strategyTrack"><span class="strategyFill strategyA" id="heroStrategyABar"></span></div></div><div class="strategyRow"><div class="strategyLine"><span id="heroStrategyBLabel">Strategy B</span><b id="heroStrategyBValue">—</b></div><div class="strategyTrack"><span class="strategyFill strategyB" id="heroStrategyBBar"></span></div></div></div>
-<div class="thresholdBlock"><div class="graphicHeading"><span>Purchase-price position</span><b id="heroPricePosition">Calculating</b></div><div class="thresholdRail" id="thresholdRail"><span class="thresholdZone favorable"></span><span class="thresholdZone caution"></span><span class="thresholdZone unfavorable"></span><span class="thresholdMarker breakEven" id="heroBreakEvenMarker"><i></i><em>Break-even</em></span><span class="thresholdMarker current" id="heroCurrentMarker"><i></i><em>Current</em></span></div><div class="thresholdLabels"><span id="heroRailMin">—</span><span id="heroRailMax">—</span></div></div></div></div>
+<details class="heroThresholdDisclosure"><summary>Show purchase-price position</summary><div class="thresholdBlock"><div class="graphicHeading"><span>Purchase-price position</span><b id="heroPricePosition">Calculating</b></div><div class="thresholdRail" id="thresholdRail"><span class="thresholdZone favorable"></span><span class="thresholdZone caution"></span><span class="thresholdZone unfavorable"></span><span class="thresholdMarker breakEven" id="heroBreakEvenMarker"><i></i><em>Break-even</em></span><span class="thresholdMarker current" id="heroCurrentMarker"><i></i><em>Current</em></span></div><div class="thresholdLabels"><span id="heroRailMin">—</span><span id="heroRailMax">—</span></div></div></details></div></div>
 <div class="heroActions"><button class="btn" id="viewDetails" type="button">Explore the result</button><button class="btn secondary" id="heroPrintBrief" type="button">Print decision brief</button></div></section>
 <div class="srOnly" id="resultAnnouncement" role="status" aria-live="polite" aria-atomic="true"></div>
 <section class="printScenario" id="printScenario" aria-label="Scenario assumptions"><div><span>Location</span><b id="printLocation">—</b></div><div><span>Strategy</span><b id="printStrategy">—</b></div><div><span>Property</span><b id="printProperty">—</b></div><div><span>Purchase price</span><b id="printPrice">—</b></div><div><span>Financing</span><b id="printFinancing">—</b></div><div><span>Holding period</span><b id="printHorizon">—</b></div><div><span>Current rent</span><b id="printRent">—</b></div><div><span>Generated</span><b id="printGenerated">—</b></div></section>
@@ -87,8 +90,8 @@ input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:i
 <h3>Price discovery</h3>
 <div class="pricebox"><div class="pricevalue"><span>Purchase price</span><b id="priceDisplay">$385,000</b></div>
 <div class="muted" id="priceEstimateNote">Local editable purchase-price estimate</div>
-<div class="rangeWrap"><input class="range" id="priceSlider" type="range" min="100000" max="800000" step="1000" value="385000"><div class="marker" id="beMarker" title="Modeled break-even price"></div></div>
-<div class="legend"><span class="buy" id="priceLowWinner">BUYING WINS</span><span class="close">CLOSE CALL</span><span class="rentwin" id="priceHighWinner">RENTING WINS</span></div>
+<div class="rangeWrap"><div class="marker" id="beMarker" title="Modeled break-even price"></div><input class="range" id="priceSlider" type="range" min="100000" max="800000" step="1000" value="385000" aria-describedby="priceSliderDescription"><div class="decisionZones" id="priceDecisionZones" aria-hidden="true"></div></div><span class="srOnly" id="priceSliderDescription"></span>
+<div class="legend"><span class="sideWinner propertyAhead" id="priceLowWinner">BUYING WINS</span><span class="close">CLOSE CALL</span><span class="sideWinner alternativeAhead" id="priceHighWinner">RENTING WINS</span></div>
 <div class="sliderMeta"><span id="sliderRangeText"></span><span class="snapText" id="snapText"></span><button class="btn secondary" id="useLocalPrice" style="padding:6px 9px;font-size:11px">Use local estimate</button></div></div>
 <div class="form" style="margin-top:10px">
 <div><label>Exact purchase price</label><input id="price" type="number" value="385000" step="1000"></div>
@@ -133,7 +136,7 @@ input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:i
 </div>
 </div>
 
-<div class="status" id="loanProgramDetails" style="margin-top:9px"></div>
+<details class="compactDisclosure" id="loanModelDisclosure"><summary>How this loan is modeled <small>Rates, fees &amp; eligibility</small></summary><div class="disclosureBody"><div class="status" id="loanProgramDetails"></div></div></details>
 
 <div id="usdaIncomeBox" class="sharedCard" style="display:none;margin-top:10px">
 <div><b>USDA Guaranteed income limits — FY 2026</b></div>
@@ -189,9 +192,9 @@ input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:i
 <div id="pmiCancelWrap"><label>PMI cancellation LTV %</label><input id="pmiCancelLtv" type="number" value="80" step="1" min="70" max="100"></div>
 </div>
 
-<div class="status" id="mortgageDisclaimer" style="margin-top:10px">
+<details class="compactDisclosure" id="mortgageDisclaimer"><summary>Financing assumptions &amp; lender note <small>Planning model</small></summary><div class="disclosureBody"><div class="status">
 <b>Planning estimate—not a lender quote.</b> The live benchmark comes from Freddie Mac PMMS. Low-down-payment and government-program rate differences use editable-model planning assumptions; actual pricing depends on credit, points, loan size, occupancy, property type, lender, and eligibility.
-</div>
+</div></div></details>
 
 <h3 id="primaryRentHeading">Rent-versus-own assumptions</h3>
 <div id="primaryRentSection">
@@ -208,7 +211,7 @@ input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:i
 <div class="muted" id="renterGarageNote" style="margin-top:5px"></div>
 </div>
 
-<h3>Shared housing / income offsets</h3>
+<details class="featureDisclosure" id="incomeOffsetsDisclosure"><summary>Optional income &amp; shared housing <small id="incomeOffsetsSummary">Roommates, ADUs &amp; duplexes</small></summary><div class="disclosureBody">
 <div class="sharedGrid">
 <div class="sharedCard" id="renterShareCard">
 <div class="switchrow" style="border:0;padding:0;background:transparent">
@@ -306,6 +309,7 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 </div>
 </div>
 </div>
+</div></details>
 </div>
 
 <div id="liveInSection" style="display:none">
@@ -509,28 +513,31 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 </div>
 </div>
 <h3>Growth assumptions</h3>
+<div class="assumptionLead"><b>Nominal means before inflation.</b> Defaults use 10% stock total return and 4% home appreciation; choose 7% and 3% for a more cautious stress test.</div>
 <div class="form">
 <div>
-<label>S&amp;P 500 annual return %</label>
+<label>S&amp;P 500 nominal total return %</label>
 <input id="stockReturn" type="number" value="10" step=".25">
 <div class="presetGroup">
-<button type="button" class="presetBtn active" id="return10">10% average</button>
-<button type="button" class="presetBtn" id="return7">7% conservative</button>
+<button type="button" class="presetBtn active" id="return10">10% historical</button>
+<button type="button" class="presetBtn" id="return7">7% cautious</button>
 </div>
 </div>
 <div>
-<label>Home appreciation %</label>
+<label>Nominal home-price appreciation %</label>
 <input id="appreciation" type="number" value="4" step=".25">
 <div class="presetGroup">
-<button type="button" class="presetBtn active" id="appreciation4">4% average</button>
-<button type="button" class="presetBtn" id="appreciation3">3% conservative</button>
+<button type="button" class="presetBtn active" id="appreciation4">4% planning</button>
+<button type="button" class="presetBtn" id="appreciation3">3% cautious</button>
 </div>
 </div>
+</div>
+<details class="compactDisclosure" id="advancedGrowthDisclosure"><summary>Advanced growth &amp; transaction assumptions <small id="advancedGrowthSummary">Rent, inflation &amp; closing costs</small></summary><div class="disclosureBody"><div class="form">
 <div><label>Near-term rent growth %</label><input id="rentGrowth" type="number" value="10"></div>
 <div><label>Long-term inflation %</label><input id="marketGrowth" type="number" value="3"></div>
 <div><label>Buying closing costs %</label><input id="buyClose" type="number" value="2"></div>
 <div><label>Selling costs %</label><input id="sellCost" type="number" value="7"></div>
-</div>
+</div></div></details>
 <div class="row" style="margin-top:14px"><button class="btn" id="refresh">Refresh market benchmarks</button></div><div class="muted" id="updated" style="margin-top:7px"></div>
 </div>
 
@@ -656,12 +663,17 @@ function syncRestoredScenarioUi(){
  $('ownerGarageNote').textContent=garageCharge?`Separate owner-paid garage/storage uses your saved ${money(n('storage'))}/mo assumption.`:$('ownerGarageSituation').value==='included'?'Garage/storage is included with the purchased property, so the modeled monthly cost is $0.':'No owner garage/storage need is modeled, so the monthly cost is $0.';
  applyRenterStorageToggle();
  const renterOn=$('renterShareOn').checked,ownerOn=$('ownerIncomeOn').checked,ownerType=$('ownerIncomeType').value,roommate=ownerType==='roommate',newAdu=ownerType==='newadu';
+ $('incomeOffsetsDisclosure').open=renterOn||ownerOn;$('incomeOffsetsSummary').textContent=renterOn&&ownerOn?'2 features on':renterOn||ownerOn?'1 feature on':'Roommates, ADUs & duplexes';
  $('renterShareFields').style.display=renterOn?'block':'none';$('ownerIncomeFields').style.display=ownerOn?'block':'none';$('renterShareCard').classList.toggle('active',renterOn);$('ownerIncomeCard').classList.toggle('active',ownerOn);
  $('ownerBedroomsWrap').style.display=roommate?'none':'block';$('ownerReserveWrap').style.display=roommate?'none':'block';$('ownerExpenseWrap').style.display=roommate?'none':'block';$('ownerManagementBlock').style.display=roommate?'none':'block';$('newAduProject').style.display=newAdu?'block':'none';
  $('ownerManagementRateWrap').style.display=$('ownerManagementOn').checked&&!roommate?'block':'none';$('aduLoanRateWrap').style.display=$('aduFunding').value==='loan'?'block':'none';$('aduLoanTermWrap').style.display=$('aduFunding').value==='loan'?'block':'none';
  $('managementRateWrap').style.display=$('managementOn').checked?'block':'none';$('investmentAduFields').style.display=$('investmentAduOn').checked?'block':'none';$('investmentAduCard').classList.toggle('active',$('investmentAduOn').checked);
  $('invAduLoanRateWrap').style.display=$('invAduFunding').value==='loan'?'block':'none';$('invAduLoanTermWrap').style.display=$('invAduFunding').value==='loan'?'block':'none';$('invAduManagementRateWrap').style.display=$('invAduManagementOn').checked?'block':'none';
+ updateAdvancedGrowthSummary();
  applyLoanProgramRules();applyPmiVisibility();updateLiveInControls(false);updateDownPresetState();updateUsdaIncomeBox();
+}
+function updateAdvancedGrowthSummary(){
+ const custom=Math.abs(n('rentGrowth')-10)>.001||Math.abs(n('marketGrowth')-3)>.001||Math.abs(n('buyClose')-2)>.001||Math.abs(n('sellCost')-7)>.001;$('advancedGrowthSummary').textContent=custom?'Custom assumptions':'Rent, inflation & closing costs'
 }
 function restoreScenario(saved){
  if(!saved)return false;const previousSuspend=suspendUpdates;suspendUpdates=true;
@@ -777,7 +789,7 @@ function scenarioIsValid(focus=false){
  const invalid=controls.filter(el=>{if(!isRelevant(el))return false;const validity=el.validity;return validity.valueMissing||validity.badInput||validity.rangeUnderflow||validity.rangeOverflow||validity.customError||validity.typeMismatch});
  if(!invalid.length){$('validationStatus').classList.remove('show');$('validationStatus').textContent='';return true}
  invalid.forEach(el=>el.setAttribute('aria-invalid','true'));const first=invalid[0],label=first.labels?.[0]?.textContent?.trim()||first.id;
- $('validationStatus').textContent=`Check ${label}. ${first.validationMessage||`Enter a value between ${first.min||'the allowed minimum'} and ${first.max||'the allowed maximum'}.`}`;$('validationStatus').classList.add('show');if(focus){const calculatorTab=document.querySelector('.tab[data-tab="calculator"]');if(!calculator.classList.contains('active'))activateTab(calculatorTab,false);first.focus()}return false
+ $('validationStatus').textContent=`Check ${label}. ${first.validationMessage||`Enter a value between ${first.min||'the allowed minimum'} and ${first.max||'the allowed maximum'}.`}`;$('validationStatus').classList.add('show');if(focus){const calculatorTab=document.querySelector('.tab[data-tab="calculator"]');if(!calculator.classList.contains('active'))activateTab(calculatorTab,false);const disclosure=first.closest('details:not([open])');if(disclosure)disclosure.open=true;first.focus()}return false
 }
 function enhanceAccessibility(){
  document.querySelectorAll('button:not([type])').forEach(button=>button.type='button');
@@ -852,7 +864,9 @@ function applyLoanProgramRules(){
  const conventionalOption=$('loanProgram').querySelector('option[value="conventional"]');
  const fhaOption=$('loanProgram').querySelector('option[value="fha"]');
  conventionalOption.disabled=down<3;
+ conventionalOption.hidden=down<3;
  fhaOption.disabled=down<3.5;
+ fhaOption.hidden=down<3.5;
 
  if(rental||cash||down>=20){
    $('loanProgram').value='conventional';
@@ -1331,28 +1345,28 @@ function applyLocalPurchaseEstimate(force=true){
  setDynamicSliderRange(estimate,n('price'));
 }
 function updatePriceVisual(bp,priceDirection){
- const slider=$('priceSlider'),min=+slider.min,max=+slider.max;
+ const slider=$('priceSlider'),zones=$('priceDecisionZones'),marker=$('beMarker'),min=+slider.min,max=+slider.max;
  currentBreakEvenPrice=Number.isFinite(bp)?bp:null;
- const lowColor=priceDirection.rangeLowPropertyAhead?'var(--green)':'var(--red)',highColor=priceDirection.rangeHighPropertyAhead?'var(--green)':'var(--red)',rangeBackground=lowColor===highColor?lowColor:`linear-gradient(90deg,${lowColor} 0%,${lowColor} 50%,${highColor} 50%,${highColor} 100%)`;
+ const lowColor=priceDirection.rangeLowPropertyAhead?'var(--green)':'var(--red)',highColor=priceDirection.rangeHighPropertyAhead?'var(--green)':'var(--red)';
+ marker.classList.remove('edge-low','edge-high');
  if(!Number.isFinite(bp)){
-   $('beMarker').style.display='none';slider.style.background=rangeBackground;slider.classList.remove('snap');$('snapText').textContent='No crossing in tested range';return
+   marker.style.display='none';zones.style.background=lowColor;slider.classList.remove('snap');$('snapText').textContent='No crossing in tested range';$('priceSliderDescription').textContent=`No purchase-price crossing in the displayed range. ${priceDirection.rangeLowPropertyAhead?'The property strategy':'The alternative strategy'} stays ahead. Current price ${money(n('price'))}.`;return
  }
+ const markerPct=Math.max(0,Math.min(100,(bp-min)/(max-min)*100));
+ marker.style.display='block';marker.style.left=markerPct+'%';marker.textContent=`Break-even ${money(bp)}`;marker.title=`Modeled break-even ${money(bp)}`;
  if(bp<min||bp>max){
-   $('beMarker').style.display='none';slider.style.background=rangeBackground;slider.classList.remove('snap');$('snapText').textContent=`Break-even ${bp<min?'below':'above'} slider range`;return
- }else{
-   $('beMarker').style.display='block';
-   $('beMarker').style.left=Math.max(0,Math.min(100,(bp-min)/(max-min)*100))+'%';
-   $('beMarker').title=`Break-even ${money(bp)}`;
+   marker.classList.add(bp<min?'edge-low':'edge-high');zones.style.background=lowColor===highColor?lowColor:`linear-gradient(90deg,${lowColor} 0 50%,${highColor} 50% 100%)`;slider.classList.remove('snap');$('snapText').textContent=`Break-even ${bp<min?'below':'above'} slider range`;$('priceSliderDescription').textContent=`Modeled break-even ${money(bp)}, ${bp<min?'below':'above'} the displayed range. Current price ${money(n('price'))}.`;return
  }
  const yellowWidth=Math.max(10000,(max-min)*.03);
- const center=bp||min;
+ const center=bp;
  const y1=Math.max(min,center-yellowWidth),y2=Math.min(max,center+yellowWidth);
  const p1=(y1-min)/(max-min)*100,p2=(y2-min)/(max-min)*100;
- slider.style.background=`linear-gradient(90deg,${lowColor} 0%,${lowColor} ${p1}%,var(--amber) ${p1}%,var(--amber) ${p2}%,${highColor} ${p2}%,${highColor} 100%)`;
+ zones.style.background=`linear-gradient(90deg,${lowColor} 0%,${lowColor} ${p1}%,var(--amber) ${p1}%,var(--amber) ${p2}%,${highColor} ${p2}%,${highColor} 100%)`;
  const threshold=Math.max(2500,(max-min)*.006);
  const snapped=bp&&Math.abs(n('price')-bp)<=threshold;
  slider.classList.toggle('snap',!!snapped);
  $('snapText').textContent=snapped?`Break-even: ${money(bp)}`:'';
+ const lowWinner=$('priceLowWinner').textContent.toLowerCase(),highWinner=$('priceHighWinner').textContent.toLowerCase();$('priceSliderDescription').textContent=`Below ${money(bp)}, ${lowWinner}. Above ${money(bp)}, ${highWinner}. Current price ${money(n('price'))}.`;
 }
 function scaledInsurance(price){
  if(!$('insuranceAuto').checked) return n('insurance');
@@ -1455,7 +1469,10 @@ function update(){
  $('investmentAduMetrics').style.display=x.investmentAduEnabled?'block':'none';if(x.investmentAduEnabled){const completionIndex=Math.min(x.invAduCompletionMonth,x.rec.length-1),ar=x.rec[completionIndex],completed=x.invAduCompletionMonth<=Math.round(x.v.years*12);$('invAduRentResult').textContent=completed?money(ar.invAduGrossRent)+'/mo':'Not completed';$('invAduCashFlowResult').textContent=completed?(ar.invAduCashFlow>=0?'+':'')+money(ar.invAduCashFlow)+'/mo':'—';$('invAduCashFlowResult').className=completed?(ar.invAduCashFlow>=0?'good':'bad'):'';$('invAduValueResult').textContent=completed?money(ar.invAduValue):'—';if(completed){const aduRentRoot=root('invAduRent',0,12000),aduCostRoot=root('invAduBuildCost',0,1500000);$('investmentAduBreakEven').innerHTML=`The ADU begins producing rent after month <b>${x.invAduCompletionMonth}</b>. Modeled ADU-rent break-even: <b>${aduRentRoot?money(aduRentRoot)+'/mo':noRootMessage('invAduRent',0,12000)}</b>. Modeled construction-cost break-even: <b>${aduCostRoot?money(aduCostRoot):noRootMessage('invAduBuildCost',0,1500000)}</b>. Tax and maintenance on modeled added value are included.`}else $('investmentAduBreakEven').innerHTML=`The ADU completes in month <b>${x.invAduCompletionMonth}</b>, after the ${x.v.years}-year holding period, so ADU break-evens are not shown.`;}
 
  const bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):x.liveInMode?liveAltRoot:root('rent',250,12000),priceDirection=priceDirectionAtRoot(bp),propertyLabel=x.rentalMode?'PROPERTY':x.liveInMode?'LIVE-IN STRATEGY':'BUYING',alternativeLabel=x.rentalMode?'S&P 500':x.liveInMode?'RENT + S&P':'RENTING';
- $('priceLowWinner').textContent=`${priceDirection.rangeLowPropertyAhead?propertyLabel:alternativeLabel} WINS`;$('priceHighWinner').textContent=`${priceDirection.rangeHighPropertyAhead?propertyLabel:alternativeLabel} WINS`;updatePriceVisual(bp,priceDirection);const bpText=bp?money(bp):noRootMessage('price',50000,1500000),brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`)),rrText=x.liveInMode&&!liveAltRentActive?'not applicable within this holding period':rr?money(rr)+'/mo':noRootMessage(x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',250,x.rentalMode?20000:12000);
+ const lowWinner=$('priceLowWinner'),highWinner=$('priceHighWinner');
+ lowWinner.textContent=`${priceDirection.rangeLowPropertyAhead?propertyLabel:alternativeLabel} WINS`;highWinner.textContent=`${priceDirection.rangeHighPropertyAhead?propertyLabel:alternativeLabel} WINS`;
+ lowWinner.classList.toggle('propertyAhead',priceDirection.rangeLowPropertyAhead);lowWinner.classList.toggle('alternativeAhead',!priceDirection.rangeLowPropertyAhead);highWinner.classList.toggle('propertyAhead',priceDirection.rangeHighPropertyAhead);highWinner.classList.toggle('alternativeAhead',!priceDirection.rangeHighPropertyAhead);
+ updatePriceVisual(bp,priceDirection);const bpText=bp?money(bp):noRootMessage('price',50000,1500000),brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`)),rrText=x.liveInMode&&!liveAltRentActive?'not applicable within this holding period':rr?money(rr)+'/mo':noRootMessage(x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',250,x.rentalMode?20000:12000);
  if(x.rentalMode)$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`;
  else if(x.liveInMode){const mainThreshold=liveMainRentActive?(liveMainRoot?money(liveMainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)):'not active within this holding period';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the live-in strategy matches rent + S&amp;P near <b>${bpText}</b> purchase price. Mortgage-rate crossing: <b>${brText}</b>. Comparable-rent crossing: <b>${rrText}</b>. Main-home rent crossing: <b>${mainThreshold}</b>.${liveMoveWithinHorizon?'':` The modeled move occurs after year ${x.v.years}; only rents active before that point affect these thresholds.`}`;}
  else{const bpLabel=bp?rootDirection('price',bp):'Purchase-price result',brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result',rrLabel=rr!==null?rootDirection('rent',rr):'Current-rent result';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;}
@@ -1631,6 +1648,8 @@ function applyAduFundingToggle(){
 function applySharedHousingToggles(){
  const renterOn=$('renterShareOn').checked;
  const ownerOn=$('ownerIncomeOn').checked;
+ if(renterOn||ownerOn)$('incomeOffsetsDisclosure').open=true;
+ $('incomeOffsetsSummary').textContent=renterOn&&ownerOn?'2 features on':renterOn||ownerOn?'1 feature on':'Roommates, ADUs & duplexes';
  $('renterShareFields').style.display=renterOn?'block':'none';
  $('ownerIncomeFields').style.display=ownerOn?'block':'none';
  $('renterShareCard').classList.toggle('active',renterOn);
@@ -1937,6 +1956,7 @@ $('return10').onclick=()=>setReturnPreset(10);
 $('return7').onclick=()=>setReturnPreset(7);
 $('appreciation4').onclick=()=>setAppreciationPreset(4);
 $('appreciation3').onclick=()=>setAppreciationPreset(3);
+['rentGrowth','marketGrowth','buyClose','sellCost'].forEach(id=>$(id).addEventListener('input',updateAdvancedGrowthSummary));
 $('rentCollected').addEventListener('input',()=>{rentAuto=false;update()});
 $('rentCollectedCap').addEventListener('input',()=>{rentAuto=false;update()});
 document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>activateTab(tab,false));

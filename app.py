@@ -205,7 +205,7 @@ def usda_limits_for_location(location):
 MORTGAGE_URL='https://www.freddiemac.com/pmms'
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/31.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/32.0'})
     with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
