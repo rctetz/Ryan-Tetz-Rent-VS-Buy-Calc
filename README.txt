@@ -1,4 +1,4 @@
-HOUSE ALPHA V33
+HOUSE ALPHA V33.1
 
 This release fixes the price break-even control and makes financing choices genuinely progressive.
 
@@ -10,6 +10,8 @@ New in v33:
 - Shows only programs compatible with the current down payment inside the chooser.
 - Hides all program controls at 20% or more and all financing controls for a cash purchase, while retaining one compact financing-details disclosure when relevant.
 - Keeps the Down payments table on the selected loan program below 20% instead of silently swapping in unrelated programs.
+- Normalizes each comparison row to that row's program-specific estimated rate.
+- Reveals the modeled PMI assumptions for 15% investment-property scenarios instead of applying a hidden cost.
 
 VERSION HISTORY
 
