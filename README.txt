@@ -1,3 +1,41 @@
+HOUSE ALPHA V31
+
+This release turns House Alpha into a sharper, more visual decision instrument while preserving the transparent local model.
+
+New in v31:
+- A redesigned outcome hero makes the winner, modeled wealth advantage, ending wealth, and price break-even immediately legible.
+- A responsive, interactive wealth-path chart supports mouse, touch, and keyboard inspection without an external chart library.
+- Decision-lever cards let you try the modeled price, rate, or rent break-even and undo the experiment in one click.
+- Saved-scenario comparison shows how current edits change ending advantage, month-one economics, and break-even price.
+- A focused print layout creates a clean decision brief from the current scenario.
+- A bespoke 1200×630 House Alpha preview card sharpens shared links and social unfurls.
+- A compact masthead and workspace bar improve hierarchy, density, and mobile usability.
+- Expanded numeric guardrails cover ADU loans, costs, rents, sizes, and operating assumptions; rental scenarios require at least 15% down.
+- Live-in scoring and break-even copy now respect moves beyond the selected holding period.
+- Investment-ADU break-evens are suppressed when construction finishes beyond the holding period.
+- Modeled ADU added value now carries corresponding property-tax and maintenance costs after completion.
+
+VERSION HISTORY
+
+HOUSE ALPHA V30
+
+This release polishes the existing House Alpha model without changing its core financial assumptions.
+
+New in v30:
+- Save one complete scenario on the current device and restore it after reopening the app.
+- Share a concise, mode-aware result summary through the phone share sheet or clipboard.
+- Reset saved edits with confirmation.
+- Adds a compact result summary near the top, with a direct jump to full details.
+- Refreshes market benchmarks without erasing manual scenario edits.
+- Adds clearer loading, validation, keyboard, focus, tab, and switch behavior.
+- Improves phone layouts, touch targets, tables, safe-area spacing, and the install prompt.
+- Removes the false $50,000 break-even marker when no modeled crossing exists.
+- Validates unsafe values such as zero-year mortgage terms and negative holding periods.
+- Fixes live-in move dates that fall beyond the modeled holding period.
+- Defers the expensive down-payment comparison until that tab is opened.
+- Strengthens offline data caching so an installed app can reopen with its last known location data.
+- Parallelizes live mortgage, rent, and home-value checks and reports saved fallbacks honestly when parsing fails.
+
 HOUSE ALPHA V4
 
 Deploying over the existing Render app:

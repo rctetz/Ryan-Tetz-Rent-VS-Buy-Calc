@@ -1,28 +1,35 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10243f"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b172a"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="House Alpha">
 <link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="description" content="Compare buying, renting, and property strategies with a transparent, local-first housing decision model.">
+<meta property="og:type" content="website"><meta property="og:title" content="House Alpha — Housing Decision Engine">
+<meta property="og:description" content="See the wealth path, break-even points, and assumptions behind a housing decision.">
+<meta property="og:image" content="__HOUSE_ALPHA_ORIGIN__/social-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="House Alpha — Housing Decision Engine">
+<meta name="twitter:description" content="See the wealth path, break-even points, and assumptions behind a housing decision."><meta name="twitter:image" content="__HOUSE_ALPHA_ORIGIN__/social-card.png">
 <title>House Alpha</title>
 <style>
-:root{--bg:#eef3f8;--card:#fff;--ink:#132033;--muted:#667085;--line:#dfe5ec;--navy:#10243f;--blue:#2563eb;--green:#138a61;--amber:#d28a16;--red:#c73a3a}
-*{box-sizing:border-box}body{margin:0;font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 90% 0,#dce8ff 0,transparent 28%),var(--bg);color:var(--ink)}
-header{background:linear-gradient(135deg,#0c1f38,#244f8e 65%,#2b6ad9);color:#fff;padding:24px 18px 29px;position:relative;overflow:hidden}
+:root{--bg:#eef3f8;--card:#fff;--ink:#132033;--muted:#596579;--line:#d8e0ea;--navy:#10243f;--blue:#1d5fd1;--green:#087451;--amber:#a96607;--red:#b62d2d;--shadow:0 12px 34px #18314c12}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 90% 0,#dce8ff 0,transparent 28%),var(--bg);color:var(--ink)}
+button,input,select{font:inherit}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid #71a8ff;outline-offset:2px}
+header{background:linear-gradient(135deg,#0c1f38,#244f8e 65%,#2b6ad9);color:#fff;padding:calc(24px + env(safe-area-inset-top)) 18px 29px;position:relative;overflow:hidden}
 header:after{content:"α";position:absolute;right:16px;top:-45px;font-size:190px;font-weight:900;opacity:.08}
-.wrap{max-width:1220px;margin:auto}h1{margin:0 0 4px;font-size:clamp(30px,5vw,47px);letter-spacing:-1.5px}.tag{opacity:.9;line-height:1.4}
-.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}.tab.active{background:var(--navy);color:#fff}
+.wrap{max-width:1220px;margin:auto}main.wrap{padding:0 16px 48px}h1{margin:0 0 4px;font-size:clamp(30px,5vw,47px);letter-spacing:-1.5px}.tag{opacity:.9;line-height:1.4;max-width:680px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:0;padding:14px 0 10px;position:sticky;top:0;z-index:8;background:linear-gradient(var(--bg) 76%,transparent)}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;min-height:44px;font-weight:800;cursor:pointer}.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 7px 24px #18314c0c}.left{grid-column:span 5}.right{grid-column:span 7}.full{grid-column:1/-1}@media(max-width:920px){.left,.right{grid-column:1/-1}}
 h2{margin:0 0 13px;font-size:20px}h3{font-size:16px;margin:18px 0 9px}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}@media(max-width:560px){.form{grid-template-columns:1fr}}
-label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin-bottom:5px}input,select{width:100%;padding:11px;border:1px solid #cfd7e2;border-radius:10px;font-size:15px;background:#fff;color:var(--ink)}
-select{font-weight:650}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.btn{border:0;background:var(--blue);color:white;padding:11px 14px;border-radius:11px;font-weight:800;cursor:pointer}.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}.presetGroup{display:flex;gap:7px;margin-top:7px}.presetBtn{flex:1;border:1px solid #cbd5e1;background:#fff;color:var(--ink);padding:9px 8px;border-radius:10px;font-weight:850;cursor:pointer}.presetBtn.active{background:var(--navy);color:#fff;border-color:var(--navy)}.sensitivity{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}@media(max-width:560px){.sensitivity{grid-template-columns:1fr}}
+label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin-bottom:5px}input,select{width:100%;padding:11px;border:1px solid #c7d1dd;border-radius:10px;font-size:16px;background:#fff;color:var(--ink)}input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--red);box-shadow:0 0 0 3px #b62d2d18}
+select{font-weight:650}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.btn{border:0;background:var(--blue);color:white;padding:11px 14px;min-height:44px;border-radius:11px;font-weight:800;cursor:pointer}.secondary{background:#fff;color:var(--blue);border:1px solid var(--blue)}.danger{background:#fff;color:var(--red);border:1px solid #d9a0a0}.presetGroup{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap}.presetBtn{flex:1 1 62px;border:1px solid #cbd5e1;background:#fff;color:var(--ink);padding:9px 8px;min-height:44px;border-radius:10px;font-weight:850;cursor:pointer}.presetBtn.active{background:var(--navy);color:#fff;border-color:var(--navy)}.sensitivity{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}@media(max-width:560px){.sensitivity{grid-template-columns:1fr}}
 .switchrow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);padding:10px 12px;border-radius:11px;background:#f9fbfd}.switch{position:relative;width:48px;height:28px}.switch input{opacity:0;width:0;height:0}.sliderSwitch{position:absolute;inset:0;background:#bbc4cf;border-radius:999px;cursor:pointer;transition:.2s}.sliderSwitch:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:white;border-radius:50%;box-shadow:0 1px 4px #0003;transition:.2s}.switch input:checked+.sliderSwitch{background:var(--green)}.switch input:checked+.sliderSwitch:before{transform:translateX(20px)}
 .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:620px){.metrics{grid-template-columns:1fr}}.metric{padding:13px;border:1px solid var(--line);border-radius:13px;background:#fafcfe}.metric b{font-size:23px;display:block;margin-top:4px}.muted{color:var(--muted);font-size:12px;line-height:1.42}
 .scorebox{display:flex;gap:16px;align-items:center;padding:15px;border-radius:15px;margin-bottom:13px}.score{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;color:white;font-size:30px;font-weight:900;box-shadow:inset 0 0 0 7px #ffffff2a}.verdict{font-size:23px;font-weight:900}
 .status{padding:13px;border-left:5px solid var(--blue);background:#f2f6ff;border-radius:10px;line-height:1.5}
 table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
 .pricebox{padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcff}.pricevalue{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}.pricevalue b{font-size:25px}
-.rangeWrap{position:relative;padding:25px 2px 14px;min-height:48px}.range{appearance:none;width:100%;height:10px;border-radius:4px;outline:none;border:1px solid #bfc9d5;box-shadow:inset 0 1px 2px #0001}.range::-webkit-slider-thumb{appearance:none;width:8px;height:30px;border-radius:2px;background:var(--navy);border:1px solid #fff;box-shadow:0 2px 6px #0005;cursor:ew-resize}.range::-moz-range-thumb{width:7px;height:28px;border-radius:2px;background:var(--navy);border:1px solid #fff;cursor:ew-resize}
+.rangeWrap{position:relative;padding:25px 2px 14px;min-height:48px}.range{appearance:none;width:100%;height:12px;border-radius:5px;border:1px solid #aebccc;box-shadow:inset 0 1px 2px #0001}.range::-webkit-slider-thumb{appearance:none;width:14px;height:32px;border-radius:3px;background:var(--navy);border:2px solid #fff;box-shadow:0 2px 6px #0005;cursor:ew-resize}.range::-moz-range-thumb{width:14px;height:30px;border-radius:3px;background:var(--navy);border:2px solid #fff;cursor:ew-resize}
 .marker{position:absolute;top:10px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #111827;transform:translateX(-50%);z-index:2;pointer-events:none}
 .range.snap::-webkit-slider-thumb{background:var(--green);box-shadow:0 0 0 5px #138a6130,0 2px 7px #0005}.range.snap::-moz-range-thumb{background:var(--green)}
 .sliderMeta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;font-size:11px;color:var(--muted)}.snapText{font-weight:850;color:var(--green);min-height:14px}
@@ -32,11 +39,42 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 .usdaLimitItem{border:1px solid var(--line);border-radius:11px;background:#fff;padding:10px}
 .usdaLimitItem b{display:block;font-size:17px;margin-top:3px}
 @media(max-width:700px){.usdaLimitGrid{grid-template-columns:1fr 1fr}}.timelineGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}.timelineItem{border:1px solid var(--line);border-radius:11px;background:#fff;padding:10px}.timelineItem b{display:block;margin-top:4px;font-size:17px}@media(max-width:700px){.timelineGrid{grid-template-columns:1fr}}.sourcegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:700px){.sourcegrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:13px;padding:12px}.pill{display:inline-block;padding:3px 7px;border-radius:999px;background:#eaf0ff;color:#234bb8;font-size:11px;font-weight:800}
-.installbar{position:sticky;bottom:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px;display:none}.installbar.show{display:block}.installinner{max-width:1220px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.scenarioBar{display:flex;justify-content:space-between;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow)}.scenarioActions{display:flex;flex-wrap:wrap;gap:8px}.scenarioActions .btn{padding:9px 12px}.scenarioStatus{font-size:12px;color:var(--muted);margin-top:3px}.quickResult{display:grid;grid-template-columns:minmax(190px,1fr) minmax(260px,2fr) auto;gap:14px;align-items:center;background:linear-gradient(135deg,#10243f,#1c477d);color:#fff;border-radius:17px;padding:15px 16px;margin-bottom:15px;box-shadow:var(--shadow)}.quickResult .eyebrow{display:block;font-size:11px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:#bcd2f6}.quickResult b{display:block;font-size:18px;margin-top:2px}.quickResult .muted{color:#d7e4f6}.quickBreakEven{font-weight:800}.quickResult .secondary{background:#fff;color:var(--navy);border-color:#fff;white-space:nowrap}.validationStatus{display:none;background:#fff0f0;color:#8f2020;border-left:4px solid var(--red);border-radius:10px;padding:10px 12px;margin-bottom:12px}.validationStatus.show{display:block}.tableScroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px}.tableScroll:focus-visible{outline-offset:4px}.right{scroll-margin-top:76px}.installbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:none;box-shadow:0 -10px 30px #10243f18}.installbar.show{display:block}.installinner{max-width:1220px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+@media(max-width:700px){header{padding-left:16px;padding-right:16px}main.wrap{padding-left:12px;padding-right:12px}.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{white-space:nowrap}.scenarioBar,.installinner{align-items:stretch;flex-direction:column}.scenarioActions{display:grid;grid-template-columns:1fr 1fr}.scenarioActions .btn:first-child{grid-column:1/-1}.quickResult{grid-template-columns:1fr}.quickResult .btn{width:100%}.card{padding:14px;border-radius:15px}.scorebox,.pricevalue,.sliderMeta{align-items:flex-start;flex-direction:column}.sliderMeta .btn{width:100%}.metrics{grid-template-columns:1fr 1fr}.tableScroll{margin-inline:-4px;padding-bottom:4px}table{min-width:760px}.sourcegrid{grid-template-columns:1fr}}
+@media(max-width:430px){.scenarioActions,.metrics{grid-template-columns:1fr}.scenarioActions .btn:first-child{grid-column:auto}.usdaLimitGrid{grid-template-columns:1fr}.scorebox{gap:10px}.score{width:74px;height:74px;font-size:26px}.verdict{font-size:20px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sliderSwitch,.sliderSwitch:before{transition:none}}
+
+/* House Alpha v31 — decision-instrument visual system */
+:root{--bg:#f3f6fa;--card:#fff;--ink:#0b172a;--ink-soft:#33445c;--muted:#647187;--line:#d7e0eb;--navy:#153675;--blue:#2356c7;--green:#08775b;--amber:#916000;--red:#ae3644;--outcome:var(--blue);--positive-bg:#e9f6f1;--negative-bg:#faecee;--caution-bg:#fff5d9;--shadow:0 1px 2px #0b172a0a,0 12px 34px #17345b0b}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(90deg,#2356c706 1px,transparent 1px),linear-gradient(#2356c706 1px,transparent 1px),radial-gradient(circle at 90% -10%,#dce7fb 0,transparent 34%),var(--bg);background-size:48px 48px,48px 48px,auto,auto;color:var(--ink)}
+.masthead{background:#0b172a;color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;border-bottom:1px solid #ffffff16;overflow:visible}.masthead:after{display:none}.mastheadInner{display:flex;align-items:center;justify-content:space-between;gap:18px}.brandLockup{display:flex;align-items:center;gap:12px;min-width:0}.brandMark{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:linear-gradient(145deg,#316bdf,#183f92);box-shadow:inset 0 1px 0 #ffffff42,0 8px 22px #0004;font:800 27px/1 Georgia,serif}.masthead h1{font-size:24px;letter-spacing:-.55px;margin:0;line-height:1.05}.masthead .tag{font-size:12px;color:#bac8dc;opacity:1;margin-top:3px;white-space:nowrap}.mastheadMeta{display:flex;align-items:center;gap:9px;color:#cbd6e8;font-size:11px}.mastheadMeta span{border:1px solid #ffffff28;border-radius:999px;padding:4px 7px;font-size:9px;letter-spacing:.1em;font-weight:750}.mastheadMeta b{font-weight:600}
+main.wrap{padding:0 18px 70px}.workspaceBar{position:sticky;top:0;z-index:12;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;background:#f3f6faf2;backdrop-filter:blur(18px);border-bottom:1px solid #d7e0ebaa;margin-bottom:12px}.tabs{position:static;background:none;padding:0;margin:0;gap:4px}.tab{min-height:38px;padding:8px 12px;border:0;background:transparent;color:var(--muted);font-size:13px;font-weight:650}.tab:hover{background:#e7edf6;color:var(--ink)}.tab.active{background:#fff;color:var(--navy);border:0;box-shadow:0 1px 2px #0b172a12,0 4px 12px #17345b0d}.scenarioBar{padding:0;margin:0;border:0;background:transparent;box-shadow:none;gap:12px}.scenarioIdentity{display:flex;align-items:center;gap:8px;min-width:132px}.scenarioIdentity>b,.scenarioIdentity b{font-size:12px}.saveDot{width:8px;height:8px;border-radius:50%;background:#98a4b6;box-shadow:0 0 0 4px #98a4b618;flex:none}.scenarioBar.is-saved .saveDot{background:var(--green);box-shadow:0 0 0 4px #08775b16}.scenarioBar.is-dirty .saveDot{background:#d08b17;box-shadow:0 0 0 4px #d08b1718}.scenarioStatus{font-size:10px;margin:0;color:var(--muted);white-space:nowrap}.scenarioActions{gap:6px}.btn{border-radius:10px;font-weight:650;box-shadow:0 1px 2px #0b172a0b;transition:transform .16s ease,box-shadow .16s ease,background-color .16s ease,border-color .16s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 5px 16px #17345b18}.btn:active{transform:translateY(0)}.btn.compact{min-height:36px;padding:7px 10px;font-size:12px}.btn.quiet{background:transparent;color:var(--muted);border:1px solid transparent;box-shadow:none}.btn.quiet:hover{background:#e9eef5;color:var(--ink)}
+.quickResult.outcomeHero{--outcome:var(--blue);display:block;position:relative;overflow:hidden;background:linear-gradient(145deg,#fff,#f8fbff);color:var(--ink);border:1px solid #cfdbe9;border-radius:22px;padding:clamp(20px,3vw,32px);margin:0 0 14px;box-shadow:0 2px 3px #0b172a0b,0 22px 58px #183c6812}.quickResult.outcomeHero:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#2356c708 1px,transparent 1px),linear-gradient(#2356c708 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(90deg,#000,transparent 76%)}.outcomeHero[data-state="positive"]{--outcome:var(--green)}.outcomeHero[data-state="negative"]{--outcome:var(--red)}.outcomeHero[data-state="close"]{--outcome:var(--amber)}.outcomeGrid{position:relative;display:grid;grid-template-columns:minmax(280px,.88fr) minmax(360px,1.12fr);gap:clamp(28px,5vw,70px);align-items:center}.outcomeCopy{min-width:0}.quickResult .eyebrow,.eyebrow{display:block;font-size:10px;font-weight:750;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}.outcomeHero h2{font-size:clamp(25px,3vw,38px);line-height:1.06;letter-spacing:-.035em;margin:8px 0 7px;max-width:620px}.outcomeValue{font-size:clamp(42px,6vw,68px);font-weight:780;line-height:1;letter-spacing:-.055em;color:var(--outcome);font-variant-numeric:tabular-nums}.outcomeUnit{font-size:12px;font-weight:700;color:var(--muted);margin-top:5px}.quickResult.outcomeHero p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:14px 0 0;max-width:570px}.outcomeMeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}.alphaScore,.quickBreakEven{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:6px 9px;background:#edf2f8;color:var(--ink-soft);font-size:10px;font-weight:650}.alphaScore b{color:var(--outcome);font-size:12px}.quickBreakEven{color:var(--ink-soft)}.outcomeGraphic{position:relative;border:1px solid #dce4ed;background:#ffffffd9;border-radius:17px;padding:17px;box-shadow:0 10px 30px #17345b0b}.graphicHeading,.strategyLine{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:11px;color:var(--muted)}.graphicHeading b,.strategyLine b{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}.strategyCompare{display:grid;gap:14px;margin-top:13px}.strategyRow{display:grid;gap:6px}.strategyLine span{font-weight:650;color:var(--ink-soft)}.strategyTrack{height:9px;border-radius:999px;background:#e7edf4;overflow:hidden}.strategyFill{display:block;width:0;height:100%;border-radius:inherit;transition:width .34s cubic-bezier(.2,.7,.2,1);background:var(--blue)}.strategyFill.strategyA,.legendSwatch.strategyA{background:var(--outcome)}.strategyFill.strategyB,.legendSwatch.strategyB{background:#8796aa}.thresholdBlock{margin-top:22px;padding-top:16px;border-top:1px solid #e1e7ef}.thresholdRail{height:9px;position:relative;margin:28px 5px 24px;border-radius:999px;background:#e7edf4}.thresholdZone{position:absolute;top:0;bottom:0}.thresholdZone.favorable{left:0;width:44%;background:#9ed4c4;border-radius:999px 0 0 999px}.thresholdZone.caution{left:44%;width:12%;background:#edd58d}.thresholdZone.unfavorable{left:56%;right:0;background:#e6a4ad;border-radius:0 999px 999px 0}.thresholdMarker{position:absolute;top:50%;left:50%;z-index:2;transform:translate(-50%,-50%)}.thresholdMarker i{display:block}.thresholdMarker em{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:9px;font-style:normal;font-weight:750;color:var(--muted)}.thresholdMarker.breakEven i{width:2px;height:25px;background:#18263a;border-radius:2px}.thresholdMarker.breakEven em{bottom:18px}.thresholdMarker.current i{width:14px;height:14px;border:3px solid #fff;background:var(--outcome);border-radius:50%;box-shadow:0 2px 7px #0b172a4a}.thresholdMarker.current em{top:16px;color:var(--ink)}.thresholdLabels{display:flex;justify-content:space-between;color:var(--muted);font-size:9px;font-variant-numeric:tabular-nums}.heroActions{position:relative;display:flex;gap:8px;margin-top:20px}.heroActions .btn{min-height:40px;padding:9px 12px;font-size:12px}
+.savedComparison{display:grid;grid-template-columns:minmax(150px,.75fr) minmax(360px,1.7fr) auto;align-items:center;gap:18px;padding:14px 16px;margin-bottom:14px;background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.savedComparison[hidden]{display:none}.savedComparison>div:first-child>b{display:block;font-size:14px;margin-top:3px}.savedDeltas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.savedDeltas>div{padding-left:12px;border-left:1px solid var(--line)}.savedDeltas span{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.06em}.savedDeltas b{display:block;margin-top:3px;font-size:15px;font-variant-numeric:tabular-nums}.savedActions{display:flex;gap:6px}
+.card{border-color:#d9e2ec;border-radius:17px;box-shadow:var(--shadow)}.left{background:#fcfdff}.resultCard{padding:clamp(16px,2.2vw,24px)}.resultIntro{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.resultIntro h2{font-size:24px;letter-spacing:-.025em;margin:4px 0 0}.resultIntro .scorebox{background:transparent!important;margin:0;padding:0;gap:8px;max-width:250px}.resultIntro .score{width:42px;height:42px;flex:none;font-size:15px;box-shadow:inset 0 0 0 4px #ffffff42}.resultIntro .verdict{font-size:12px;line-height:1.25}.resultIntro .muted{font-size:10px}.metrics{gap:9px}.metric{background:#f8fafc;border-color:#e0e7ef;border-radius:12px;padding:12px}.metric b,.pricevalue b,td{font-variant-numeric:tabular-nums}.metric b{font-size:21px;letter-spacing:-.025em}.metric .good,.metric b.good{color:var(--green)}
+.analysisModule{margin-top:18px;padding:17px;border:1px solid #dde5ee;border-radius:15px;background:#fbfcfe}.moduleHeading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.moduleHeading h3{font-size:18px;letter-spacing:-.02em;margin:3px 0 0}.moduleHeading p{max-width:380px;text-align:right;color:var(--muted);font-size:11px;margin:0;line-height:1.45}.chartLegend{display:flex;gap:18px;align-items:center;margin:14px 0 7px;font-size:10px;color:var(--ink-soft)}.chartLegend span{display:flex;align-items:center;gap:6px}.legendSwatch{width:16px;height:3px;border-radius:99px;display:inline-block}.wealthChart{position:relative;min-height:270px;border-radius:12px;background:#fff;border:1px solid #e3e9f0;overflow:hidden;touch-action:pan-y}.wealthChart svg{display:block;width:100%;height:auto;min-height:250px}.wealthChart .chartGrid{stroke:#dfe6ee;stroke-width:1;vector-effect:non-scaling-stroke}.wealthChart .zeroLine{stroke:#aab6c5;stroke-width:1.2;stroke-dasharray:4 5;vector-effect:non-scaling-stroke}.wealthChart .axisLabel{font-size:10px;fill:#718096}.wealthChart .seriesPath{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}.wealthChart .seriesA{stroke:var(--outcome)}.wealthChart .seriesB{stroke:#8796aa}.wealthChart .chartCrosshair{stroke:#33445c;stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}.wealthChart .chartPoint{stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}.wealthChart .chartPoint.seriesA{fill:var(--outcome)}.wealthChart .chartPoint.seriesB{fill:#8796aa}.chartTooltip{position:absolute;z-index:3;min-width:150px;pointer-events:none;padding:9px 10px;border-radius:10px;background:#0b172aec;color:#fff;box-shadow:0 8px 30px #0b172a35;font-size:10px;line-height:1.5;transform:translate(-50%,-115%);font-variant-numeric:tabular-nums}.chartTooltip b{font-size:11px}.chartHint{font-size:9px;color:var(--muted);margin-top:7px}.leverGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.leverCard{position:relative;min-height:150px;display:flex;flex-direction:column;padding:13px;border:1px solid #dce4ed;border-radius:13px;background:#fff}.leverCard .leverIcon{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#edf3ff;color:var(--blue);font-size:14px;font-weight:800}.leverCard h4{font-size:13px;line-height:1.28;margin:10px 0 4px}.leverCard p{font-size:10px;color:var(--muted);margin:0 0 12px}.leverCard .btn{margin-top:auto;align-self:flex-start;min-height:32px;padding:6px 9px;font-size:10px}.leverCard.noCrossing{background:#f7f9fc}.leverCard.noCrossing .leverIcon{background:#edf0f4;color:#7b8798}.leverCard.noCrossing .btn{display:none}
+input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:inset 0 1px 1px #0b172a05}input:hover,select:hover{border-color:#aebdd0}input:focus,select:focus{border-color:#6c91d4;box-shadow:0 0 0 3px #2356c713}.pricebox{background:#f7faff;border-color:#d7e3f1}.presetBtn{font-weight:700}.presetBtn.active{background:var(--navy)}.status{border-left-width:3px;background:#f5f8fd}.source{background:#fbfcfe}.source b+div{font-variant-numeric:tabular-nums}h3{letter-spacing:-.01em}
+.tabShort{display:none}.strategyFill.negativeWealth{background-image:repeating-linear-gradient(135deg,#ffffff4a 0,#ffffff4a 3px,transparent 3px,transparent 7px)}.thresholdRail.reverse .thresholdZone.favorable{background:#e6a4ad}.thresholdRail.reverse .thresholdZone.unfavorable{background:#9ed4c4}.thresholdRail.noCrossing .thresholdZone{display:none}.thresholdRail.noCrossing{background:#e6a4ad}.thresholdRail.noCrossing.propertyAhead{background:#9ed4c4}.scoreNote{font-size:9px;color:var(--muted)}.srOnly{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}.printScenario{display:none}.printScenario>div{border-left:2px solid var(--line);padding-left:9px}.printScenario span{display:block;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.07em}.printScenario b{display:block;margin-top:2px;font-size:11px}
+@media(max-width:980px){.workspaceBar{align-items:flex-start}.scenarioIdentity{display:none}.outcomeGrid{grid-template-columns:1fr 1fr;gap:24px}.savedComparison{grid-template-columns:1fr auto}.savedDeltas{grid-column:1/-1;grid-row:2}.savedActions{grid-column:2;grid-row:1}.leverGrid{grid-template-columns:1fr}}
+@media(max-width:760px){.masthead{padding:calc(10px + env(safe-area-inset-top)) 14px 10px}.brandMark{width:36px;height:36px;border-radius:10px;font-size:23px}.masthead h1{font-size:20px}.masthead .tag,.mastheadMeta{display:none}main.wrap{padding-inline:12px}.workspaceBar{gap:7px;margin-inline:-2px}.tabs{overflow-x:auto;min-width:0}.scenarioActions{display:flex;flex-wrap:nowrap}.scenarioActions .btn{padding-inline:8px}.scenarioActions #printBrief{display:none}.outcomeGrid{grid-template-columns:1fr}.quickResult.outcomeHero{border-radius:18px;padding:20px 17px}.outcomeGraphic{padding:14px}.heroActions{display:grid;grid-template-columns:1fr 1fr}.heroActions .btn{width:100%}.savedComparison{grid-template-columns:1fr}.savedDeltas{grid-template-columns:1fr 1fr 1fr;grid-column:auto;grid-row:auto}.savedActions{grid-column:auto;grid-row:auto}.resultIntro{flex-direction:column}.resultIntro .scorebox{max-width:none}.moduleHeading{flex-direction:column}.moduleHeading p{text-align:left}.wealthChart{min-height:230px}.wealthChart svg{min-height:220px}.leverGrid{grid-template-columns:1fr}.leverCard{min-height:0}.analysisModule{padding:14px}.metrics{grid-template-columns:1fr 1fr}.scenarioBar{flex-direction:row;align-items:center}.scenarioActions{display:flex}.scenarioActions .btn:first-child{grid-column:auto}}
+@media(max-width:480px){.tab{padding-inline:9px;font-size:12px}.tabLong{display:none}.tabShort{display:inline}.scenarioActions #resetScenario{display:none}.outcomeHero h2{font-size:27px}.outcomeValue{font-size:46px}.outcomeGraphic{margin-inline:-3px}.savedDeltas{grid-template-columns:1fr}.savedDeltas>div{padding:7px 0 0;border-left:0;border-top:1px solid var(--line)}.heroActions{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.metric b{font-size:18px}.chartLegend{align-items:flex-start;flex-direction:column;gap:5px}}
+@media(pointer:coarse){.tab,.btn.compact{min-height:44px}}
+@media(prefers-reduced-motion:no-preference){.outcomeHero.is-updated .outcomeValue{animation:resultTick .25s ease-out}.chartTooltip{transition:left .08s linear,top .08s linear}@keyframes resultTick{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}}
+@media(prefers-reduced-motion:reduce){.btn,.strategyFill,.chartTooltip{transition:none!important}.btn:hover{transform:none}}
+@media print{body{background:#fff;font-size:12px}.masthead{background:#fff;color:var(--ink);padding:0 0 14px;border-bottom:2px solid var(--ink)}.brandMark{color:#fff}.masthead .tag{display:block;color:var(--muted)}.workspaceBar,.scenarioBar,.tabs,.validationStatus,.heroActions,.savedComparison,.left,.installbar,.chartHint,#undoLever,.leverCard .btn{display:none!important}main.wrap{max-width:none;padding:16px 0}#calculator{display:block!important}#downpayments,#market{display:none!important}.printScenario{display:grid!important;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 12px;padding:11px 0;border-bottom:1px solid var(--line)}.quickResult.outcomeHero{box-shadow:none;border:1px solid #aab6c5;break-inside:avoid}.grid{display:block}.resultCard{box-shadow:none;border:0;padding:18px 0}.resultIntro .scorebox{display:none}.analysisModule{break-inside:avoid}.wealthChart{min-height:220px}.wealthChart svg{height:220px}.leverGrid{grid-template-columns:repeat(3,1fr)}.leverCard{min-height:120px}@page{margin:.55in}}
 </style></head><body>
-<header><div class="wrap"><h1>House Alpha</h1><div class="tag">Find the price where owning starts building more wealth than renting.</div></div></header>
+<header class="masthead"><div class="wrap mastheadInner"><div class="brandLockup"><span class="brandMark" aria-hidden="true">α</span><div><h1>House Alpha</h1><div class="tag">A transparent decision engine for buying, renting, and property strategies.</div></div></div><div class="mastheadMeta"><span>LOCAL-FIRST</span><b>Planning model</b></div></div></header>
 <main class="wrap">
-<div class="tabs"><button class="tab active" data-tab="calculator">Calculator</button><button class="tab" data-tab="downpayments">Down payments</button><button class="tab" data-tab="market">Market data</button></div>
+<div class="workspaceBar"><div class="tabs" aria-label="House Alpha sections"><button class="tab active" data-tab="calculator"><span class="tabLong">Calculator</span><span class="tabShort">Calc</span></button><button class="tab" data-tab="downpayments"><span class="tabLong">Down payments</span><span class="tabShort">Down</span></button><button class="tab" data-tab="market"><span class="tabLong">Market data</span><span class="tabShort">Market</span></button></div><div class="scenarioBar" aria-label="Scenario actions"><div class="scenarioIdentity"><span class="saveDot" aria-hidden="true"></span><div><b>Your scenario</b><div class="scenarioStatus" id="scenarioStatus" aria-live="polite">Not saved</div></div></div><div class="scenarioActions"><button class="btn compact" id="saveScenario" type="button">Save</button><button class="btn secondary compact" id="shareScenario" type="button">Share</button><button class="btn secondary compact" id="printBrief" type="button">Print</button><button class="btn quiet compact" id="resetScenario" type="button">Reset</button></div></div></div>
+<section class="quickResult outcomeHero" id="quickResult" aria-busy="true" data-state="neutral">
+<div class="outcomeGrid"><div class="outcomeCopy"><span class="eyebrow" id="heroContext">Modeled outcome</span><h2 id="quickVerdict">Loading local assumptions…</h2><div class="outcomeValue" id="heroAdvantage">—</div><div class="outcomeUnit" id="heroWinner">wealth advantage</div><p id="quickExplain">House Alpha is preparing the comparison.</p><div class="outcomeMeta"><span class="alphaScore" title="Directional planning signal, not a probability or credit score."><b id="heroScore">—</b> Alpha signal</span><span class="scoreNote">Directional—not a probability</span><span class="quickBreakEven" id="quickBreakEven"></span></div></div>
+<div class="outcomeGraphic"><div class="graphicHeading"><span>Ending wealth</span><b id="heroHorizon">Holding period</b></div><div class="strategyCompare"><div class="strategyRow"><div class="strategyLine"><span id="heroStrategyALabel">Strategy A</span><b id="heroStrategyAValue">—</b></div><div class="strategyTrack"><span class="strategyFill strategyA" id="heroStrategyABar"></span></div></div><div class="strategyRow"><div class="strategyLine"><span id="heroStrategyBLabel">Strategy B</span><b id="heroStrategyBValue">—</b></div><div class="strategyTrack"><span class="strategyFill strategyB" id="heroStrategyBBar"></span></div></div></div>
+<div class="thresholdBlock"><div class="graphicHeading"><span>Purchase-price position</span><b id="heroPricePosition">Calculating</b></div><div class="thresholdRail" id="thresholdRail"><span class="thresholdZone favorable"></span><span class="thresholdZone caution"></span><span class="thresholdZone unfavorable"></span><span class="thresholdMarker breakEven" id="heroBreakEvenMarker"><i></i><em>Break-even</em></span><span class="thresholdMarker current" id="heroCurrentMarker"><i></i><em>Current</em></span></div><div class="thresholdLabels"><span id="heroRailMin">—</span><span id="heroRailMax">—</span></div></div></div></div>
+<div class="heroActions"><button class="btn" id="viewDetails" type="button">Explore the result</button><button class="btn secondary" id="heroPrintBrief" type="button">Print decision brief</button></div></section>
+<div class="srOnly" id="resultAnnouncement" role="status" aria-live="polite" aria-atomic="true"></div>
+<section class="printScenario" id="printScenario" aria-label="Scenario assumptions"><div><span>Location</span><b id="printLocation">—</b></div><div><span>Strategy</span><b id="printStrategy">—</b></div><div><span>Property</span><b id="printProperty">—</b></div><div><span>Purchase price</span><b id="printPrice">—</b></div><div><span>Financing</span><b id="printFinancing">—</b></div><div><span>Holding period</span><b id="printHorizon">—</b></div><div><span>Current rent</span><b id="printRent">—</b></div><div><span>Generated</span><b id="printGenerated">—</b></div></section>
+<section class="savedComparison" id="savedComparison" hidden aria-live="polite"><div><span class="eyebrow">Compared with saved scenario</span><b id="savedComparisonTitle">Your edits</b></div><div class="savedDeltas"><div><span>Ending advantage</span><b id="savedAdvDelta">—</b></div><div><span>Month-one difference</span><b id="savedMonthDelta">—</b></div><div><span>Break-even price</span><b id="savedBreakEvenDelta">—</b></div></div><div class="savedActions"><button class="btn secondary compact" id="restoreSaved" type="button">Restore saved</button><button class="btn compact" id="saveCurrent" type="button">Save these changes</button></div></section>
+<div class="validationStatus" id="validationStatus" role="alert"></div>
 
 <section id="calculator" class="panel active"><div class="grid">
 <div class="card left"><h2>Home and location</h2>
@@ -59,7 +97,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 <label>Down payment %</label>
 <input id="downPct" type="number" value="20" min="0" max="100" step=".5">
 <div class="presetGroup" id="primaryDownPresets">
-<button type="button" class="presetBtn downPreset" data-down="0">0%</button>
+<button type="button" class="presetBtn downPreset" data-down="0">0% VA</button>
 <button type="button" class="presetBtn downPreset" data-down="3">3%</button>
 <button type="button" class="presetBtn downPreset" data-down="3.5">3.5% FHA</button>
 <button type="button" class="presetBtn downPreset" data-down="5">5%</button>
@@ -493,10 +531,10 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 <div><label>Buying closing costs %</label><input id="buyClose" type="number" value="2"></div>
 <div><label>Selling costs %</label><input id="sellCost" type="number" value="7"></div>
 </div>
-<div class="row" style="margin-top:14px"><button class="btn" id="refresh">Refresh location data</button></div><div class="muted" id="updated" style="margin-top:7px"></div>
+<div class="row" style="margin-top:14px"><button class="btn" id="refresh">Refresh market benchmarks</button></div><div class="muted" id="updated" style="margin-top:7px"></div>
 </div>
 
-<div class="card right"><h2 id="resultHeading">House Alpha result</h2><div class="scorebox" id="scorebox"><div class="score" id="score">—</div><div><div class="verdict" id="verdict"></div><div class="muted" id="explain"></div></div></div>
+<div class="card right resultCard" id="resultCard" tabindex="-1"><div class="resultIntro"><div><span class="eyebrow">Model details</span><h2 id="resultHeading">House Alpha result</h2></div><div class="scorebox" id="scorebox"><div class="score" id="score" aria-label="Model score">—</div><div><div class="verdict" id="verdict"></div><div class="muted" id="explain"></div></div></div></div>
 <div class="metrics">
 <div class="metric"><span class="muted" id="metricLabelOwner">Owner cost, month 1</span><b id="owner"></b></div>
 <div class="metric"><span class="muted" id="metricLabelRent">Renter cost, month 1</span><b id="rentNow"></b></div>
@@ -505,6 +543,7 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 <div class="metric"><span class="muted" id="metricLabelProperty">Buyer wealth</span><b id="buyWealth"></b></div>
 <div class="metric"><span class="muted" id="metricLabelAdv">Buyer advantage</span><b id="adv"></b></div>
 </div>
+<section class="analysisModule wealthModule" aria-labelledby="wealthPathHeading"><div class="moduleHeading"><div><span class="eyebrow">Trajectory</span><h3 id="wealthPathHeading">Wealth path</h3></div><p id="wealthPathSummary">Building the timeline…</p></div><div class="chartLegend"><span><i class="legendSwatch strategyA"></i><b id="chartStrategyALabel">Strategy A</b></span><span><i class="legendSwatch strategyB"></i><b id="chartStrategyBLabel">Strategy B</b></span></div><div class="wealthChart" id="wealthChart" tabindex="0" aria-describedby="wealthPathSummary"><svg id="wealthSvg" viewBox="0 0 720 270" role="img" aria-labelledby="wealthChartTitle wealthChartDesc"><title id="wealthChartTitle">Modeled wealth path</title><desc id="wealthChartDesc">Two strategies compared over the selected holding period.</desc></svg><div class="chartTooltip" id="chartTooltip" role="status" aria-live="polite" aria-atomic="true" hidden></div></div><div class="chartHint">Hover, tap, or use the arrow keys to inspect the timeline.</div></section>
 <div id="sharedHousingMetrics" style="display:none">
 <h3>Shared-housing impact</h3>
 <div class="metrics">
@@ -546,19 +585,20 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 </div>
 <div class="status" id="investmentAduBreakEven" style="margin-top:10px"></div>
 </div>
-<h3>Exact modeled break-even</h3><div class="status" id="thresholds"></div>
+<section class="analysisModule leverModule" aria-labelledby="leverHeading"><div class="moduleHeading"><div><span class="eyebrow">Decision levers</span><h3 id="leverHeading" tabindex="-1">What would change the answer?</h3></div><button class="btn quiet compact" id="undoLever" type="button" hidden>Undo last try</button></div><div class="leverGrid" id="decisionLevers"></div><div class="srOnly" id="leverStatus" role="status" aria-live="polite" aria-atomic="true"></div></section>
+<h3>Modeled break-even</h3><div class="status" id="thresholds"></div>
 <h3>S&amp;P 500 return sensitivity</h3>
 <div class="sensitivity">
 <div class="metric"><span class="muted">Using 10% annual return</span><b id="sensitivity10"></b><span class="muted" id="sensitivity10note"></span></div>
 <div class="metric"><span class="muted">Using 7% annual return</span><b id="sensitivity7"></b><span class="muted" id="sensitivity7note"></span></div>
 </div>
-<h3>Milestones</h3><table><thead><tr><th>Year</th><th id="milestoneIncome">Rent</th><th id="milestoneCost">Owner</th><th>Property value</th><th>Loan</th><th id="milestoneAlt">Rent wealth</th><th id="milestoneProperty">Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table>
+<h3>Milestones</h3><div class="tableScroll" tabindex="0" aria-label="Milestone table, scroll horizontally on small screens"><table><thead><tr><th>Year</th><th id="milestoneIncome">Rent</th><th id="milestoneCost">Owner</th><th>Property value</th><th>Loan</th><th id="milestoneAlt">Rent wealth</th><th id="milestoneProperty">Buy wealth</th></tr></thead><tbody id="milestones"></tbody></table></div>
 </div></div></section>
 
-<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">Exact model results using the current property, location, and growth assumptions.</p><table><thead><tr><th>Down</th><th>Cash needed</th><th id="dpCostLabel">Owner/mo</th><th>Mortgage insurance / fee</th><th>Break-even price</th><th id="dpRentLabel">Break-even rent</th><th id="dpAdvLabel">Advantage now</th></tr></thead><tbody id="dpRows"></tbody></table></div></section>
+<section id="downpayments" class="panel"><div class="card"><h2>Break-even by down payment</h2><p class="muted">Exact model results using the current property, location, and growth assumptions.</p><div class="tableScroll" tabindex="0" aria-label="Down-payment comparison table, scroll horizontally on small screens"><table><thead><tr><th>Down</th><th>Cash needed</th><th id="dpCostLabel">Owner/mo</th><th>Mortgage insurance / fee</th><th>Break-even price</th><th id="dpRentLabel">Break-even rent</th><th id="dpAdvLabel">Advantage now</th></tr></thead><tbody id="dpRows"></tbody></table></div></div></section>
 <section id="market" class="panel"><div class="card"><h2>Location assumptions and sources</h2><div class="sourcegrid" id="sources"></div><p class="muted">HOA, garage/storage, and insurance are editable planning benchmarks. Small mountain communities often lack enough long-term listings for a statistically stable live average.</p></div></section>
 </main>
-<div class="installbar" id="installbar"><div class="installinner"><div><b>Install House Alpha</b><div class="muted">Add it to your home screen and share the same link.</div></div><button id="installBtn" class="btn">Install</button></div></div>
+<div class="installbar" id="installbar"><div class="installinner"><div><b>Install House Alpha</b><div class="muted">Add it to your home screen and keep your saved scenario on this device.</div></div><div class="row"><button id="installDismiss" class="btn secondary" type="button">Not now</button><button id="installBtn" class="btn" type="button">Install</button></div></div></div>
 
 <script>
 const $=id=>document.getElementById(id);
@@ -573,8 +613,183 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'liveAduBuildCost','liveAduBuildPsf','liveAduValueAdded','liveAduBuildMonths','liveAduLoanRate','liveAduLoanTerm','liveAduSize','liveAduLocalPsf','liveAduCustomValue',
 'livePreAduRent','livePreAduRentCap','livePreAduVacancy','livePreAduReserve','livePreAduOther','livePreAduRentGrowth','livePreAduManagementRate',
 'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
-const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x);
-let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.55, mortgageBenchmarkDate='July 16, 2026', rateAuto=true, currentUsdaLimits=null, liveAltRentAuto=true, liveMainRentAuto=true, livePreAduRentAuto=true, liveMoveAuto=true, liveAduPsfAuto=true, liveAduBuildCostAuto=true, liveAduBuildPsfAuto=true, liveAduSizeAuto=true;
+const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x), compactMoney=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(x);
+const SCENARIO_KEY='house-alpha:scenario:v1',SCENARIO_VERSION=1;
+const derivedControlIds=new Set(['storageOn','aduValueAdded','invAduValueAdded','liveAduValueAdded','bedroomRentEstimate','bedroomPriceEstimate','usdaSelectedLimit']);
+let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.69, mortgageBenchmarkDate='August 6, 2026', rateAuto=true, currentUsdaLimits=null, liveAltRentAuto=true, liveMainRentAuto=true, livePreAduRentAuto=true, liveMoveAuto=true, liveAduPsfAuto=true, liveAduBuildCostAuto=true, liveAduBuildPsfAuto=true, liveAduSizeAuto=true;
+let currentBreakEvenPrice=null,latestResult=null,latestBreakEvenPrice=null,latestAnalysis=null,appReady=false,suspendUpdates=false,locationRequestSeq=0,leverUndoState=null,wealthChartState=null,wealthChartIndex=0,heroMotionTimer=null,resultAnnouncementTimer=null;
+
+function setScenarioStatus(message){
+ $('scenarioStatus').textContent=message;const bar=document.querySelector('.scenarioBar');if(!bar)return;
+ bar.classList.toggle('is-saved',message.startsWith('Saved')||message.startsWith('Matches'));bar.classList.toggle('is-dirty',message==='Unsaved changes')
+}
+function savedTimeLabel(iso){
+ const date=new Date(iso);if(Number.isNaN(date.getTime()))return 'Saved on this device';
+ return `Saved on this device · ${date.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`
+}
+function scenarioControls(){return [...document.querySelectorAll('#calculator input[id],#calculator select[id]')].filter(el=>!derivedControlIds.has(el.id))}
+function autoFlags(){return {insuranceUserEditing,priceAuto,rentAuto,invAduRentAuto,ownerAduPsfAuto,invAduPsfAuto,ownerAduBuildCostAuto,invAduBuildCostAuto,ownerAduBuildPsfAuto,invAduBuildPsfAuto,ownerAduSizeAuto,invAduSizeAuto,rateAuto,liveAltRentAuto,liveMainRentAuto,livePreAduRentAuto,liveMoveAuto,liveAduPsfAuto,liveAduBuildCostAuto,liveAduBuildPsfAuto,liveAduSizeAuto}}
+function restoreAutoFlags(f={}){
+ if(typeof f.insuranceUserEditing==='boolean')insuranceUserEditing=f.insuranceUserEditing;
+ if(typeof f.priceAuto==='boolean')priceAuto=f.priceAuto;if(typeof f.rentAuto==='boolean')rentAuto=f.rentAuto;if(typeof f.invAduRentAuto==='boolean')invAduRentAuto=f.invAduRentAuto;
+ if(typeof f.ownerAduPsfAuto==='boolean')ownerAduPsfAuto=f.ownerAduPsfAuto;if(typeof f.invAduPsfAuto==='boolean')invAduPsfAuto=f.invAduPsfAuto;
+ if(typeof f.ownerAduBuildCostAuto==='boolean')ownerAduBuildCostAuto=f.ownerAduBuildCostAuto;if(typeof f.invAduBuildCostAuto==='boolean')invAduBuildCostAuto=f.invAduBuildCostAuto;
+ if(typeof f.ownerAduBuildPsfAuto==='boolean')ownerAduBuildPsfAuto=f.ownerAduBuildPsfAuto;if(typeof f.invAduBuildPsfAuto==='boolean')invAduBuildPsfAuto=f.invAduBuildPsfAuto;
+ if(typeof f.ownerAduSizeAuto==='boolean')ownerAduSizeAuto=f.ownerAduSizeAuto;if(typeof f.invAduSizeAuto==='boolean')invAduSizeAuto=f.invAduSizeAuto;
+ if(typeof f.rateAuto==='boolean')rateAuto=f.rateAuto;if(typeof f.liveAltRentAuto==='boolean')liveAltRentAuto=f.liveAltRentAuto;if(typeof f.liveMainRentAuto==='boolean')liveMainRentAuto=f.liveMainRentAuto;
+ if(typeof f.livePreAduRentAuto==='boolean')livePreAduRentAuto=f.livePreAduRentAuto;if(typeof f.liveMoveAuto==='boolean')liveMoveAuto=f.liveMoveAuto;if(typeof f.liveAduPsfAuto==='boolean')liveAduPsfAuto=f.liveAduPsfAuto;
+ if(typeof f.liveAduBuildCostAuto==='boolean')liveAduBuildCostAuto=f.liveAduBuildCostAuto;if(typeof f.liveAduBuildPsfAuto==='boolean')liveAduBuildPsfAuto=f.liveAduBuildPsfAuto;if(typeof f.liveAduSizeAuto==='boolean')liveAduSizeAuto=f.liveAduSizeAuto;
+}
+function captureScenario(){
+ const controls={};scenarioControls().forEach(el=>controls[el.id]=el.type==='checkbox'?{checked:el.checked}:{value:el.value});
+ return {version:SCENARIO_VERSION,savedAt:new Date().toISOString(),controls,flags:autoFlags(),activeTab:document.querySelector('.tab.active')?.dataset.tab||'calculator',result:latestResult?resultSnapshot(latestResult,latestBreakEvenPrice):null}
+}
+function readSavedScenario(){
+ try{const saved=JSON.parse(localStorage.getItem(SCENARIO_KEY)||'null');return saved?.version===SCENARIO_VERSION&&saved.controls?saved:null}catch(e){return null}
+}
+function applyControlSnapshot(controls={}){
+ Object.entries(controls).forEach(([id,state])=>{const el=$(id);if(!el||derivedControlIds.has(id))return;if(el.type==='checkbox'&&typeof state.checked==='boolean')el.checked=state.checked;else if('value' in state)el.value=state.value})
+}
+function syncRestoredScenarioUi(){
+ syncModeVisibility();
+ const garageCharge=$('ownerGarageSituation').value==='rent';$('storageOn').checked=garageCharge;$('storage').disabled=!garageCharge;
+ $('ownerGarageNote').textContent=garageCharge?`Separate owner-paid garage/storage uses your saved ${money(n('storage'))}/mo assumption.`:$('ownerGarageSituation').value==='included'?'Garage/storage is included with the purchased property, so the modeled monthly cost is $0.':'No owner garage/storage need is modeled, so the monthly cost is $0.';
+ applyRenterStorageToggle();
+ const renterOn=$('renterShareOn').checked,ownerOn=$('ownerIncomeOn').checked,ownerType=$('ownerIncomeType').value,roommate=ownerType==='roommate',newAdu=ownerType==='newadu';
+ $('renterShareFields').style.display=renterOn?'block':'none';$('ownerIncomeFields').style.display=ownerOn?'block':'none';$('renterShareCard').classList.toggle('active',renterOn);$('ownerIncomeCard').classList.toggle('active',ownerOn);
+ $('ownerBedroomsWrap').style.display=roommate?'none':'block';$('ownerReserveWrap').style.display=roommate?'none':'block';$('ownerExpenseWrap').style.display=roommate?'none':'block';$('ownerManagementBlock').style.display=roommate?'none':'block';$('newAduProject').style.display=newAdu?'block':'none';
+ $('ownerManagementRateWrap').style.display=$('ownerManagementOn').checked&&!roommate?'block':'none';$('aduLoanRateWrap').style.display=$('aduFunding').value==='loan'?'block':'none';$('aduLoanTermWrap').style.display=$('aduFunding').value==='loan'?'block':'none';
+ $('managementRateWrap').style.display=$('managementOn').checked?'block':'none';$('investmentAduFields').style.display=$('investmentAduOn').checked?'block':'none';$('investmentAduCard').classList.toggle('active',$('investmentAduOn').checked);
+ $('invAduLoanRateWrap').style.display=$('invAduFunding').value==='loan'?'block':'none';$('invAduLoanTermWrap').style.display=$('invAduFunding').value==='loan'?'block':'none';$('invAduManagementRateWrap').style.display=$('invAduManagementOn').checked?'block':'none';
+ applyLoanProgramRules();applyPmiVisibility();updateLiveInControls(false);updateDownPresetState();updateUsdaIncomeBox();
+}
+function restoreScenario(saved){
+ if(!saved)return false;const previousSuspend=suspendUpdates;suspendUpdates=true;
+ leverUndoState=null;applyControlSnapshot(saved.controls);restoreAutoFlags(saved.flags);currentLocation=$('location').value||currentLocation;currentUsdaLimits=locations[currentLocation]?.usda_limits||currentUsdaLimits;syncRestoredScenarioUi();
+ const savedTab=document.querySelector(`.tab[data-tab="${saved.activeTab}"]`)||document.querySelector('.tab[data-tab="calculator"]');activateTab(savedTab,false);
+ suspendUpdates=previousSuspend;setScenarioStatus(`Saved scenario restored · ${new Date(saved.savedAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`);if(!suspendUpdates)update();return true
+}
+function saveScenario(){
+ if(!scenarioIsValid(true))return;const saved=captureScenario();try{localStorage.setItem(SCENARIO_KEY,JSON.stringify(saved));setScenarioStatus(savedTimeLabel(saved.savedAt));if(latestResult)renderSavedComparison(latestResult,latestBreakEvenPrice)}catch(e){setScenarioStatus('Could not save on this device')}
+}
+function buildShareSummary(){
+ if(!latestResult)return 'House Alpha is still calculating.';const x=latestResult,locationName=$('location').selectedOptions[0]?.textContent||currentLocation,type=$('propertyType').selectedOptions[0]?.textContent||'',price=money(x.v.price),down=x.v.downPct>=100?'cash purchase':`${x.v.downPct}% down · ${x.v.rate.toFixed(2)}%`;
+ const title=x.rentalMode?'Rental property vs S&P 500':x.liveInMode?'Live-in rental vs rent + S&P 500':'Rent versus own';
+ const advantage=x.adv>=0?(x.rentalMode?'Rental strategy':x.liveInMode?'Live-in strategy':'Buying'):(x.rentalMode?'S&P 500':x.liveInMode?'Rent + S&P':'Renting + investing');
+ const monthOne=x.rentalMode?`Month 1: Property costs ${money(x.first.totalLandlordCosts)} · Gross rent ${money(x.first.totalGrossCollected)}`:x.liveInMode?`Month 1: Property ${money(x.first.livePropertyCost)} · Comparable rent ${money(x.first.liveAlternativeCost)}`:`Month 1: Owning ${money(x.first.effectiveOwnerCost)} · Renting ${money(x.first.totalRenterCost)}`;
+ return [`House Alpha — ${title}`,`${locationName} · ${type} · ${price} · ${down}`,`${x.v.years}-year result: ${advantage} ahead by ${money(Math.abs(x.adv))}`,monthOne,latestBreakEvenPrice?`Modeled break-even purchase price: ${money(latestBreakEvenPrice)}`:'No purchase-price crossing in the tested range.','',`Planning estimate—not a lender quote.`,['http:','https:'].includes(window.location.protocol)?window.location.href:''].filter(Boolean).join('\n')
+}
+async function shareScenario(){
+ if(!scenarioIsValid(true)||!latestResult)return;const text=buildShareSummary();
+ try{if(navigator.share){await navigator.share({title:'House Alpha scenario',text});setScenarioStatus('Summary shared.');return}}catch(e){if(e?.name==='AbortError')return}
+ try{await navigator.clipboard.writeText(text);setScenarioStatus('Summary copied to clipboard.')}catch(e){const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();document.execCommand('copy');area.remove();setScenarioStatus('Summary copied to clipboard.')}
+}
+function resetScenario(){if(!confirm('Reset this scenario?\n\nThis clears your saved edits and restores House Alpha\u2019s default assumptions.'))return;localStorage.removeItem(SCENARIO_KEY);location.reload()}
+function markScenarioDirty(){if(appReady)setScenarioStatus('Unsaved changes')}
+
+function strategyDefinition(x){
+ if(x.rentalMode)return {aLabel:'Rental-property wealth',bLabel:'S&P 500',aKey:'rentalOwnerWealth',bKey:'rentalAlternative',aShort:'Rental property',bShort:'S&P 500'};
+ if(x.liveInMode)return {aLabel:'Live-in property wealth',bLabel:'Rent + S&P',aKey:'livePropertyWealth',bKey:'liveAlternative',aShort:'Live-in strategy',bShort:'Rent + S&P'};
+ return {aLabel:'Buyer wealth',bLabel:'Rent + S&P',aKey:'buyWealth',bKey:'renter',aShort:'Buying',bShort:'Rent + S&P'}
+}
+function monthOneMetric(x){return x.rentalMode?x.first.rentalCashFlow:x.liveInMode?x.first.livePropertyCost-x.first.liveAlternativeCost:x.first.effectiveOwnerCost-x.first.totalRenterCost}
+function resultSnapshot(x,bp){const def=strategyDefinition(x);return {mode:x.mode,years:x.v.years,adv:x.adv,monthOne:monthOneMetric(x),breakEven:Number.isFinite(bp)?bp:null,strategyA:x.last[def.aKey],strategyB:x.last[def.bKey]}}
+function scenarioMatchesSaved(saved){return !!saved&&scenarioControls().every(el=>{const state=saved.controls?.[el.id];return state&&(el.type==='checkbox'?state.checked===el.checked:String(state.value)===String(el.value))})}
+function signedMoney(value){return `${value>0?'+':value<0?'−':''}${money(Math.abs(value))}`}
+function setDelta(id,value,positiveIsGood=true){const el=$(id);el.textContent=signedMoney(value);el.className=Math.abs(value)<1?'':((value>0)===positiveIsGood?'good':'bad')}
+function renderSavedComparison(x,bp){
+ const panel=$('savedComparison'),saved=readSavedScenario();if(!saved?.result||scenarioMatchesSaved(saved)){panel.hidden=true;return}panel.hidden=false;
+ if(saved.result.mode!==x.mode||+saved.result.years!==+x.v.years){$('savedComparisonTitle').textContent='Strategy or holding period changed';$('savedAdvDelta').textContent='Not comparable';$('savedMonthDelta').textContent='Not comparable';$('savedBreakEvenDelta').textContent='Not comparable';['savedAdvDelta','savedMonthDelta','savedBreakEvenDelta'].forEach(id=>$(id).className='');return}
+ $('savedComparisonTitle').textContent='Your edits';const current=resultSnapshot(x,bp);setDelta('savedAdvDelta',current.adv-saved.result.adv,true);setDelta('savedMonthDelta',current.monthOne-saved.result.monthOne,x.rentalMode);
+ if(Number.isFinite(current.breakEven)&&Number.isFinite(saved.result.breakEven)){const delta=current.breakEven-saved.result.breakEven;$('savedBreakEvenDelta').textContent=signedMoney(delta);$('savedBreakEvenDelta').className=''}else{$('savedBreakEvenDelta').textContent=current.breakEven===saved.result.breakEven?'No change':'Not comparable';$('savedBreakEvenDelta').className=''}
+}
+function renderOutcomeHero(x,s,bp,priceDirection){
+ const def=strategyDefinition(x),a=x.last[def.aKey],b=x.last[def.bKey],scale=Math.max(Math.abs(a),Math.abs(b),1),winner=x.adv>=0?def.aShort:def.bShort,relative=Math.abs(x.adv)/scale,hero=$('quickResult');
+ hero.dataset.state=relative<.06?'close':x.adv>=0?'positive':'negative';$('resultCard').style.setProperty('--outcome',relative<.06?'var(--amber)':x.adv>=0?'var(--green)':'var(--red)');$('heroContext').textContent=`${x.v.years}-year modeled outcome · ${$('location').selectedOptions[0]?.textContent||currentLocation} · ${$('propertyType').selectedOptions[0]?.textContent||'Property'}`;$('heroAdvantage').textContent=money(Math.abs(x.adv));$('heroWinner').textContent=`${winner} modeled wealth advantage`;$('heroScore').textContent=`${s}/100`;$('heroHorizon').textContent=`Year ${x.v.years}`;
+ $('heroStrategyALabel').textContent=def.aLabel;$('heroStrategyBLabel').textContent=def.bLabel;$('heroStrategyAValue').textContent=money(a);$('heroStrategyBValue').textContent=money(b);$('heroStrategyABar').style.width=`${Math.max(4,Math.abs(a)/scale*100)}%`;$('heroStrategyBBar').style.width=`${Math.max(4,Math.abs(b)/scale*100)}%`;$('heroStrategyABar').classList.toggle('negativeWealth',a<0);$('heroStrategyBBar').classList.toggle('negativeWealth',b<0);
+ const rail=$('thresholdRail'),min=+$('priceSlider').min,max=+$('priceSlider').max,current=n('price'),currentPct=Math.max(0,Math.min(100,(current-min)/Math.max(1,max-min)*100));$('heroCurrentMarker').style.left=`${currentPct}%`;$('heroRailMin').textContent=money(min);$('heroRailMax').textContent=money(max);
+ const hasCrossing=Number.isFinite(bp),visibleCrossing=hasCrossing&&bp>=min&&bp<=max;rail.classList.toggle('noCrossing',!visibleCrossing);rail.classList.toggle('propertyAhead',!visibleCrossing&&x.adv>=0);rail.classList.toggle('reverse',visibleCrossing&&!priceDirection.leftPropertyAhead);$('heroBreakEvenMarker').hidden=!visibleCrossing;
+ if(visibleCrossing){const bpPct=(bp-min)/Math.max(1,max-min)*100,p1=Math.max(0,bpPct-3),p2=Math.min(100,bpPct+3),zones=rail.querySelectorAll('.thresholdZone');zones[0].style.width=`${p1}%`;zones[1].style.left=`${p1}%`;zones[1].style.width=`${p2-p1}%`;zones[2].style.left=`${p2}%`;$('heroBreakEvenMarker').style.left=`${bpPct}%`;$('heroPricePosition').textContent=`${money(current)} vs ${money(bp)} break-even`}
+ else if(hasCrossing)$('heroPricePosition').textContent=`Break-even ${money(bp)} · ${bp<min?'below':'above'} chart range`;
+ else $('heroPricePosition').textContent=`${winner} leads across the tested range`;
+ clearTimeout(resultAnnouncementTimer);resultAnnouncementTimer=setTimeout(()=>{$('resultAnnouncement').textContent=`${x.v.years}-year result. ${winner} leads by ${money(Math.abs(x.adv))}. ${hasCrossing?`Purchase-price break-even ${money(bp)}.`:'No purchase-price crossing in the tested range.'}`},450);
+ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){clearTimeout(heroMotionTimer);hero.classList.remove('is-updated');heroMotionTimer=setTimeout(()=>hero.classList.add('is-updated'),180)}
+}
+function renderPrintScenario(x){
+ const programNames={conventional:'Conventional',fha:'FHA',va:'VA',usda:'USDA'},rent=x.rentalMode?x.v.rentCollected:x.liveInMode?x.v.liveAltRent:x.v.rent;
+ $('printLocation').textContent=$('location').selectedOptions[0]?.textContent||currentLocation;$('printStrategy').textContent=$('useMode').selectedOptions[0]?.textContent||x.mode;$('printProperty').textContent=$('propertyType').selectedOptions[0]?.textContent||'Property';$('printPrice').textContent=money(x.v.price);$('printFinancing').textContent=x.v.downPct>=100?'Cash purchase':`${x.v.downPct}% down · ${programNames[x.loanProgram]||x.loanProgram} · ${x.v.rate.toFixed(2)}%`;$('printHorizon').textContent=`${x.v.years} years`;$('printRent').textContent=`${money(rent)}/mo`;$('printGenerated').textContent=new Date().toLocaleString([],{dateStyle:'medium',timeStyle:'short'})
+}
+function svgNode(name,attrs={},textValue=''){const el=document.createElementNS('http://www.w3.org/2000/svg',name);Object.entries(attrs).forEach(([key,value])=>el.setAttribute(key,value));if(textValue!=='')el.textContent=textValue;return el}
+function wealthSummary(x,def){
+ let previous=0,crossings=[];for(let i=0;i<x.rec.length;i++){const diff=x.rec[i][def.aKey]-x.rec[i][def.bKey],sign=Math.sign(diff);if(!sign)continue;if(previous&&sign!==previous)crossings.push(x.rec[i]);previous=sign}
+ const winner=x.adv>=0?def.aShort:def.bShort,finish=`${winner} finishes ${money(Math.abs(x.adv))} ahead.`;if(crossings.length>1)return `The paths cross ${crossings.length} times; ${finish}`;if(crossings.length===1)return `The paths cross around year ${(crossings[0].y).toFixed(crossings[0].y<3?1:0)}. ${finish}`;return `No crossing appears in the selected period. ${finish}`
+}
+function renderWealthChart(x){
+ const svg=$('wealthSvg'),def=strategyDefinition(x),W=720,H=270,L=66,R=18,T=18,B=32,values=x.rec.flatMap(r=>[r[def.aKey],r[def.bKey]]).filter(Number.isFinite);let yMin=Math.min(0,...values),yMax=Math.max(0,...values);if(Math.abs(yMax-yMin)<1){yMax+=1;yMin-=1}const pad=(yMax-yMin)*.08;yMax+=pad;yMin-=pad;const plotW=W-L-R,plotH=H-T-B,toX=i=>L+i/Math.max(1,x.rec.length-1)*plotW,toY=value=>T+(yMax-value)/(yMax-yMin)*plotH;
+ svg.replaceChildren();svg.append(svgNode('title',{id:'wealthChartTitle'},'Modeled wealth path'),svgNode('desc',{id:'wealthChartDesc'},`${def.aLabel} and ${def.bLabel} over ${x.v.years} years.`));
+ for(let i=0;i<5;i++){const value=yMax-(yMax-yMin)*i/4,y=toY(value);svg.append(svgNode('line',{x1:L,y1:y,x2:W-R,y2:y,class:value===0?'zeroLine':'chartGrid'}),svgNode('text',{x:L-9,y:y+3,'text-anchor':'end',class:'axisLabel'},compactMoney(value)))}
+ for(let i=0;i<=4;i++){const index=Math.round((x.rec.length-1)*i/4),px=toX(index),year=x.rec[index].y;svg.append(svgNode('line',{x1:px,y1:T,x2:px,y2:H-B,class:'chartGrid'}),svgNode('text',{x:px,y:H-10,'text-anchor':i===0?'start':i===4?'end':'middle',class:'axisLabel'},`Year ${Math.round(year)}`))}
+ const step=Math.max(1,Math.ceil((x.rec.length-1)/170)),indices=[];for(let i=0;i<x.rec.length;i+=step)indices.push(i);if(indices.at(-1)!==x.rec.length-1)indices.push(x.rec.length-1);const pathFor=key=>indices.map((index,i)=>`${i?'L':'M'}${toX(index).toFixed(2)},${toY(x.rec[index][key]).toFixed(2)}`).join(' ');
+ svg.append(svgNode('path',{d:pathFor(def.aKey),class:'seriesPath seriesA'}),svgNode('path',{d:pathFor(def.bKey),class:'seriesPath seriesB'}));const line=svgNode('line',{x1:L,y1:T,x2:L,y2:H-B,class:'chartCrosshair'}),pointA=svgNode('circle',{cx:L,cy:toY(x.rec[0][def.aKey]),r:5,class:'chartPoint seriesA'}),pointB=svgNode('circle',{cx:L,cy:toY(x.rec[0][def.bKey]),r:5,class:'chartPoint seriesB'});line.style.display=pointA.style.display=pointB.style.display='none';svg.append(line,pointA,pointB);
+ wealthChartState={x,def,W,H,L,R,T,B,toX,toY,line,pointA,pointB};wealthChartIndex=Math.min(wealthChartIndex,x.rec.length-1);$('chartStrategyALabel').textContent=def.aLabel;$('chartStrategyBLabel').textContent=def.bLabel;const summary=wealthSummary(x,def);$('wealthPathSummary').textContent=summary;$('wealthChartDesc').textContent=`${def.aLabel} and ${def.bLabel} over ${x.v.years} years. ${summary}`;$('wealthChart').setAttribute('aria-label',summary)
+}
+function showWealthChartPoint(index){
+ const state=wealthChartState;if(!state)return;const {x,def,toX,toY,line,pointA,pointB,W,H}=state;index=Math.max(0,Math.min(x.rec.length-1,index));wealthChartIndex=index;const record=x.rec[index],px=toX(index),ay=toY(record[def.aKey]),by=toY(record[def.bKey]);line.setAttribute('x1',px);line.setAttribute('x2',px);pointA.setAttribute('cx',px);pointA.setAttribute('cy',ay);pointB.setAttribute('cx',px);pointB.setAttribute('cy',by);line.style.display=pointA.style.display=pointB.style.display='';
+ const tip=$('chartTooltip'),heading=document.createElement('b'),rowA=document.createElement('div'),rowB=document.createElement('div'),xPct=px/W*100;heading.textContent=record.y<1?`Month ${record.m}`:`Year ${record.y.toFixed(record.y<3?1:0)}`;rowA.textContent=`${def.aShort}: ${money(record[def.aKey])}`;rowB.textContent=`${def.bShort}: ${money(record[def.bKey])}`;tip.replaceChildren(heading,rowA,rowB);tip.style.left=`${Math.max(2,Math.min(98,xPct))}%`;tip.style.transform=xPct<24?'translate(0,-115%)':xPct>76?'translate(-100%,-115%)':'translate(-50%,-115%)';tip.style.top=`${Math.max(18,Math.min(88,Math.min(ay,by)/H*100))}%`;tip.hidden=false
+}
+function initWealthChartInteraction(){
+ const chart=$('wealthChart'),pointerIndex=event=>{const state=wealthChartState,rect=$('wealthSvg').getBoundingClientRect(),svgX=(event.clientX-rect.left)/Math.max(1,rect.width)*state.W,ratio=Math.max(0,Math.min(1,(svgX-state.L)/Math.max(1,state.W-state.L-state.R)));return Math.round(ratio*(state.x.rec.length-1))};chart.addEventListener('pointermove',event=>{if(wealthChartState)showWealthChartPoint(pointerIndex(event))});chart.addEventListener('pointerdown',event=>{if(wealthChartState)showWealthChartPoint(pointerIndex(event))});chart.addEventListener('pointerleave',()=>{$('chartTooltip').hidden=true;if(wealthChartState){wealthChartState.line.style.display=wealthChartState.pointA.style.display=wealthChartState.pointB.style.display='none'}});chart.addEventListener('keydown',event=>{if(!wealthChartState||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const last=wealthChartState.x.rec.length-1,index=event.key==='Home'?0:event.key==='End'?last:wealthChartIndex+(event.key==='ArrowRight'?1:-1);showWealthChartPoint(index)})
+}
+function leverDelta(value,current,kind){const delta=value-current;if(kind==='rate')return `${delta>0?'+':delta<0?'−':''}${Math.abs(delta).toFixed(2)} percentage points from current`;return `${signedMoney(delta)}${kind==='rent'?'/mo':''} from current`}
+function createLeverCard({icon,title,detail,field,value,button}){const card=document.createElement('article');card.className='leverCard'+(Number.isFinite(value)?'':' noCrossing');const badge=document.createElement('span'),heading=document.createElement('h4'),copy=document.createElement('p'),action=document.createElement('button');badge.className='leverIcon';badge.textContent=icon;heading.textContent=title;copy.textContent=detail;action.className='btn secondary';action.type='button';action.textContent=button||'Try this value';if(Number.isFinite(value)){action.dataset.field=field;action.dataset.value=value}else action.hidden=true;card.append(badge,heading,copy,action);return card}
+function renderDecisionLevers(x,analysis){
+ const grid=$('decisionLevers');grid.replaceChildren();const rentField=x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',rentLabel=x.rentalMode?'Gross-rent break-even':x.liveInMode?'Comparable-rent break-even':'Base-rent break-even',rentUnavailable=x.liveInMode&&!analysis.liveAltRentActive;
+ grid.append(createLeverCard({icon:'$',title:Number.isFinite(analysis.bp)?`Purchase-price break-even ${money(analysis.bp)}`:'No purchase-price crossing',detail:Number.isFinite(analysis.bp)?leverDelta(analysis.bp,n('price'),'price'):'The current winner stays ahead across the tested price range.',field:'price',value:analysis.bp,button:Number.isFinite(analysis.bp)?`Try ${money(analysis.bp)}`:''}));
+ if(x.v.downPct<100)grid.append(createLeverCard({icon:'%',title:Number.isFinite(analysis.br)?`Rate break-even ${analysis.br.toFixed(2)}%`:'No mortgage-rate crossing',detail:Number.isFinite(analysis.br)?leverDelta(analysis.br,n('rate'),'rate'):'The answer does not flip within the tested 0%–20% rate range.',field:'rate',value:analysis.br,button:Number.isFinite(analysis.br)?`Try ${analysis.br.toFixed(2)}%`:''}));
+ grid.append(createLeverCard({icon:'R',title:rentUnavailable?'Comparable rent is not active':Number.isFinite(analysis.rr)?`${rentLabel} ${money(analysis.rr)}/mo`:`No ${rentLabel.toLowerCase()}`,detail:rentUnavailable?'The alternative strategy does not incur comparable rent during this modeled horizon.':Number.isFinite(analysis.rr)?leverDelta(analysis.rr,n(rentField),'rent'):'The answer does not flip within the tested rent range.',field:rentField,value:rentUnavailable?null:analysis.rr,button:Number.isFinite(analysis.rr)?`Try ${money(analysis.rr)}/mo`:''}));$('undoLever').hidden=!leverUndoState
+}
+function tryDecisionLever(field,value){
+ if(!$(field)||!Number.isFinite(value))return;const watched=['price','rate','rent','rentCap','rentCollected','rentCollectedCap','liveAltRent','liveAltRentCap','insurance'],controls={};watched.forEach(id=>{if($(id))controls[id]={value:$(id).value}});leverUndoState={controls,flags:autoFlags(),field};$(field).value=Math.round(value*(field==='rate'?100:1))/(field==='rate'?100:1);
+ if(field==='price'){priceAuto=false;insuranceUserEditing=false;syncInsuranceToPrice()}else if(field==='rate')rateAuto=false;else if(field==='rent'){rentAuto=false;$('rentCap').value=$(field).value}else if(field==='rentCollected'){rentAuto=false;$('rentCollectedCap').value=$(field).value}else if(field==='liveAltRent'){liveAltRentAuto=false;$('liveAltRentCap').value=$(field).value}markScenarioDirty();update();$('leverStatus').textContent=`Tried the modeled ${field==='price'?'purchase price':field==='rate'?'mortgage rate':'rent'} break-even. Use Undo last try to restore your assumptions.`;$('undoLever').focus({preventScroll:true})
+}
+function undoDecisionLever(){if(!leverUndoState)return;const saved=leverUndoState;applyControlSnapshot(saved.controls);restoreAutoFlags(saved.flags);leverUndoState=null;markScenarioDirty();update();$('leverStatus').textContent='Restored the assumptions from before the last decision-lever experiment.';$('leverHeading').focus({preventScroll:true})}
+function printDecisionBrief(){if(!scenarioIsValid(true)||!latestResult)return;renderPrintScenario(latestResult);window.print()}
+
+function configureNumericConstraints(){
+ const rules={price:[50000,100000000,true],downPct:[0,100,true],rate:[0,25,true],term:[1,50,true],years:[1,50,true],pmiRate:[0,10,false],pmiCancelLtv:[50,100,false],taxRate:[0,10,false],maintRate:[0,20,false],stockReturn:[-50,50,false],appreciation:[-20,30,false],rentGrowth:[-50,100,false],marketGrowth:[-20,50,false],hoaGrowth:[-20,50,false],buyClose:[0,25,false],sellCost:[0,25,false]};
+ ['vacancyRate','ownerIncomeVacancy','invAduVacancy','liveMainVacancy','livePreAduVacancy','renterShareVacancy'].forEach(id=>rules[id]=[0,100,false]);
+ ['managementRate','rentalReserveRate','ownerIncomeManagement','ownerIncomeReserve','invAduReserve','invAduManagementRate','liveMainReserve','liveMainManagementRate','livePreAduReserve','livePreAduManagementRate'].forEach(id=>rules[id]=[0,100,false]);
+ ['aduBuildMonths','invAduBuildMonths','liveAduBuildMonths','liveMoveMonth'].forEach(id=>rules[id]=[0,600,false]);
+ ['aduLoanRate','invAduLoanRate','liveAduLoanRate'].forEach(id=>rules[id]=[0,25,true]);
+ ['aduLoanTerm','invAduLoanTerm','liveAduLoanTerm'].forEach(id=>rules[id]=[1,50,true]);
+ ['aduSize','invAduSize','liveAduSize'].forEach(id=>rules[id]=[100,10000,true]);
+ ['aduBuildPsf','invAduBuildPsf','liveAduBuildPsf','aduLocalPsf','invAduLocalPsf','liveAduLocalPsf'].forEach(id=>rules[id]=[0,5000,false]);
+ ['aduBuildCost','invAduBuildCost','liveAduBuildCost','aduCustomValue','invAduCustomValue','liveAduCustomValue'].forEach(id=>rules[id]=[0,10000000,false]);
+ ['rent','rentCap','renterStorage','renterShareContribution','ownerIncomeGross','ownerIncomeCap','ownerIncomeOther','liveAltRent','liveAltRentCap','liveMainRent','liveMainRentCap','liveMainOther','livePreAduRent','livePreAduRentCap','livePreAduOther','hoa','storage','insurance','assessment','rentCollected','rentCollectedCap','landlordUtilities','landlordOther','invAduOther','invAduRent','invAduRentCap'].forEach(id=>rules[id]=[0,1000000,false]);
+ ['renterShareGrowth','ownerIncomeGrowth','liveAltRentGrowth','liveMainRentGrowth','livePreAduRentGrowth','collectedRentGrowth','invAduRentGrowth'].forEach(id=>rules[id]=[-50,100,false]);
+ Object.entries(rules).forEach(([id,[min,max,required]])=>{const el=$(id);if(!el)return;el.min=min;el.max=max;if(required)el.required=true})
+}
+function scenarioIsValid(focus=false){
+ const down=$('downPct'),downValue=n('downPct'),rental=$('useMode').value==='rental';down.setCustomValidity(rental&&downValue<15?'Investment-property scenarios require at least 15% down in this model.':downValue>0&&downValue<3?'Use 0% with an eligible VA loan, or enter at least 3% down.':'');
+ [['rentCap','rent'],['ownerIncomeCap','ownerIncomeGross'],['rentCollectedCap','rentCollected'],['invAduRentCap','invAduRent'],['liveAltRentCap','liveAltRent'],['liveMainRentCap','liveMainRent'],['livePreAduRentCap','livePreAduRent']].forEach(([cap,base])=>$(cap)?.setCustomValidity(n(cap)<n(base)?'The growth cap must be at least the starting amount.':''));
+ const calculator=$('calculator'),controls=[...calculator.querySelectorAll('input,select')];controls.forEach(el=>el.removeAttribute('aria-invalid'));
+ const isRelevant=el=>{if(el.disabled||el.type==='hidden')return false;for(let node=el;node&&node!==calculator;node=node.parentElement){const style=getComputedStyle(node);if(style.display==='none'||style.visibility==='hidden')return false}return true};
+ const invalid=controls.filter(el=>{if(!isRelevant(el))return false;const validity=el.validity;return validity.valueMissing||validity.badInput||validity.rangeUnderflow||validity.rangeOverflow||validity.customError||validity.typeMismatch});
+ if(!invalid.length){$('validationStatus').classList.remove('show');$('validationStatus').textContent='';return true}
+ invalid.forEach(el=>el.setAttribute('aria-invalid','true'));const first=invalid[0],label=first.labels?.[0]?.textContent?.trim()||first.id;
+ $('validationStatus').textContent=`Check ${label}. ${first.validationMessage||`Enter a value between ${first.min||'the allowed minimum'} and ${first.max||'the allowed maximum'}.`}`;$('validationStatus').classList.add('show');if(focus){const calculatorTab=document.querySelector('.tab[data-tab="calculator"]');if(!calculator.classList.contains('active'))activateTab(calculatorTab,false);first.focus()}return false
+}
+function enhanceAccessibility(){
+ document.querySelectorAll('button:not([type])').forEach(button=>button.type='button');
+ document.querySelectorAll('label:not([for])').forEach(label=>{const control=label.querySelector('input[id],select[id]')||label.parentElement?.querySelector(':scope > input[id],:scope > select[id]');if(control&&!label.contains(control))label.htmlFor=control.id});
+ document.querySelectorAll('.switchrow').forEach((row,index)=>{const control=row.querySelector('input[type="checkbox"]'),title=row.querySelector('b');if(!control||!title)return;if(!title.id)title.id=`switch-label-${index}`;control.setAttribute('aria-labelledby',title.id)});
+ document.querySelectorAll('th').forEach(th=>th.scope='col');$('priceSlider').setAttribute('aria-label','Purchase price');
+ const tablist=document.querySelector('.tabs');tablist.setAttribute('role','tablist');document.querySelectorAll('.tab').forEach((tab,index)=>{tab.id=`tab-${tab.dataset.tab}`;tab.setAttribute('role','tab');tab.setAttribute('aria-controls',tab.dataset.tab);tab.setAttribute('aria-selected',tab.classList.contains('active'));tab.tabIndex=tab.classList.contains('active')?0:-1;const panel=$(tab.dataset.tab);panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',tab.id);tab.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=[...document.querySelectorAll('.tab')];const next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;activateTab(tabs[next],true)})});
+ document.querySelectorAll('.presetBtn').forEach(button=>button.setAttribute('aria-pressed',button.classList.contains('active')))
+}
+function activateTab(tab,focus=false){
+ if(!tab)return;document.querySelectorAll('.tab').forEach(item=>{const active=item===tab;item.classList.toggle('active',active);item.setAttribute('aria-selected',active);item.tabIndex=active?0:-1});document.querySelectorAll('.panel').forEach(panel=>panel.classList.toggle('active',panel.id===tab.dataset.tab));if(!suspendUpdates&&tab.dataset.tab==='downpayments'&&scenarioIsValid(false))updateDp();if(focus)tab.focus()
+}
 
 function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return P*m*(1+m)**N/((1+m)**N-1)}
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
@@ -653,7 +868,7 @@ function applyLoanProgramRules(){
 function updateDownPresetState(){
  const down=n('downPct');
  document.querySelectorAll('.downPreset,.rentalDownPreset').forEach(btn=>{
-   btn.classList.toggle('active',Math.abs(+btn.dataset.down-down)<.001)
+   const active=Math.abs(+btn.dataset.down-down)<.001;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',active)
  });
 }
 function mortgageInsuranceName(program){
@@ -845,14 +1060,15 @@ function model(o={}){
        totalRenterCost=Math.max(0,rent+renterGarage-renterShareNet),
 
        aduAvailable=!newAduEnabled||m>=aduCompletionMonth,
+       aduLoanBalance=newAduEnabled&&aduFunding==='loan'?bal(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm,m):0,
+       aduValueAdded=newAduEnabled&&m>=aduCompletionMonth?v.aduValueAdded*(1+v.appreciation/100)**((m-aduCompletionMonth)/12):0,
+       aduCarryingCost=aduValueAdded*(v.taxRate+v.maintRate)/100/12,
        ownerIncomeEffective=ownerIncomeEnabled&&aduAvailable?ownerIncomeGross*Math.max(0,1-v.ownerIncomeVacancy/100):0,
        ownerIncomeManagement=ownerManagementEnabled&&aduAvailable?ownerIncomeEffective*v.ownerIncomeManagement/100:0,
        ownerIncomeReserve=ownerIncomeEnabled&&aduAvailable?ownerIncomeEffective*v.ownerIncomeReserve/100:0,
        ownerIncomeNet=ownerIncomeEnabled&&aduAvailable?ownerIncomeEffective-ownerIncomeManagement-ownerIncomeReserve-v.ownerIncomeOther:0,
        activeAduLoanPayment=newAduEnabled&&aduFunding==='loan'&&m<Math.round(v.aduLoanTerm*12)?aduLoanPayment:0,
-       effectiveOwnerCost=ownerBase+activeAduLoanPayment-ownerIncomeNet,
-       aduLoanBalance=newAduEnabled&&aduFunding==='loan'?bal(aduLoanPrincipal,v.aduLoanRate,v.aduLoanTerm,m):0,
-       aduValueAdded=newAduEnabled&&m>=aduCompletionMonth?v.aduValueAdded*(1+v.appreciation/100)**((m-aduCompletionMonth)/12):0,
+       effectiveOwnerCost=ownerBase+activeAduLoanPayment+aduCarryingCost-ownerIncomeNet,
 
        effectiveCollected=grossCollected*(1-v.vacancyRate/100),
        management=$('managementOn').checked?effectiveCollected*v.managementRate/100:0,
@@ -864,13 +1080,14 @@ function model(o={}){
        invAduManagement=invAduManagementEnabled&&investmentAduAvailable?invAduEffectiveRent*v.invAduManagementRate/100:0,
        invAduReserve=investmentAduAvailable?invAduEffectiveRent*v.invAduReserve/100:0,
        activeInvAduLoanPayment=investmentAduEnabled&&invAduFunding==='loan'&&m<Math.round(v.invAduLoanTerm*12)?invAduLoanPayment:0,
-       invAduCashFlow=investmentAduEnabled?invAduEffectiveRent-invAduManagement-invAduReserve-(investmentAduAvailable?v.invAduOther:0)-activeInvAduLoanPayment:0,
        invAduLoanBalance=investmentAduEnabled&&invAduFunding==='loan'?bal(invAduLoanPrincipal,v.invAduLoanRate,v.invAduLoanTerm,m):0,
        invAduValue=investmentAduAvailable?v.invAduValueAdded*(1+v.appreciation/100)**((m-invAduCompletionMonth)/12):0,
+       invAduCarryingCost=invAduValue*(v.taxRate+v.maintRate)/100/12,
+       invAduCashFlow=investmentAduEnabled?invAduEffectiveRent-invAduManagement-invAduReserve-(investmentAduAvailable?v.invAduOther:0)-activeInvAduLoanPayment-invAduCarryingCost:0,
        totalGrossCollected=grossCollected+(investmentAduAvailable?invAduGrossRent:0),
        totalEffectiveCollected=effectiveCollected+invAduEffectiveRent,
-       totalLandlordCosts=baseLandlordCosts+invAduManagement+invAduReserve+(investmentAduAvailable?v.invAduOther:0)+activeInvAduLoanPayment,
-       rentalCashFlow=baseRentalCashFlow+invAduCashFlow,
+       totalLandlordCosts=baseLandlordCosts+invAduManagement+invAduReserve+(investmentAduAvailable?v.invAduOther:0)+activeInvAduLoanPayment+invAduCarryingCost,
+       rentalCashFlow=totalEffectiveCollected-totalLandlordCosts,
 
        liveAduAvailable=liveInMode&&m>=liveAduCompletionMonth,
        liveOwnerInAdu=liveInMode&&liveAduAvailable&&m>=liveMoveMonth,
@@ -888,8 +1105,9 @@ function model(o={}){
        activeLiveAduLoanPayment=liveAduBuildEnabled&&liveAduFunding==='loan'&&m<Math.round(v.liveAduLoanTerm*12)?liveAduLoanPayment:0,
        liveAduLoanBalance=liveAduBuildEnabled&&liveAduFunding==='loan'?bal(liveAduLoanPrincipal,v.liveAduLoanRate,v.liveAduLoanTerm,m):0,
        liveAduValue=liveAduBuildEnabled&&liveAduAvailable?v.liveAduValueAdded*(1+v.appreciation/100)**((m-liveAduCompletionMonth)/12):0,
+       liveAduCarryingCost=liveAduValue*(v.taxRate+v.maintRate)/100/12,
        liveNetRentalIncome=liveMainNet+livePreAduNet,
-       livePropertyCost=ownerBase+activeLiveAduLoanPayment+liveOutsideRent-liveNetRentalIncome,
+       livePropertyCost=ownerBase+activeLiveAduLoanPayment+liveAduCarryingCost+liveOutsideRent-liveNetRentalIncome,
        liveAlternativeCost=liveAltRent,
        liveGrossRent=(liveMainRented?liveMainGross:0)+(livePreAduRented?livePreAduGross:0),
 
@@ -899,12 +1117,12 @@ function model(o={}){
 
    rec.push({m,y,rent,renterGarage,renterShareGross,renterShareNet,totalRenterCost,
      owner:ownerBase,ownerBase,ownerIncomeGross,ownerIncomeEffective,ownerIncomeManagement,ownerIncomeReserve,ownerIncomeNet,effectiveOwnerCost,
-     activeAduLoanPayment,aduLoanBalance,aduValueAdded,aduAvailable,home,loanBal,renter,buyWealth,pmi,ltv,
+     activeAduLoanPayment,aduLoanBalance,aduValueAdded,aduCarryingCost,aduAvailable,home,loanBal,renter,buyWealth,pmi,ltv,
      grossCollected,effectiveCollected,management,rentalReserve,baseLandlordCosts,baseRentalCashFlow,
-     investmentAduAvailable,invAduGrossRent,invAduEffectiveRent,invAduManagement,invAduReserve,activeInvAduLoanPayment,invAduCashFlow,invAduLoanBalance,invAduValue,
+     investmentAduAvailable,invAduGrossRent,invAduEffectiveRent,invAduManagement,invAduReserve,activeInvAduLoanPayment,invAduCashFlow,invAduLoanBalance,invAduValue,invAduCarryingCost,
      totalGrossCollected,totalEffectiveCollected,totalLandlordCosts,rentalCashFlow,rentalAlternative,rentalOwnerWealth,
      liveAduAvailable,liveOwnerInAdu,liveMainRented,livePreAduRented,liveOutsideRent,liveMainGross,liveMainEffective,liveMainManagement,liveMainReserve,liveMainNet,
-     livePreAduGross,livePreAduEffective,livePreAduManagement,livePreAduReserve,livePreAduNet,activeLiveAduLoanPayment,liveAduLoanBalance,liveAduValue,
+     livePreAduGross,livePreAduEffective,livePreAduManagement,livePreAduReserve,livePreAduNet,activeLiveAduLoanPayment,liveAduLoanBalance,liveAduValue,liveAduCarryingCost,
      liveNetRentalIncome,livePropertyCost,liveAlternativeCost,liveGrossRent,liveAlternative,livePropertyWealth});
 
    if(m===M)break;
@@ -950,6 +1168,7 @@ function model(o={}){
 }
 function scenarioForRoot(field,value,extra={}){
  let o={...extra,[field]:value};
+ if(field==='price'&&$('insuranceAuto').checked)o.insurance=Math.round(scaledInsurance(value));
  // For a current-rent break-even, the assumed market-rent ceiling must move
  // with the tested rent. Otherwise a high test rent falls back to the old cap.
  if(field==='rent') o.rentCap=Math.max(value, extra.rentCap||value);
@@ -982,13 +1201,14 @@ function scenarioForRoot(field,value,extra={}){
 function bisectRoot(field,lo,hi,extra={}){
  let a=model(scenarioForRoot(field,lo,extra)).adv,b=model(scenarioForRoot(field,hi,extra)).adv;
  if(Math.abs(a)<1)return lo;if(Math.abs(b)<1)return hi;if(a*b>0)return null;
- for(let i=0;i<60;i++){
+ const tolerance=field==='rate'?.001:1;
+ for(let i=0;i<32&&hi-lo>tolerance;i++){
    let mid=(lo+hi)/2,c=model(scenarioForRoot(field,mid,extra)).adv;
    if(a*c<=0){hi=mid;b=c}else{lo=mid;a=c}
  }
  return (lo+hi)/2
 }
-function roots(field,lo,hi,extra={},segments=80){
+function roots(field,lo,hi,extra={},segments=36){
  const found=[];
  let x0=lo,y0=model(scenarioForRoot(field,x0,extra)).adv;
  for(let i=1;i<=segments;i++){
@@ -1028,6 +1248,13 @@ function rootDirection(field,rootValue,extra={}){
  if(field==='invAduBuildCost')return now.adv>=0?'maximum ADU construction cost before the S&P 500 wins':'lower ADU cost needed for the property strategy to catch up';
  return '';
 }
+function priceDirectionAtRoot(bp){
+ const slider=$('priceSlider'),min=+slider.min,max=+slider.max,sample=price=>model(scenarioForRoot('price',price)).adv>=0;
+ const rangeLowPropertyAhead=sample(min),rangeHighPropertyAhead=sample(max);
+ if(!Number.isFinite(bp))return {leftPropertyAhead:rangeLowPropertyAhead,rightPropertyAhead:rangeHighPropertyAhead,rangeLowPropertyAhead,rangeHighPropertyAhead};
+ const delta=Math.max(1000,(max-min)*.01),leftPropertyAhead=sample(Math.max(50000,bp-delta)),rightPropertyAhead=sample(Math.min(1500000,bp+delta));
+ return {leftPropertyAhead,rightPropertyAhead,rangeLowPropertyAhead,rangeHighPropertyAhead}
+}
 function cashFlowBreakEven(x){
  const vacancyKeep=Math.max(.01,1-x.v.vacancyRate/100);
  const variableRate=(($('managementOn').checked?x.v.managementRate:0)+x.v.rentalReserveRate)/100;
@@ -1043,9 +1270,8 @@ function score(x){
    const cfbe=cashFlowBreakEven(x);
    s+=Math.max(-10,Math.min(10,(x.v.rentCollected-cfbe)/Math.max(cfbe,1)*35));
  }else if(x.liveInMode){
-   const r=x.rec[Math.min(x.liveMoveMonth,x.rec.length-1)];
-   s+=Math.max(-16,Math.min(16,(r.liveAlternativeCost-r.livePropertyCost)/75));
-   s+=Math.max(-7,Math.min(7,r.liveNetRentalIncome/300));
+   const r=x.rec.find(record=>record.liveOwnerInAdu||record.liveMainRented);
+   if(r){s+=Math.max(-16,Math.min(16,(r.liveAlternativeCost-r.livePropertyCost)/75));s+=Math.max(-7,Math.min(7,r.liveNetRentalIncome/300))}
  }else{
    s+=Math.max(-15,Math.min(12,(500-(x.first.effectiveOwnerCost-x.first.totalRenterCost))/70));
    s-=Math.max(0,x.v.storage/100);
@@ -1104,11 +1330,15 @@ function applyLocalPurchaseEstimate(force=true){
  if(force||priceAuto){priceAuto=true;$('price').value=Math.round(estimate);insuranceUserEditing=false;syncInsuranceToPrice();}
  setDynamicSliderRange(estimate,n('price'));
 }
-function updatePriceVisual(bp){
+function updatePriceVisual(bp,priceDirection){
  const slider=$('priceSlider'),min=+slider.min,max=+slider.max;
- currentBreakEvenPrice=bp||null;
- if(!bp||bp<min||bp>max){
-   $('beMarker').style.display='none';
+ currentBreakEvenPrice=Number.isFinite(bp)?bp:null;
+ const lowColor=priceDirection.rangeLowPropertyAhead?'var(--green)':'var(--red)',highColor=priceDirection.rangeHighPropertyAhead?'var(--green)':'var(--red)',rangeBackground=lowColor===highColor?lowColor:`linear-gradient(90deg,${lowColor} 0%,${lowColor} 50%,${highColor} 50%,${highColor} 100%)`;
+ if(!Number.isFinite(bp)){
+   $('beMarker').style.display='none';slider.style.background=rangeBackground;slider.classList.remove('snap');$('snapText').textContent='No crossing in tested range';return
+ }
+ if(bp<min||bp>max){
+   $('beMarker').style.display='none';slider.style.background=rangeBackground;slider.classList.remove('snap');$('snapText').textContent=`Break-even ${bp<min?'below':'above'} slider range`;return
  }else{
    $('beMarker').style.display='block';
    $('beMarker').style.left=Math.max(0,Math.min(100,(bp-min)/(max-min)*100))+'%';
@@ -1118,7 +1348,7 @@ function updatePriceVisual(bp){
  const center=bp||min;
  const y1=Math.max(min,center-yellowWidth),y2=Math.min(max,center+yellowWidth);
  const p1=(y1-min)/(max-min)*100,p2=(y2-min)/(max-min)*100;
- slider.style.background=`linear-gradient(90deg,var(--green) 0%,var(--green) ${p1}%,var(--amber) ${p1}%,var(--amber) ${p2}%,var(--red) ${p2}%,var(--red) 100%)`;
+ slider.style.background=`linear-gradient(90deg,${lowColor} 0%,${lowColor} ${p1}%,var(--amber) ${p1}%,var(--amber) ${p2}%,${highColor} ${p2}%,${highColor} 100%)`;
  const threshold=Math.max(2500,(max-min)*.006);
  const snapped=bp&&Math.abs(n('price')-bp)<=threshold;
  slider.classList.toggle('snap',!!snapped);
@@ -1141,19 +1371,17 @@ function setAppreciationPreset(value){
 }
 function updateAppreciationPresetState(){
  const a=n('appreciation');
- $('appreciation4').classList.toggle('active',Math.abs(a-4)<.001);
- $('appreciation3').classList.toggle('active',Math.abs(a-3)<.001);
+ const four=Math.abs(a-4)<.001,three=Math.abs(a-3)<.001;$('appreciation4').classList.toggle('active',four);$('appreciation4').setAttribute('aria-pressed',four);
+ $('appreciation3').classList.toggle('active',three);$('appreciation3').setAttribute('aria-pressed',three);
 }
 function setReturnPreset(value){
  $('stockReturn').value=value;
- $('return10').classList.toggle('active',value===10);
- $('return7').classList.toggle('active',value===7);
  update()
 }
 function updateReturnPresetState(){
  const r=n('stockReturn');
- $('return10').classList.toggle('active',Math.abs(r-10)<.001);
- $('return7').classList.toggle('active',Math.abs(r-7)<.001);
+ const ten=Math.abs(r-10)<.001,seven=Math.abs(r-7)<.001;$('return10').classList.toggle('active',ten);$('return10').setAttribute('aria-pressed',ten);
+ $('return7').classList.toggle('active',seven);$('return7').setAttribute('aria-pressed',seven);
 }
 function updateSensitivity(){
  const base10=model({stockReturn:10}),conservative7=model({stockReturn:7});
@@ -1173,11 +1401,13 @@ function upfrontFeeDescription(x){
  return `<span class="muted" style="display:block">${money(x.upfrontFee)} financed ${labels[x.loanProgram]||'upfront program fee'}</span>`;
 }
 function update(){
+ if(suspendUpdates)return;
  syncInsuranceToPrice();
  applyLoanProgramRules();
  if(rateAuto)applyEstimatedRate(false);else updateLoanProgramDetails();
  applyPmiVisibility();updateReturnPresetState();updateAppreciationPresetState();
  updateAllAduBuildEstimates(false);updateAllAduValues(false);updateLiveInControls(false);
+ if(!scenarioIsValid(false))return;
  const x=model(),s=score(x),c=s>=70?'#138a61':s>=50?'#d28a16':'#c73a3a';
  setDynamicSliderRange(localPurchaseEstimate(),n('price'));
  $('priceDisplay').textContent=money(n('price'));$('priceSlider').value=Math.min(+$('priceSlider').max,Math.max(+$('priceSlider').min,n('price')));
@@ -1204,31 +1434,35 @@ function update(){
    $('milestoneIncome').textContent='Renter cost';$('milestoneCost').textContent='Owner cost';$('milestoneAlt').textContent='Renter wealth';$('milestoneProperty').textContent='Buyer wealth';
  }
  $('adv').textContent=(x.adv>=0?'+':'')+money(x.adv);$('adv').className=x.adv>=0?'good':'bad';
+ let liveMainRoot=null,liveAltRoot=null,liveMoveWithinHorizon=false,liveMainRentActive=false,liveAltRentActive=false;
 
  const sharedActive=x.primaryMode&&(x.renterShareEnabled||x.ownerIncomeEnabled);$('sharedHousingMetrics').style.display=sharedActive?'block':'none';
  if(sharedActive){
    $('renterShareNetResult').textContent=x.renterShareEnabled?money(x.first.renterShareNet)+'/mo':'Off';const displayOwnerIncome=x.newAduEnabled?x.rec[Math.min(x.aduCompletionMonth,x.rec.length-1)].ownerIncomeNet:x.first.ownerIncomeNet;$('ownerIncomeNetResult').textContent=x.ownerIncomeEnabled?money(displayOwnerIncome)+'/mo':'Off';const shift=x.first.ownerIncomeNet-x.first.renterShareNet;$('sharedHousingShift').textContent=(shift>=0?'+':'')+money(shift)+'/mo';$('sharedHousingShift').className=shift>=0?'good':'bad';
-   if(x.ownerIncomeEnabled){const incomeRoot=root('ownerIncomeGross',0,20000),incomeText=incomeRoot?`${money(incomeRoot)}/mo gross owner income`:noRootMessage('ownerIncomeGross',0,20000),aduText=x.newAduEnabled?` The ADU begins producing rent after month ${x.aduCompletionMonth}.`:'';$('sharedHousingBreakEven').innerHTML=`Modeled owner housing income needed for buying to match renting: <b>${incomeText}</b>.${aduText}`;}else $('sharedHousingBreakEven').innerHTML='Enable owner housing income to calculate the house-hacking income needed for buying to catch up.';
+   if(x.ownerIncomeEnabled){const incomeRoot=root('ownerIncomeGross',0,20000),incomeText=incomeRoot?`${money(incomeRoot)}/mo gross owner income`:noRootMessage('ownerIncomeGross',0,20000),aduText=x.newAduEnabled?` The ADU begins producing rent after month ${x.aduCompletionMonth}; tax and maintenance on modeled added value are included.`:'';$('sharedHousingBreakEven').innerHTML=`Modeled owner housing income needed for buying to match renting: <b>${incomeText}</b>.${aduText}`;}else $('sharedHousingBreakEven').innerHTML='Enable owner housing income to calculate the house-hacking income needed for buying to catch up.';
  }
 
  $('liveInMetrics').style.display=x.liveInMode?'block':'none';
  if(x.liveInMode){
-   const moveIndex=Math.min(x.liveMoveMonth,x.rec.length-1),mr=x.rec[moveIndex];
-   $('liveMoveResult').textContent=x.liveMoveMonth===0?'Immediately':`Month ${x.liveMoveMonth}`;$('liveMainRentResult').textContent=money(mr.liveMainGross)+'/mo';$('liveHousingCostResult').textContent=money(mr.livePropertyCost)+'/mo';$('liveNetIncomeResult').textContent=money(mr.liveNetRentalIncome)+'/mo';$('liveAltRentResult').textContent=money(mr.liveAlternativeCost)+'/mo';const ma=mr.liveAlternativeCost-mr.livePropertyCost;$('liveMonthlyAdvResult').textContent=(ma>=0?'+':'')+money(ma)+'/mo';$('liveMonthlyAdvResult').className=ma>=0?'good':'bad';
-   const mainRoot=root('liveMainRent',0,20000),altRoot=root('liveAltRent',250,12000);$('liveInBreakEven').innerHTML=`Effective ADU move-in is <b>month ${x.liveMoveMonth}</b>. Main-home rent break-even: <b>${mainRoot?money(mainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)}</b>. Comparable-rent crossing: <b>${altRoot?money(altRoot)+'/mo':noRootMessage('liveAltRent',250,12000)}</b>.`;
+   const moveWithinHorizon=x.liveMoveMonth<=Math.round(x.v.years*12),moveIndex=Math.min(x.liveMoveMonth,x.rec.length-1),mr=x.rec[moveIndex];
+   liveMoveWithinHorizon=moveWithinHorizon;liveMainRentActive=x.rec.some(record=>record.liveMainRented);liveAltRentActive=x.rec.some(record=>record.liveAlternativeCost>0);liveMainRoot=liveMainRentActive?root('liveMainRent',0,20000):null;liveAltRoot=liveAltRentActive?root('liveAltRent',250,12000):null;
+   $('liveMoveResult').textContent=x.liveMoveMonth===0?'Immediately':moveWithinHorizon?`Month ${x.liveMoveMonth}`:`Month ${x.liveMoveMonth} · beyond horizon`;
+   if(moveWithinHorizon){$('liveMainRentResult').textContent=money(mr.liveMainGross)+'/mo';$('liveHousingCostResult').textContent=money(mr.livePropertyCost)+'/mo';$('liveNetIncomeResult').textContent=money(mr.liveNetRentalIncome)+'/mo';$('liveAltRentResult').textContent=money(mr.liveAlternativeCost)+'/mo';const ma=mr.liveAlternativeCost-mr.livePropertyCost;$('liveMonthlyAdvResult').textContent=(ma>=0?'+':'')+money(ma)+'/mo';$('liveMonthlyAdvResult').className=ma>=0?'good':'bad';$('liveInBreakEven').innerHTML=`Effective ADU move-in is <b>month ${x.liveMoveMonth}</b>. Main-home rent break-even: <b>${liveMainRoot?money(liveMainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)}</b>. Comparable-rent crossing: <b>${liveAltRoot?money(liveAltRoot)+'/mo':noRootMessage('liveAltRent',250,12000)}</b>.${x.liveAduBuildEnabled?' Tax and maintenance on modeled ADU added value are included.':''}`}
+   else{$('liveMainRentResult').textContent='—';$('liveHousingCostResult').textContent='—';$('liveNetIncomeResult').textContent='—';$('liveAltRentResult').textContent='—';$('liveMonthlyAdvResult').textContent='—';$('liveMonthlyAdvResult').className='';const mainText=liveMainRentActive?`Main-home rent is active before the move and crosses near <b>${liveMainRoot?money(liveMainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)}</b>.`:'The main home is not rented during this horizon, so its rent break-even is not applicable.';$('liveInBreakEven').innerHTML=`The modeled move in month <b>${x.liveMoveMonth}</b> falls after the ${x.v.years}-year holding period, so after-move metrics are not shown. ${mainText} Comparable-rent crossing: <b>${liveAltRoot?money(liveAltRoot)+'/mo':noRootMessage('liveAltRent',250,12000)}</b>.`}
  }
 
  $('rentalMetrics').style.display=x.rentalMode?'block':'none';if(x.rentalMode){$('effectiveRent').textContent=money(x.first.totalEffectiveCollected);$('landlordCashFlow').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);$('landlordCashFlow').className=x.first.rentalCashFlow>=0?'good':'bad';$('cashFlowBreakEven').textContent=money(cashFlowBreakEven(x))+'/mo';}
- $('investmentAduMetrics').style.display=x.investmentAduEnabled?'block':'none';if(x.investmentAduEnabled){const completionIndex=Math.min(x.invAduCompletionMonth,x.rec.length-1),ar=x.rec[completionIndex],completed=x.invAduCompletionMonth<=Math.round(x.v.years*12);$('invAduRentResult').textContent=completed?money(ar.invAduGrossRent)+'/mo':'Not completed';$('invAduCashFlowResult').textContent=completed?(ar.invAduCashFlow>=0?'+':'')+money(ar.invAduCashFlow)+'/mo':'—';$('invAduCashFlowResult').className=completed?(ar.invAduCashFlow>=0?'good':'bad'):'';$('invAduValueResult').textContent=completed?money(ar.invAduValue):'—';const aduRentRoot=root('invAduRent',0,12000),aduCostRoot=root('invAduBuildCost',0,1500000);$('investmentAduBreakEven').innerHTML=`The ADU begins producing rent after month <b>${x.invAduCompletionMonth}</b>. Modeled ADU-rent break-even: <b>${aduRentRoot?money(aduRentRoot)+'/mo':noRootMessage('invAduRent',0,12000)}</b>. Modeled construction-cost break-even: <b>${aduCostRoot?money(aduCostRoot):noRootMessage('invAduBuildCost',0,1500000)}</b>.`;}
+ $('investmentAduMetrics').style.display=x.investmentAduEnabled?'block':'none';if(x.investmentAduEnabled){const completionIndex=Math.min(x.invAduCompletionMonth,x.rec.length-1),ar=x.rec[completionIndex],completed=x.invAduCompletionMonth<=Math.round(x.v.years*12);$('invAduRentResult').textContent=completed?money(ar.invAduGrossRent)+'/mo':'Not completed';$('invAduCashFlowResult').textContent=completed?(ar.invAduCashFlow>=0?'+':'')+money(ar.invAduCashFlow)+'/mo':'—';$('invAduCashFlowResult').className=completed?(ar.invAduCashFlow>=0?'good':'bad'):'';$('invAduValueResult').textContent=completed?money(ar.invAduValue):'—';if(completed){const aduRentRoot=root('invAduRent',0,12000),aduCostRoot=root('invAduBuildCost',0,1500000);$('investmentAduBreakEven').innerHTML=`The ADU begins producing rent after month <b>${x.invAduCompletionMonth}</b>. Modeled ADU-rent break-even: <b>${aduRentRoot?money(aduRentRoot)+'/mo':noRootMessage('invAduRent',0,12000)}</b>. Modeled construction-cost break-even: <b>${aduCostRoot?money(aduCostRoot):noRootMessage('invAduBuildCost',0,1500000)}</b>. Tax and maintenance on modeled added value are included.`}else $('investmentAduBreakEven').innerHTML=`The ADU completes in month <b>${x.invAduCompletionMonth}</b>, after the ${x.v.years}-year holding period, so ADU break-evens are not shown.`;}
 
- const bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):x.liveInMode?root('liveAltRent',250,12000):root('rent',250,12000);
- updatePriceVisual(bp||50000);const bpText=bp?money(bp):noRootMessage('price',50000,1500000),brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`)),rrText=rr?money(rr)+'/mo':noRootMessage(x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',250,x.rentalMode?20000:12000);
+ const bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):x.liveInMode?liveAltRoot:root('rent',250,12000),priceDirection=priceDirectionAtRoot(bp),propertyLabel=x.rentalMode?'PROPERTY':x.liveInMode?'LIVE-IN STRATEGY':'BUYING',alternativeLabel=x.rentalMode?'S&P 500':x.liveInMode?'RENT + S&P':'RENTING';
+ $('priceLowWinner').textContent=`${priceDirection.rangeLowPropertyAhead?propertyLabel:alternativeLabel} WINS`;$('priceHighWinner').textContent=`${priceDirection.rangeHighPropertyAhead?propertyLabel:alternativeLabel} WINS`;updatePriceVisual(bp,priceDirection);const bpText=bp?money(bp):noRootMessage('price',50000,1500000),brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`)),rrText=x.liveInMode&&!liveAltRentActive?'not applicable within this holding period':rr?money(rr)+'/mo':noRootMessage(x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',250,x.rentalMode?20000:12000);
  if(x.rentalMode)$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`;
- else if(x.liveInMode){const mainRoot=root('liveMainRent',0,20000);$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the live-in strategy matches rent + S&amp;P near <b>${bpText}</b> purchase price. Mortgage-rate crossing: <b>${brText}</b>. Comparable-rent crossing: <b>${rrText}</b>. Main-home rent needed: <b>${mainRoot?money(mainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)}</b>.`;}
+ else if(x.liveInMode){const mainThreshold=liveMainRentActive?(liveMainRoot?money(liveMainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)):'not active within this holding period';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the live-in strategy matches rent + S&amp;P near <b>${bpText}</b> purchase price. Mortgage-rate crossing: <b>${brText}</b>. Comparable-rent crossing: <b>${rrText}</b>. Main-home rent crossing: <b>${mainThreshold}</b>.${liveMoveWithinHorizon?'':` The modeled move occurs after year ${x.v.years}; only rents active before that point affect these thresholds.`}`;}
  else{const bpLabel=bp?rootDirection('price',bp):'Purchase-price result',brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result',rrLabel=rr!==null?rootDirection('rent',rr):'Current-rent result';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;}
 
  $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{const r=x.rec[Math.round(y*12)];if(x.rentalMode)return `<tr><td>${y}</td><td>${money(r.totalGrossCollected)}</td><td>${money(r.totalLandlordCosts)}</td><td>${money(r.home+r.invAduValue)}</td><td>${money(r.loanBal+r.invAduLoanBalance)}</td><td>${money(r.rentalAlternative)}</td><td>${money(r.rentalOwnerWealth)}</td></tr>`;if(x.liveInMode)return `<tr><td>${y}</td><td>${money(r.liveGrossRent)}</td><td>${money(r.livePropertyCost)}</td><td>${money(r.home+r.liveAduValue)}</td><td>${money(r.loanBal+r.liveAduLoanBalance)}</td><td>${money(r.liveAlternative)}</td><td>${money(r.livePropertyWealth)}</td></tr>`;return `<tr><td>${y}</td><td>${money(r.totalRenterCost)}</td><td>${money(r.effectiveOwnerCost)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(r.renter)}</td><td>${money(r.buyWealth)}</td></tr>`;}).join('');
- updateSensitivity();updateDp();
+ latestResult=x;latestBreakEvenPrice=bp;latestAnalysis={bp,br,rr,liveMainRoot,liveMoveWithinHorizon,liveMainRentActive,liveAltRentActive,priceDirection};$('quickVerdict').textContent=$('verdict').textContent;$('quickExplain').textContent=$('explain').textContent;$('quickBreakEven').textContent=bp?`Break-even ${money(bp)}`:'No price crossing in range';renderOutcomeHero(x,s,bp,priceDirection);renderPrintScenario(x);renderWealthChart(x);renderDecisionLevers(x,latestAnalysis);renderSavedComparison(x,bp);$('quickResult').setAttribute('aria-busy','false');
+ updateSensitivity();if($('downpayments').classList.contains('active'))updateDp();
 }
 function updateDp(){
  const mode=$('useMode').value,rental=mode==='rental',live=mode==='livein';
@@ -1478,12 +1712,15 @@ function applyInvestmentAduToggle(){
  }
  update()
 }
-function applyUseMode(){
+function syncModeVisibility(){
  const mode=$('useMode').value,rental=mode==='rental',live=mode==='livein',primary=mode==='primary';
  $('rentalSection').style.display=rental?'block':'none';$('liveInSection').style.display=live?'block':'none';$('investmentBedroomsField').style.display=(rental||live)?'block':'none';$('propertyBedroomsLabel').textContent=live?'Main-home bedrooms':'Investment-property bedrooms';
  $('primaryRentSection').style.display=primary?'block':'none';$('primaryRentHeading').style.display=primary?'block':'none';$('ownerGarageBlock').style.display=rental?'none':'block';
  $('propertyCostsHeading').textContent=rental?'Investment-property expenses':live?'Live-in property expenses':'Purchased-property expenses';
  $('priceLowWinner').textContent=rental?'PROPERTY WINS':live?'LIVE-IN STRATEGY WINS':'BUYING WINS';$('priceHighWinner').textContent=rental?'S&P 500 WINS':live?'RENT + S&P WINS':'RENTING WINS';
+}
+function applyUseMode(){
+ const mode=$('useMode').value,rental=mode==='rental',live=mode==='livein';syncModeVisibility();
  if(rental){applyPropertyRentEstimate(false);applyLocalPurchaseEstimate(priceAuto);}else if(live){applyLiveRentEstimates(false);applyLocalPurchaseEstimate(priceAuto);applyOwnerGarageSituation();updateLiveInControls(true);}else applyOwnerGarageSituation();
  applyLoanProgramRules();applyEstimatedRate(false);applyPmiVisibility();update();
 }
@@ -1523,42 +1760,37 @@ function applyPropertyDefaults(){
  update()
 }
 async function loadLocations(){
- locations=await fetch('/api/locations').then(r=>r.json());
+ const saved=readSavedScenario();suspendUpdates=true;
+ try{
+   const response=await fetch('/api/locations');if(!response.ok)throw new Error('Location data unavailable');const data=await response.json();
+   if(!data||data.error||!data.mammoth||!Object.values(data).every(item=>item&&item.name))throw new Error('Invalid location data');locations=data;
+ }catch(e){
+   suspendUpdates=false;$('quickVerdict').textContent='Location data unavailable';$('quickExplain').textContent='Reconnect once to load House Alpha’s saved market assumptions.';$('quickResult').setAttribute('aria-busy','false');setScenarioStatus('Could not load location assumptions.');return
+ }
  $('location').innerHTML=Object.entries(locations).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('');
- $('location').value='mammoth';applyLocation('mammoth',true).then(()=>{
-   selectOwnerGarageFromPropertyType();
-   updateSharedHousingEstimates(true,true);
-   applyUseMode();
-   applyRenterStorageToggle();
-   applyOwnerIncomePreset(false);
-   applyAduFundingToggle();
-   applySharedHousingToggles();
-   applyInvestmentAduFundingToggle();
-   applyInvestmentAduManagementToggle();
-   applyRentalManagementToggle();
-   applyLoanProgramRules();
-   applyEstimatedRate(true);
-   applyPmiVisibility();
-   updateAllAduBuildEstimates(true);
-   updateAllAduValues(true);
-   applyLiveRentEstimates(true);
-   updateLiveInControls(true);
-   applyInvestmentAduToggle();
- })
+ const savedLocation=saved?.controls?.location?.value,startLocation=locations[savedLocation]?savedLocation:'mammoth';$('location').value=startLocation;
+ await applyLocation(startLocation,true,{preserve:false});
+ selectOwnerGarageFromPropertyType();updateSharedHousingEstimates(true,true);applyUseMode();applyRenterStorageToggle();applyOwnerIncomePreset(false);applyAduFundingToggle();applySharedHousingToggles();applyInvestmentAduFundingToggle();applyInvestmentAduManagementToggle();applyRentalManagementToggle();applyLoanProgramRules();applyEstimatedRate(true);applyPmiVisibility();updateAllAduBuildEstimates(true);updateAllAduValues(true);applyLiveRentEstimates(true);updateLiveInControls(true);applyInvestmentAduToggle();
+ if(saved)restoreScenario(saved);
+ suspendUpdates=false;appReady=true;update();
+ if(saved)setScenarioStatus(`Saved scenario restored · ${new Date(saved.savedAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`);else setScenarioStatus('Not saved')
 }
-async function applyLocation(key,live=true){
- currentLocation=key;let d;
- try{d=live?await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now()).then(r=>r.json()):locations[key]}catch(e){d=locations[key]}
- if(!d)return;
+async function applyLocation(key,live=true,{preserve=false}={}){
+ const requestId=++locationRequestSeq;let d=locations[key];
+ if(live){try{const response=await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now());if(!response.ok)throw new Error('Market refresh unavailable');const refreshed=await response.json();if(!refreshed||refreshed.error||refreshed.location_key!==key||!refreshed.name)throw new Error('Invalid market response');d=refreshed}catch(e){d=locations[key];if(preserve)$('updated').textContent='Live refresh unavailable. Your scenario and saved benchmarks are unchanged.'}}
+ if(requestId!==locationRequestSeq||!d||!d.name)return false;
+ currentLocation=key;$('location').value=key;
  locations[key]={...(locations[key]||{}),...d};
  currentUsdaLimits=d.usda_limits||locations[key]?.usda_limits||null;
- $('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=n('price')||d.home_value||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;ownerStorageMarketEstimate=+(d.storage||0);$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true;
+ ownerStorageMarketEstimate=+(d.storage||0);
+ if(!preserve){$('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=d.home_value||n('price')||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true}
+ else if($('insuranceAuto').checked&&!insuranceUserEditing){insuranceAnchorPrice=d.home_value||n('price')||385000;insuranceAnchorMonthly=d.insurance;syncInsuranceToPrice()}
  if(d.mortgage_rate)mortgageBenchmark=+d.mortgage_rate;
  if(d.mortgage_rate_date)mortgageBenchmarkDate=d.mortgage_rate_date;
  if(rateAuto)applyEstimatedRate(true);
- $('updated').textContent=`${d.name}: ${d.note||''}`;
- if($('useMode').value==='rental'){applyPropertyRentEstimate(true);applyLocalPurchaseEstimate(true);}else if($('useMode').value==='livein'){applyLiveRentEstimates(true);applyLocalPurchaseEstimate(true);}else applyLocalPurchaseEstimate(true);
- applyOwnerGarageSituation();
+ $('updated').textContent=`${d.name}: ${d.note||''}${preserve?' Scenario edits were preserved.':''}`;
+ if($('useMode').value==='rental'){applyPropertyRentEstimate(!preserve);applyLocalPurchaseEstimate(!preserve);}else if($('useMode').value==='livein'){applyLiveRentEstimates(!preserve);applyLocalPurchaseEstimate(!preserve);}else applyLocalPurchaseEstimate(!preserve);
+ if(!preserve)applyOwnerGarageSituation();else $('ownerGarageNote').textContent=$('ownerGarageSituation').value==='rent'?`Your scenario uses ${money(n('storage'))}/mo; the refreshed local garage/storage benchmark is ${money(ownerStorageMarketEstimate)}/mo.`:$('ownerGarageSituation').value==='included'?'Garage/storage is included with the purchased property, so the modeled monthly cost is $0.':'No owner garage/storage need is modeled, so the monthly cost is $0.';
  applyRenterStorageToggle();
  updateSharedHousingEstimates(false,false);
  applyInvestmentAduRentEstimate(false);
@@ -1583,10 +1815,10 @@ async function applyLocation(key,live=true){
   ['Property tax',d.tax+'%','Editable location benchmark'],
   ['30-year mortgage benchmark',mortgageBenchmark.toFixed(2)+'%',`${d.status?.mortgage||'Current app value'}${mortgageBenchmarkDate?' — '+mortgageBenchmarkDate:''}. Conventional conforming benchmark at 80% LTV or less.`,src.mortgage],
   ['USDA Guaranteed income limit',d.usda_limits?.one_four?`${money(d.usda_limits.one_four)} (1–4) / ${money(d.usda_limits.five_eight)} (5–8)`:'Check USDA',d.usda_limits?.area||'Exact area depends on property location',d.usda_limits?.source]
- ].map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:7px"><a href="${a[3]}" target="_blank">Open source</a></div>`:''}</div>`).join('');
- update()
+ ].map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:7px"><a href="${a[3]}" target="_blank" rel="noopener">Open source</a></div>`:''}</div>`).join('');
+ update();return true
 }
-const customInputIds=new Set(['price','insurance','liveMoveMonth','aduBuildCost','aduBuildPsf','aduSize','aduLocalPsf','invAduBuildCost','invAduBuildPsf','invAduSize','invAduLocalPsf','liveAduBuildCost','liveAduBuildPsf','liveAduSize','liveAduLocalPsf']);
+const customInputIds=new Set(['price','downPct','rate','insurance','renterStorage','rentCollected','rentCollectedCap','invAduRent','invAduRentCap','liveMoveMonth','liveAltRent','liveAltRentCap','liveMainRent','liveMainRentCap','livePreAduRent','livePreAduRentCap','aduBuildCost','aduBuildPsf','aduSize','aduLocalPsf','aduCustomValue','invAduBuildCost','invAduBuildPsf','invAduSize','invAduLocalPsf','invAduCustomValue','liveAduBuildCost','liveAduBuildPsf','liveAduBuildMonths','liveAduSize','liveAduLocalPsf','liveAduCustomValue']);
 ids.forEach(i=>{if(!customInputIds.has(i))$(i).addEventListener('input',update)});
 $('priceSlider').addEventListener('input',e=>{
  let val=+e.target.value;
@@ -1674,8 +1906,8 @@ $('liveAduValueMethod').addEventListener('change',()=>{if($('liveAduValueMethod'
 $('liveAduBuildCost').addEventListener('input',()=>{liveAduBuildCostAuto=false;update()});$('liveAduBuildPsf').addEventListener('input',()=>{liveAduBuildPsfAuto=false;liveAduBuildCostAuto=true;update()});$('liveAduSize').addEventListener('input',()=>{liveAduSizeAuto=false;liveAduBuildCostAuto=true;update()});
 $('liveAduBuildMonths').addEventListener('input',()=>{if(liveMoveAuto)$('liveMoveMonth').value=n('liveAduBuildMonths');update()});$('useLiveAduBuildEstimate').onclick=()=>{liveAduSizeAuto=true;liveAduBuildPsfAuto=true;liveAduBuildCostAuto=true;updateAduBuildEstimate('liveAdu',true);update()};
 $('liveAduLocalPsf').addEventListener('input',()=>{liveAduPsfAuto=false;update()});$('liveAduCustomValue').addEventListener('input',update);
-$('location').addEventListener('change',e=>applyLocation(e.target.value,true));
-$('refresh').onclick=()=>applyLocation(currentLocation,true);
+$('location').addEventListener('change',e=>applyLocation(e.target.value,true,{preserve:false}));
+$('refresh').onclick=async()=>{const button=$('refresh');button.disabled=true;button.textContent='Refreshing…';await applyLocation(currentLocation,true,{preserve:true});button.disabled=false;button.textContent='Refresh market benchmarks'};
 document.querySelectorAll('.downPreset,.rentalDownPreset').forEach(btn=>{
  btn.addEventListener('click',()=>setDownPaymentPreset(+btn.dataset.down))
 });
@@ -1707,8 +1939,11 @@ $('appreciation4').onclick=()=>setAppreciationPreset(4);
 $('appreciation3').onclick=()=>setAppreciationPreset(3);
 $('rentCollected').addEventListener('input',()=>{rentAuto=false;update()});
 $('rentCollectedCap').addEventListener('input',()=>{rentAuto=false;update()});
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
-let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('installbar').classList.add('show')});$('installBtn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;$('installbar').classList.remove('show')}else alert('On iPhone: Share → Add to Home Screen. On Android: browser menu → Install app.')};
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>activateTab(tab,false));
+$('saveScenario').onclick=saveScenario;$('saveCurrent').onclick=saveScenario;$('restoreSaved').onclick=()=>restoreScenario(readSavedScenario());$('shareScenario').onclick=shareScenario;$('resetScenario').onclick=resetScenario;$('printBrief').onclick=printDecisionBrief;$('heroPrintBrief').onclick=printDecisionBrief;$('viewDetails').onclick=()=>{const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;$('resultCard').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});$('resultCard').focus({preventScroll:true})};
+$('decisionLevers').addEventListener('click',event=>{const button=event.target.closest('button[data-field]');if(button)tryDecisionLever(button.dataset.field,+button.dataset.value)});$('undoLever').onclick=undoDecisionLever;initWealthChartInteraction();
+$('calculator').addEventListener('input',markScenarioDirty);$('calculator').addEventListener('change',markScenarioDirty);$('calculator').addEventListener('click',event=>{if(event.target.closest('button')&&event.target.id!=='refresh')markScenarioDirty()});
+let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(localStorage.getItem('house-alpha:install-dismissed')!=='1')$('installbar').classList.add('show')});$('installBtn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;$('installbar').classList.remove('show')}else alert('On iPhone: Share → Add to Home Screen. On Android: browser menu → Install app.')};$('installDismiss').onclick=()=>{localStorage.setItem('house-alpha:install-dismissed','1');$('installbar').classList.remove('show')};
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
-loadLocations();
+configureNumericConstraints();enhanceAccessibility();loadLocations();
 </script></body></html>

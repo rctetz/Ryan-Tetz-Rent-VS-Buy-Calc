@@ -1,4 +1,4 @@
-MAMMOTH RENT VS BUY — PHONE APP / SHARING SETUP
+HOUSE ALPHA V31 — PHONE APP / SHARING SETUP
 
 WHAT THIS IS
 This is an installable Progressive Web App (PWA). Once hosted at an HTTPS web address, it can be:

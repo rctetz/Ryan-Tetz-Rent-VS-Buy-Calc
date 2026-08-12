@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json, os, re, threading, webbrowser
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
@@ -204,8 +205,8 @@ def usda_limits_for_location(location):
 MORTGAGE_URL='https://www.freddiemac.com/pmms'
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/5.0'})
-    with urlopen(req,timeout=15) as r:
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/31.0'})
+    with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
 def first_float(patterns,text):
@@ -239,45 +240,61 @@ def bedroom_prices(home_value, property_type='condo'):
     return {k: round(home_value * f / 1000) * 1000 for k, f in factors.items()}
 
 def market(location='mammoth'):
-    loc=LOCATIONS.get(location,LOCATIONS['mammoth']).copy()
+    if location not in LOCATIONS:
+        raise ValueError(f'Unknown location: {location}')
+    loc=LOCATIONS[location].copy()
     out={
         'updated_at':datetime.now(timezone.utc).isoformat(),
-        'mortgage_rate':6.55,
-        'mortgage_rate_date':'July 16, 2026',
+        'mortgage_rate':6.69,
+        'mortgage_rate_date':'August 6, 2026',
         'mortgage_benchmark_note':'Freddie Mac PMMS conventional conforming benchmark at 80% LTV or less',
         'location_key':location,
         **loc,
         'status':{}
     }
-    try:
-        t=fetch(MORTGAGE_URL)
-        x=first_float([r'30-year fixed-rate mortgage averaged\s*([0-9.]+)%',r'30-Yr FRM[^0-9]+([0-9.]+)%'],t)
-        date_match=re.search(r'as of\s+([A-Za-z]+\s+\d{1,2},\s+\d{4})',t,re.I)
-        if x:out['mortgage_rate']=x
-        if date_match:out['mortgage_rate_date']=date_match.group(1)
-        out['status']['mortgage']='Updated from Freddie Mac PMMS'
-    except Exception:
-        out['status']['mortgage']='Using saved weekly Freddie Mac benchmark'
-    try:
-        if not loc.get('source'): raise ValueError('No live source')
-        t=fetch(loc['source'])
-        one=first_float([r'one-bedroom apartment[^$]{0,220}\$([0-9,]+)',r'one bedroom[^$]{0,220}\$([0-9,]+)'],t)
-        if one: out['rent']=one
-        out['status']['rent']='Updated from public rental-market page'
-    except Exception:
-        out['status']['rent']='Saved planning benchmark — live source unavailable'
-    try:
-        if not loc.get('home_source'): raise ValueError('No live home-value source')
-        t=fetch(loc['home_source'])
-        hv=first_float([
-            r'average[^$]{0,100}home value[^$]{0,50}\$([0-9,]+)',
-            r'Typical Home Values[^$]{0,30}\$([0-9,]+)',
-            r'##\s*\$([0-9,]+)'
-        ],t)
-        if hv: out['home_value']=hv
-        out['status']['home_value']='Updated from public home-value page'
-    except Exception:
-        out['status']['home_value']='Saved editable local home-value benchmark'
+    def mortgage_update():
+        try:
+            text=fetch(MORTGAGE_URL)
+            rate=first_float([r'30-year fixed-rate mortgage averaged\s*([0-9.]+)%',r'30-Yr FRM[^0-9]+([0-9.]+)%'],text)
+            if rate is None: raise ValueError('Mortgage rate not found')
+            date_match=re.search(r'as of\s+([A-Za-z]+\s+\d{1,2},\s+\d{4})',text,re.I)
+            values={'mortgage_rate':rate}
+            if date_match: values['mortgage_rate_date']=date_match.group(1)
+            return values,'Updated from Freddie Mac PMMS'
+        except Exception:
+            return {},'Using saved weekly Freddie Mac benchmark'
+
+    def rent_update():
+        try:
+            if not loc.get('source'): raise ValueError('No live source')
+            text=fetch(loc['source'])
+            rent=first_float([r'one-bedroom apartment[^$]{0,220}\$([0-9,]+)',r'one bedroom[^$]{0,220}\$([0-9,]+)'],text)
+            if rent is None: raise ValueError('Rent value not found')
+            return {'rent':rent},'Updated from public rental-market page'
+        except Exception:
+            return {},'Saved planning benchmark — live source unavailable'
+
+    def home_value_update():
+        try:
+            if not loc.get('home_source'): raise ValueError('No live home-value source')
+            text=fetch(loc['home_source'])
+            value=first_float([
+                r'average[^$]{0,100}home value[^$]{0,50}\$([0-9,]+)',
+                r'Typical Home Values[^$]{0,30}\$([0-9,]+)',
+                r'##\s*\$([0-9,]+)'
+            ],text)
+            if value is None: raise ValueError('Home value not found')
+            return {'home_value':value},'Updated from public home-value page'
+        except Exception:
+            return {},'Saved editable local home-value benchmark'
+
+    jobs={'mortgage':mortgage_update,'rent':rent_update,'home_value':home_value_update}
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures={name:executor.submit(job) for name,job in jobs.items()}
+        for name,future in futures.items():
+            values,status=future.result()
+            out.update(values)
+            out['status'][name]=status
     adu_psf=ADU_MARKET_PSF.get(location,ADU_MARKET_PSF['custom'])
     out['adu_market_psf']=adu_psf['value']
     out['adu_market_psf_source']=adu_psf['source']
@@ -307,6 +324,9 @@ class Handler(SimpleHTTPRequestHandler):
         u=urlparse(self.path)
         if u.path=='/api/market':
             q=parse_qs(u.query); location=q.get('location',['mammoth'])[0]
+            if location not in LOCATIONS:
+                data=json.dumps({'error':'unknown_location','location_key':location}).encode()
+                self.send_response(400);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
             data=json.dumps(market(location)).encode()
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if u.path=='/api/locations':
@@ -324,8 +344,14 @@ class Handler(SimpleHTTPRequestHandler):
                     'condo':bedroom_prices(v['home_value'],'condo'),
                     'single':bedroom_prices(v['home_value'],'single')
                 }} for k,v in LOCATIONS.items()}).encode()
-            self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
-        if u.path=='/': self.path='/index.html'
+            self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
+        if u.path in ('/','/index.html'):
+            host=self.headers.get('Host','').strip()
+            forwarded_proto=self.headers.get('X-Forwarded-Proto','').split(',')[0].strip().lower()
+            proto=forwarded_proto if forwarded_proto in ('http','https') else ('http' if host.startswith(('127.0.0.1','localhost')) else 'https')
+            origin=f'{proto}://{host}' if re.fullmatch(r'[A-Za-z0-9.-]+(?::\d{1,5})?',host) else ''
+            data=(ROOT/'index.html').read_text(encoding='utf-8').replace('__HOUSE_ALPHA_ORIGIN__',origin).encode()
+            self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Cache-Control','no-cache');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         return super().do_GET()
     def log_message(self,fmt,*args): pass
 
