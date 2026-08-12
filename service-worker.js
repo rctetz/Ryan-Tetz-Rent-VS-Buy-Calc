@@ -1,5 +1,5 @@
-const SHELL_CACHE='house-alpha-shell-v32';
-const DATA_CACHE='house-alpha-data-v32';
+const SHELL_CACHE='house-alpha-shell-v33';
+const DATA_CACHE='house-alpha-data-v33';
 const SHELL=['/','/index.html','/manifest.webmanifest','/social-card.png','/icons/icon-192.png','/icons/icon-512.png'];
 
 self.addEventListener('install',event=>event.waitUntil(

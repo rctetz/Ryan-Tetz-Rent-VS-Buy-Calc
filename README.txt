@@ -1,3 +1,18 @@
+HOUSE ALPHA V33
+
+This release fixes the price break-even control and makes financing choices genuinely progressive.
+
+New in v33:
+- Automatically expands the purchase-price slider so a modeled break-even is reachable instead of pinning it outside the range.
+- Keeps the exact break-even amount visible and adds a one-tap Use break-even action.
+- Collapses low-down presets behind one neutral row so VA and FHA labels do not linger in unrelated scenarios.
+- Shows only the selected loan program until Change loan type is opened.
+- Shows only programs compatible with the current down payment inside the chooser.
+- Hides all program controls at 20% or more and all financing controls for a cash purchase, while retaining one compact financing-details disclosure when relevant.
+- Keeps the Down payments table on the selected loan program below 20% instead of silently swapping in unrelated programs.
+
+VERSION HISTORY
+
 HOUSE ALPHA V32
 
 This release restores the focused interaction of the original calculator while keeping the deeper v31 analysis tools.
@@ -11,8 +26,6 @@ New in v32:
 - Collapses loan-model prose, lender notes, optional shared-housing/ADU income, and secondary growth/transaction inputs without removing any features.
 - Automatically reopens an active or invalid disclosure so hidden controls never conceal a modeled assumption or validation error.
 - Keeps round 10% stock and 4% home-price defaults, labels both as nominal planning assumptions, and retains the 7%/3% cautious stress presets.
-
-VERSION HISTORY
 
 HOUSE ALPHA V31
 
