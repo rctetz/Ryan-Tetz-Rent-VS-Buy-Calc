@@ -1,3 +1,26 @@
+HOUSE ALPHA V35
+
+This release turns actual-property mode into a reviewable address-to-deal workflow while preserving manual entry and the existing financial engine.
+
+New in v35:
+- Find and normalize a U.S. street address through an explicit, privacy-disclosed lookup.
+- Optionally enrich an exact address with an active asking price, property type, bedrooms, HOA, rent estimate, and reference-only physical/tax details when a private RentCast key is configured.
+- Stage every found value in a Current vs Found review; nothing changes until selected facts are applied.
+- Keep active-listing price separate from old sale prices and AVMs; historical tax bills never silently become the modeled buyer tax rate.
+- Apply selected facts in one update, keep the Deal checkpoint preliminary, and offer one-step undo.
+- Send lookup addresses only in POST bodies, never listing URLs; exclude lookups from service-worker caches and strip owner/contact data server-side.
+- Preserve manual entry and benchmark controls when lookup is unavailable or an address cannot be matched.
+
+Optional detailed property data:
+- Set `RENTCAST_API_KEY` as a private Render environment variable. Never put the key in index.html or a public repository.
+- House Alpha requests RentCast's `suppressLogging=true` option and sends only the entered address; restrict the key to the property-record, active-sale-listing, and long-term-rent-estimate endpoints in the RentCast dashboard.
+- `RENTCAST_PROCESS_CALL_LIMIT` is an optional per-server-process emergency ceiling (default 45). It limits blast radius but does not track a provider billing month or replace RentCast account quota controls.
+- One uncached primary-residence enrichment requests 2 RentCast endpoints; rental and live-in enrichment requests 3. RentCast documents that each successful 200 response with a body counts against the account billing period: https://developers.rentcast.io/reference/billing-and-pricing
+- Without this key, House Alpha still matches U.S. addresses and suggests a supported benchmark market when available.
+- Census-only results are address-range normalization/geocoding, not parcel, unit, deliverability, structure, or listing verification.
+
+VERSION HISTORY
+
 HOUSE ALPHA V34
 
 This release adds a low-clutter actual-property underwriting layer without removing the existing strategy calculator.
@@ -12,8 +35,6 @@ New in v34:
 - Preserve every purchase-price crossing so nonstandard or multiple roots are never mislabeled as a safe offer.
 - Let users test a legitimate lower wealth-parity price and then undo it through the existing decision-lever workflow.
 - Save, restore, print, and share actual-property scenarios while keeping the generic calculator available.
-
-VERSION HISTORY
 
 HOUSE ALPHA V33.1
 

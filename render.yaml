@@ -10,3 +10,5 @@ services:
         value: "0"
       - key: PYTHON_VERSION
         value: "3.12.2"
+      - key: RENTCAST_API_KEY
+        sync: false
