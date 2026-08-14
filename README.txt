@@ -1,3 +1,20 @@
+HOUSE ALPHA V34
+
+This release adds a low-clutter actual-property underwriting layer without removing the existing strategy calculator.
+
+New in v34:
+- Attach a property nickname, address or listing title, and optional source link to the current scenario.
+- Keep address and listing details local to the device; shared text omits both by default.
+- Protect exact deal inputs from benchmark-location, property-type, and bedroom changes while actual-property mode is active.
+- Add immediate repairs / work as upfront cash with no automatic resale value, including its opportunity cost in every strategy.
+- Show a Deal checkpoint based on exact ending wealth, price-root orientation, and rental cash flow—not the heuristic Alpha score.
+- Distinguish Works as modeled, Negotiate, Rework the plan, and Walk-away signal under current assumptions.
+- Preserve every purchase-price crossing so nonstandard or multiple roots are never mislabeled as a safe offer.
+- Let users test a legitimate lower wealth-parity price and then undo it through the existing decision-lever workflow.
+- Save, restore, print, and share actual-property scenarios while keeping the generic calculator available.
+
+VERSION HISTORY
+
 HOUSE ALPHA V33.1
 
 This release fixes the price break-even control and makes financing choices genuinely progressive.
@@ -12,8 +29,6 @@ New in v33:
 - Keeps the Down payments table on the selected loan program below 20% instead of silently swapping in unrelated programs.
 - Normalizes each comparison row to that row's program-specific estimated rate.
 - Reveals the modeled PMI assumptions for 15% investment-property scenarios instead of applying a hidden cost.
-
-VERSION HISTORY
 
 HOUSE ALPHA V32
 

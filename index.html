@@ -4,12 +4,12 @@
 <meta name="theme-color" content="#0b172a"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="House Alpha">
 <link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png">
-<meta name="description" content="Compare buying, renting, and property strategies with a transparent, local-first housing decision model.">
+<meta name="description" content="Analyze a real property or compare local housing strategies with transparent break-even, cash-flow, and walk-away signals.">
 <meta property="og:type" content="website"><meta property="og:title" content="House Alpha — Housing Decision Engine">
-<meta property="og:description" content="See the wealth path, break-even points, and assumptions behind a housing decision.">
+<meta property="og:description" content="Run a real property through transparent wealth, cash-flow, and break-even analysis.">
 <meta property="og:image" content="__HOUSE_ALPHA_ORIGIN__/social-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="House Alpha — Housing Decision Engine">
-<meta name="twitter:description" content="See the wealth path, break-even points, and assumptions behind a housing decision."><meta name="twitter:image" content="__HOUSE_ALPHA_ORIGIN__/social-card.png">
+<meta name="twitter:description" content="Run a real property through transparent wealth, cash-flow, and break-even analysis."><meta name="twitter:image" content="__HOUSE_ALPHA_ORIGIN__/social-card.png">
 <title>House Alpha</title>
 <style>
 :root{--bg:#eef3f8;--card:#fff;--ink:#132033;--muted:#596579;--line:#d8e0ea;--navy:#10243f;--blue:#1d5fd1;--green:#087451;--amber:#a96607;--red:#b62d2d;--shadow:0 12px 34px #18314c12}
@@ -44,7 +44,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 7px;b
 @media(max-width:430px){.scenarioActions,.metrics{grid-template-columns:1fr}.scenarioActions .btn:first-child{grid-column:auto}.usdaLimitGrid{grid-template-columns:1fr}.scorebox{gap:10px}.score{width:74px;height:74px;font-size:26px}.verdict{font-size:20px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sliderSwitch,.sliderSwitch:before{transition:none}}
 
-/* House Alpha v33.1 — decision-instrument visual system */
+/* House Alpha v34 — decision-instrument visual system */
 :root{--bg:#f3f6fa;--card:#fff;--ink:#0b172a;--ink-soft:#33445c;--muted:#647187;--line:#d7e0eb;--navy:#153675;--blue:#2356c7;--green:#08775b;--amber:#916000;--red:#ae3644;--outcome:var(--blue);--positive-bg:#e9f6f1;--negative-bg:#faecee;--caution-bg:#fff5d9;--shadow:0 1px 2px #0b172a0a,0 12px 34px #17345b0b}
 body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(90deg,#2356c706 1px,transparent 1px),linear-gradient(#2356c706 1px,transparent 1px),radial-gradient(circle at 90% -10%,#dce7fb 0,transparent 34%),var(--bg);background-size:48px 48px,48px 48px,auto,auto;color:var(--ink)}
 .masthead{background:#0b172a;color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;border-bottom:1px solid #ffffff16;overflow:visible}.masthead:after{display:none}.mastheadInner{display:flex;align-items:center;justify-content:space-between;gap:18px}.brandLockup{display:flex;align-items:center;gap:12px;min-width:0}.brandMark{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:linear-gradient(145deg,#316bdf,#183f92);box-shadow:inset 0 1px 0 #ffffff42,0 8px 22px #0004;font:800 27px/1 Georgia,serif}.masthead h1{font-size:24px;letter-spacing:-.55px;margin:0;line-height:1.05}.masthead .tag{font-size:12px;color:#bac8dc;opacity:1;margin-top:3px;white-space:nowrap}.mastheadMeta{display:flex;align-items:center;gap:9px;color:#cbd6e8;font-size:11px}.mastheadMeta span{border:1px solid #ffffff28;border-radius:999px;padding:4px 7px;font-size:9px;letter-spacing:.1em;font-weight:750}.mastheadMeta b{font-weight:600}
@@ -60,10 +60,17 @@ input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:i
 .sliderActions{display:flex;gap:6px;margin-left:auto}.sliderActions .btn{min-height:32px;padding:6px 9px;font-size:10px;white-space:nowrap}.snapText{color:var(--ink-soft)}
 .compactDisclosure,.featureDisclosure,.heroThresholdDisclosure{border:1px solid #dce4ed;border-radius:12px;background:#f8fafc;margin-top:10px}.compactDisclosure>summary,.featureDisclosure>summary,.heroThresholdDisclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:10px 12px;color:var(--ink-soft);font-size:12px;font-weight:700;cursor:pointer;list-style:none}.compactDisclosure>summary::-webkit-details-marker,.featureDisclosure>summary::-webkit-details-marker,.heroThresholdDisclosure>summary::-webkit-details-marker{display:none}.compactDisclosure>summary:after,.featureDisclosure>summary:after,.heroThresholdDisclosure>summary:after{content:"+";width:22px;height:22px;display:grid;place-items:center;flex:none;border-radius:50%;background:#e7edf5;color:var(--navy);font-size:16px;line-height:1}.compactDisclosure[open]>summary:after,.featureDisclosure[open]>summary:after,.heroThresholdDisclosure[open]>summary:after{content:"−"}.compactDisclosure>summary small,.featureDisclosure>summary small{margin-left:auto;color:var(--muted);font-size:9px;font-weight:600}.compactDisclosure>.disclosureBody,.featureDisclosure>.disclosureBody{padding:0 12px 12px}.featureDisclosure{margin:16px 0 0;background:#fbfcfe}.featureDisclosure>summary{font-size:13px}.featureDisclosure .sharedGrid{margin-top:2px}.heroThresholdDisclosure{background:transparent;border:0;border-top:1px solid #e1e7ef;border-radius:0;margin-top:18px;padding-top:7px}.heroThresholdDisclosure>summary{padding:7px 0;min-height:36px;font-size:10px;color:var(--muted)}.heroThresholdDisclosure .thresholdBlock{margin:0;padding:12px 0 0;border-top:0}.assumptionLead{margin:-5px 0 10px;color:var(--muted);font-size:10px;line-height:1.45}.assumptionLead b{color:var(--ink-soft)}
 .lowDownDisclosure{margin-top:8px}.lowDownDisclosure .presetGroup{margin-top:0}.loanProgramPicker{margin-top:0;background:#f7faff;border-color:#cfdced}.loanProgramChoices{display:grid;grid-template-columns:1fr 1fr;gap:8px}.loanProgramChoice{min-height:54px;padding:9px 10px;text-align:left;border:1px solid #d4deea;border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}.loanProgramChoice:hover{border-color:#8fa9cf;background:#f7faff}.loanProgramChoice[aria-pressed="true"]{border-color:var(--blue);background:#edf3ff;box-shadow:0 0 0 2px #2356c712}.loanProgramChoice b,.loanProgramChoice span{display:block}.loanProgramChoice b{font-size:12px}.loanProgramChoice span{margin-top:2px;color:var(--muted);font-size:9px}.loanChoiceNote{margin-top:8px}.financingNote{margin-top:8px;border-left-color:#8796aa;background:#f8fafc}.financingNote b{display:block;margin-bottom:3px}
+/* v34 actual-property underwriting layer */
+.actualPropertyDisclosure{margin:14px 0 17px;background:linear-gradient(145deg,#f8fbff,#fff);border-color:#cfdced}.actualPropertyDisclosure>summary>span{display:grid;gap:2px}.actualPropertyDisclosure>summary b{color:var(--ink);font-size:13px}.actualPropertyDisclosure>summary em{color:var(--muted);font-size:9px;font-style:normal;font-weight:550}.actualPropertyDisclosure .switchrow{margin-bottom:11px}.actualPropertyDisclosure .form{margin-top:10px}.actualPropertyDisclosure input[type="text"],.actualPropertyDisclosure input[type="url"]{font-size:14px}.propertyFieldWide{grid-column:1/-1}.propertyInputGuide{margin-top:11px;padding:11px 12px;border:1px dashed #b8c8db;border-radius:11px;background:#f7faff}.propertyInputGuide b{display:block;font-size:11px}.propertyInputGuide p{margin:4px 0 0;color:var(--muted);font-size:10px;line-height:1.5}.propertyInputGuide .row{margin-top:9px}.propertyInputGuide .btn{min-height:36px;padding:7px 10px;font-size:10px}.propertyPrivacy{margin-top:8px;color:var(--muted);font-size:9px}.propertyPrivacy b{color:var(--ink-soft)}
+.dealCheckpoint{--deal-tone:var(--blue);position:relative;overflow:hidden;margin:0 0 14px;padding:16px;border:1px solid #d9e2ec;border-radius:15px;background:linear-gradient(145deg,#fff,#f8fbff)}.dealCheckpoint:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--deal-tone)}.dealCheckpoint[data-state="works"]{--deal-tone:var(--green)}.dealCheckpoint[data-state="negotiate"],.dealCheckpoint[data-state="rework"]{--deal-tone:var(--amber)}.dealCheckpoint[data-state="walk"]{--deal-tone:var(--red)}.dealCheckpoint[data-state="preliminary"]{--deal-tone:var(--blue)}.dealHeadingRow{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.dealHeadingRow h3{margin:3px 0 0;font-size:18px}.dealIdentity{margin-top:4px;color:var(--muted);font-size:10px;overflow-wrap:anywhere}.dealBadge{flex:none;display:inline-flex;align-items:center;min-height:28px;padding:5px 8px;border:1px solid color-mix(in srgb,var(--deal-tone) 35%,white);border-radius:999px;background:color-mix(in srgb,var(--deal-tone) 9%,white);color:var(--deal-tone);font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.dealSummary{margin:12px 0;color:var(--ink-soft);font-size:12px;line-height:1.5}.dealStats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.dealStat{min-width:0;padding:10px;border:1px solid #e0e7ef;border-radius:11px;background:#fff}.dealStat span{display:block;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.06em}.dealStat b{display:block;margin-top:4px;font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.dealActions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:12px}.dealActions .btn{min-height:36px;padding:7px 10px;font-size:10px}.dealSource{font-size:10px;font-weight:700}.dealMethod{margin-top:10px;border-top:1px solid #e2e8f0;padding-top:8px}.dealMethod summary{cursor:pointer;color:var(--ink-soft);font-size:10px;font-weight:700}.dealMethod ul{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:10px;line-height:1.5}.dealDisclaimer{margin:9px 0 0;color:var(--muted);font-size:9px}.dealStatusAnnounce{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+.thresholdRail.complex{background:#d9e1eb}.thresholdRail.complex .thresholdZone{display:none}
+.dealStat small{display:block;margin-top:3px;color:var(--muted);font-size:8px;line-height:1.35}
 [hidden]{display:none!important}
 @media(max-width:980px){.workspaceBar{align-items:flex-start}.scenarioIdentity{display:none}.outcomeGrid{grid-template-columns:1fr 1fr;gap:24px}.savedComparison{grid-template-columns:1fr auto}.savedDeltas{grid-column:1/-1;grid-row:2}.savedActions{grid-column:2;grid-row:1}.leverGrid{grid-template-columns:1fr}}
 @media(max-width:760px){.masthead{padding:calc(10px + env(safe-area-inset-top)) 14px 10px}.brandMark{width:36px;height:36px;border-radius:10px;font-size:23px}.masthead h1{font-size:20px}.masthead .tag,.mastheadMeta{display:none}main.wrap{padding-inline:12px}.workspaceBar{gap:7px;margin-inline:-2px}.tabs{overflow-x:auto;min-width:0}.scenarioActions{display:flex;flex-wrap:nowrap}.scenarioActions .btn{padding-inline:8px}.scenarioActions #printBrief{display:none}.outcomeGrid{grid-template-columns:1fr}.quickResult.outcomeHero{border-radius:18px;padding:20px 17px}.outcomeGraphic{padding:14px}.heroActions{display:grid;grid-template-columns:1fr 1fr}.heroActions .btn{width:100%}.savedComparison{grid-template-columns:1fr}.savedDeltas{grid-template-columns:1fr 1fr 1fr;grid-column:auto;grid-row:auto}.savedActions{grid-column:auto;grid-row:auto}.resultIntro{flex-direction:column}.resultIntro .scorebox{max-width:none}.moduleHeading{flex-direction:column}.moduleHeading p{text-align:left}.wealthChart{min-height:230px}.wealthChart svg{min-height:220px}.leverGrid{grid-template-columns:1fr}.leverCard{min-height:0}.analysisModule{padding:14px}.metrics{grid-template-columns:1fr 1fr}.scenarioBar{flex-direction:row;align-items:center}.scenarioActions{display:flex}.scenarioActions .btn:first-child{grid-column:auto}.sliderActions{width:100%;display:grid;grid-template-columns:1fr 1fr;margin-left:0}.sliderActions.single{grid-template-columns:1fr}.sliderActions .btn{width:100%}.loanProgramChoices{grid-template-columns:1fr}}
 @media(max-width:480px){.tab{padding-inline:9px;font-size:12px}.tabLong{display:none}.tabShort{display:inline}.scenarioActions #resetScenario{display:none}.outcomeHero h2{font-size:27px}.outcomeValue{font-size:46px}.outcomeGraphic{margin-inline:-3px}.savedDeltas{grid-template-columns:1fr}.savedDeltas>div{padding:7px 0 0;border-left:0;border-top:1px solid var(--line)}.heroActions{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.metric b{font-size:18px}.chartLegend{align-items:flex-start;flex-direction:column;gap:5px}}
+@media(max-width:760px){.dealHeadingRow{display:grid}.dealBadge{justify-self:start}.dealStats{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.dealStats{grid-template-columns:1fr}.dealActions,.propertyInputGuide .row{display:grid}.dealActions .btn,.propertyInputGuide .btn{width:100%}}
 @media(pointer:coarse){.tab,.btn.compact,.heroThresholdDisclosure>summary{min-height:44px}.marker{font-size:10px}}
 @media(prefers-reduced-motion:no-preference){.outcomeHero.is-updated .outcomeValue{animation:resultTick .25s ease-out}.chartTooltip{transition:left .08s linear,top .08s linear}@keyframes resultTick{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}}
 @media(prefers-reduced-motion:reduce){.btn,.strategyFill,.chartTooltip{transition:none!important}.btn:hover{transform:none}}
@@ -71,33 +78,47 @@ input,select{border-color:#cdd7e3;border-radius:9px;background:#fff;box-shadow:i
 </style></head><body>
 <header class="masthead"><div class="wrap mastheadInner"><div class="brandLockup"><span class="brandMark" aria-hidden="true">α</span><div><h1>House Alpha</h1><div class="tag">A transparent decision engine for buying, renting, and property strategies.</div></div></div><div class="mastheadMeta"><span>LOCAL-FIRST</span><b>Planning model</b></div></div></header>
 <main class="wrap">
-<div class="workspaceBar"><div class="tabs" aria-label="House Alpha sections"><button class="tab active" data-tab="calculator"><span class="tabLong">Calculator</span><span class="tabShort">Calc</span></button><button class="tab" data-tab="downpayments"><span class="tabLong">Down payments</span><span class="tabShort">Down</span></button><button class="tab" data-tab="market"><span class="tabLong">Market data</span><span class="tabShort">Market</span></button></div><div class="scenarioBar" aria-label="Scenario actions"><div class="scenarioIdentity"><span class="saveDot" aria-hidden="true"></span><div><b>Your scenario</b><div class="scenarioStatus" id="scenarioStatus" aria-live="polite">Not saved</div></div></div><div class="scenarioActions"><button class="btn compact" id="saveScenario" type="button">Save</button><button class="btn secondary compact" id="shareScenario" type="button">Share</button><button class="btn secondary compact" id="printBrief" type="button">Print</button><button class="btn quiet compact" id="resetScenario" type="button">Reset</button></div></div></div>
+<div class="workspaceBar"><div class="tabs" aria-label="House Alpha sections"><button class="tab active" data-tab="calculator"><span class="tabLong">Calculator</span><span class="tabShort">Calc</span></button><button class="tab" data-tab="downpayments"><span class="tabLong">Down payments</span><span class="tabShort">Down</span></button><button class="tab" data-tab="market"><span class="tabLong">Market data</span><span class="tabShort">Market</span></button></div><div class="scenarioBar" aria-label="Scenario actions"><div class="scenarioIdentity"><span class="saveDot" aria-hidden="true"></span><div><b id="scenarioName">Your scenario</b><div class="scenarioStatus" id="scenarioStatus" aria-live="polite">Not saved</div></div></div><div class="scenarioActions"><button class="btn compact" id="saveScenario" type="button">Save</button><button class="btn secondary compact" id="shareScenario" type="button">Share</button><button class="btn secondary compact" id="printBrief" type="button">Print</button><button class="btn quiet compact" id="resetScenario" type="button">Reset</button></div></div></div>
 <section class="quickResult outcomeHero" id="quickResult" aria-busy="true" data-state="neutral">
 <div class="outcomeGrid"><div class="outcomeCopy"><span class="eyebrow" id="heroContext">Modeled outcome</span><h2 id="quickVerdict">Loading local assumptions…</h2><div class="outcomeValue" id="heroAdvantage">—</div><div class="outcomeUnit" id="heroWinner">wealth advantage</div><p id="quickExplain">House Alpha is preparing the comparison.</p><div class="outcomeMeta"><span class="alphaScore" title="Directional planning signal, not a probability or credit score."><b id="heroScore">—</b> Alpha signal</span><span class="scoreNote">Directional—not a probability</span><span class="quickBreakEven" id="quickBreakEven"></span></div></div>
 <div class="outcomeGraphic"><div class="graphicHeading"><span>Ending wealth</span><b id="heroHorizon">Holding period</b></div><div class="strategyCompare"><div class="strategyRow"><div class="strategyLine"><span id="heroStrategyALabel">Strategy A</span><b id="heroStrategyAValue">—</b></div><div class="strategyTrack"><span class="strategyFill strategyA" id="heroStrategyABar"></span></div></div><div class="strategyRow"><div class="strategyLine"><span id="heroStrategyBLabel">Strategy B</span><b id="heroStrategyBValue">—</b></div><div class="strategyTrack"><span class="strategyFill strategyB" id="heroStrategyBBar"></span></div></div></div>
 <details class="heroThresholdDisclosure"><summary>Show purchase-price position</summary><div class="thresholdBlock"><div class="graphicHeading"><span>Purchase-price position</span><b id="heroPricePosition">Calculating</b></div><div class="thresholdRail" id="thresholdRail"><span class="thresholdZone favorable"></span><span class="thresholdZone caution"></span><span class="thresholdZone unfavorable"></span><span class="thresholdMarker breakEven" id="heroBreakEvenMarker"><i></i><em>Break-even</em></span><span class="thresholdMarker current" id="heroCurrentMarker"><i></i><em>Current</em></span></div><div class="thresholdLabels"><span id="heroRailMin">—</span><span id="heroRailMax">—</span></div></div></details></div></div>
 <div class="heroActions"><button class="btn" id="viewDetails" type="button">Explore the result</button><button class="btn secondary" id="heroPrintBrief" type="button">Print decision brief</button></div></section>
 <div class="srOnly" id="resultAnnouncement" role="status" aria-live="polite" aria-atomic="true"></div>
-<section class="printScenario" id="printScenario" aria-label="Scenario assumptions"><div><span>Location</span><b id="printLocation">—</b></div><div><span>Strategy</span><b id="printStrategy">—</b></div><div><span>Property</span><b id="printProperty">—</b></div><div><span>Purchase price</span><b id="printPrice">—</b></div><div><span>Financing</span><b id="printFinancing">—</b></div><div><span>Holding period</span><b id="printHorizon">—</b></div><div><span>Current rent</span><b id="printRent">—</b></div><div><span>Generated</span><b id="printGenerated">—</b></div></section>
+<section class="printScenario" id="printScenario" aria-label="Scenario assumptions"><div><span>Location</span><b id="printLocation">—</b></div><div><span>Strategy</span><b id="printStrategy">—</b></div><div><span>Property</span><b id="printProperty">—</b></div><div><span>Purchase price</span><b id="printPrice">—</b></div><div id="printAddressWrap" hidden><span>Address</span><b id="printAddress">—</b></div><div><span>Financing</span><b id="printFinancing">—</b></div><div><span>Holding period</span><b id="printHorizon">—</b></div><div><span>Current rent</span><b id="printRent">—</b></div><div id="printRepairsWrap" hidden><span>Immediate work</span><b id="printRepairs">—</b></div><div><span>Generated</span><b id="printGenerated">—</b></div></section>
 <section class="savedComparison" id="savedComparison" hidden aria-live="polite"><div><span class="eyebrow">Compared with saved scenario</span><b id="savedComparisonTitle">Your edits</b></div><div class="savedDeltas"><div><span>Ending advantage</span><b id="savedAdvDelta">—</b></div><div><span>Month-one difference</span><b id="savedMonthDelta">—</b></div><div><span>Break-even price</span><b id="savedBreakEvenDelta">—</b></div></div><div class="savedActions"><button class="btn secondary compact" id="restoreSaved" type="button">Restore saved</button><button class="btn compact" id="saveCurrent" type="button">Save these changes</button></div></section>
 <div class="validationStatus" id="validationStatus" role="alert"></div>
 
 <section id="calculator" class="panel active"><div class="grid">
 <div class="card left"><h2>Home and location</h2>
 <div class="form">
-<div><label>Location</label><select id="location"></select></div>
+<div><label id="locationLabel">Location</label><select id="location"></select></div>
 <div><label>Property use</label><select id="useMode"><option value="primary">Primary residence</option><option value="livein">Live-in rental / owner in ADU</option><option value="rental">Rental / investment property</option></select></div>
 <div><label>Property type</label><select id="propertyType"><option value="condo">Condo / townhome</option><option value="single">Single-family home</option></select></div>
 <div id="investmentBedroomsField" style="display:none"><label id="propertyBedroomsLabel">Investment-property bedrooms</label><select id="bedrooms"><option value="1">1 bedroom</option><option value="2">2 bedrooms</option><option value="3">3 bedrooms</option><option value="4">4 bedrooms</option></select></div>
 </div>
-<h3>Price discovery</h3>
+<details class="featureDisclosure actualPropertyDisclosure" id="actualPropertyDisclosure"><summary><span><b>Analyze an actual property</b><em>Keep one real deal attached to these numbers.</em></span><small id="actualPropertySummary">Address + exact inputs</small></summary><div class="disclosureBody">
+<div class="switchrow"><div><b>Use actual-property mode</b><div class="muted">Protect entered deal facts and add a decision checkpoint.</div></div><label class="switch"><input id="actualPropertyOn" type="checkbox" aria-controls="actualPropertyFields dealCheckpoint" aria-expanded="false"><span class="sliderSwitch"></span></label></div>
+<div id="actualPropertyFields" hidden>
+<div class="form">
+<div><label>Property name <span class="muted">(optional)</span></label><input id="propertyName" type="text" maxlength="80" placeholder="Juniper Ridge condo" autocomplete="off"></div>
+<div><label>Street address or listing title</label><input id="propertyAddress" type="text" maxlength="180" placeholder="123 Main St, Mammoth Lakes, CA" autocomplete="street-address"></div>
+<div class="propertyFieldWide"><label>Listing / source link <span class="muted">(optional)</span></label><input id="propertyListingUrl" type="url" maxlength="500" placeholder="https://…" inputmode="url" autocomplete="url"></div>
+<div><label>Immediate repairs / work</label><input id="propertyRepairs" type="number" value="0" min="0" step="1000"><div class="muted">Upfront cash; no automatic resale value added.</div></div>
+<input id="propertyConfirmedPrice" type="hidden" value="">
+</div>
+<div class="propertyInputGuide"><b>Turn estimates into property facts</b><p>Choose the nearest benchmark market, then replace the asking price, rent, HOA, insurance, taxes, assessments, and immediate work with listing, quote, or inspection numbers.</p><div class="row"><button class="btn secondary" id="reviewPropertyInputs" type="button">Start with asking price</button><button class="btn quiet" id="restoreBenchmarkDefaults" type="button">Restore benchmark defaults</button></div></div>
+<div class="switchrow" style="margin-top:10px"><div><b>I reviewed the core property facts</b><div class="muted">Required before House Alpha shows a firm deal signal.</div></div><label class="switch"><input id="propertyFactsConfirmed" type="checkbox"><span class="sliderSwitch"></span></label></div>
+<div class="propertyPrivacy"><b>Local-first:</b> the address and link stay in this browser unless you print them. Shared text omits both.</div>
+</div></div></details>
+<h3 id="priceDiscoveryHeading">Price discovery</h3>
 <div class="pricebox"><div class="pricevalue"><span>Purchase price</span><b id="priceDisplay">$385,000</b></div>
 <div class="muted" id="priceEstimateNote">Local editable purchase-price estimate</div>
 <div class="rangeWrap"><div class="marker" id="beMarker" title="Modeled break-even price"></div><input class="range" id="priceSlider" type="range" min="100000" max="800000" step="1000" value="385000" aria-describedby="priceSliderDescription"><div class="decisionZones" id="priceDecisionZones" aria-hidden="true"></div></div><span class="srOnly" id="priceSliderDescription"></span>
 <div class="legend"><span class="sideWinner propertyAhead" id="priceLowWinner">BUYING WINS</span><span class="close">CLOSE CALL</span><span class="sideWinner alternativeAhead" id="priceHighWinner">RENTING WINS</span></div>
 <div class="sliderMeta"><span id="sliderRangeText"></span><span class="snapText" id="snapText"></span><div class="sliderActions"><button class="btn secondary" id="useBreakEvenPrice" type="button" hidden>Use break-even</button><button class="btn secondary" id="useLocalPrice" type="button">Use local estimate</button></div></div></div>
 <div class="form" style="margin-top:10px">
-<div><label>Exact purchase price</label><input id="price" type="number" value="385000" step="1000"></div>
+<div><label id="priceInputLabel">Exact purchase price</label><input id="price" type="number" value="385000" step="1000"></div>
 
 <div style="grid-column:1/-1">
 <label>Down payment %</label>
@@ -564,6 +585,7 @@ Local proxy = ADU square feet × local market $/sq. ft. × 75%. This is a planni
 <div class="metric"><span class="muted" id="metricLabelProperty">Buyer wealth</span><b id="buyWealth"></b></div>
 <div class="metric"><span class="muted" id="metricLabelAdv">Buyer advantage</span><b id="adv"></b></div>
 </div>
+<section class="dealCheckpoint" id="dealCheckpoint" data-state="preliminary" aria-labelledby="dealCheckpointHeading" hidden><div class="dealHeadingRow"><div><span class="eyebrow">Actual property</span><h3 id="dealCheckpointHeading">Deal checkpoint</h3><div class="dealIdentity" id="dealIdentity">Property details</div></div><span class="dealBadge" id="dealBadge">Preliminary</span></div><p class="dealSummary" id="dealSummary"></p><div class="dealStats"><div class="dealStat"><span>Asking price</span><b id="dealAsk">—</b><small id="dealAskNote" hidden></small></div><div class="dealStat"><span id="dealParityLabel">Wealth-parity price</span><b id="dealParity">—</b></div><div class="dealStat"><span id="dealGapLabel">Ask to parity</span><b id="dealGap">—</b></div><div class="dealStat"><span id="dealMonthlyLabel">Cash to close</span><b id="dealMonthly">—</b></div></div><div class="dealActions"><button class="btn" id="dealTestOffer" type="button" hidden>Test parity offer</button><button class="btn secondary" id="dealRestoreAsk" type="button" hidden>Restore asking price</button><button class="btn secondary" id="dealReviewLevers" type="button">Review ways to make it work</button><a class="dealSource" id="dealSource" target="_blank" rel="noopener" hidden>Open listing source</a></div><details class="dealMethod"><summary>How this signal works</summary><ul id="dealReasons"></ul></details><p class="dealDisclaimer">A planning signal from the current inputs—not an appraisal, inspection, loan approval, or affordability determination.</p><div class="dealStatusAnnounce" id="dealStatusAnnounce" role="status" aria-live="polite" aria-atomic="true"></div></section>
 <section class="analysisModule wealthModule" aria-labelledby="wealthPathHeading"><div class="moduleHeading"><div><span class="eyebrow">Trajectory</span><h3 id="wealthPathHeading">Wealth path</h3></div><p id="wealthPathSummary">Building the timeline…</p></div><div class="chartLegend"><span><i class="legendSwatch strategyA"></i><b id="chartStrategyALabel">Strategy A</b></span><span><i class="legendSwatch strategyB"></i><b id="chartStrategyBLabel">Strategy B</b></span></div><div class="wealthChart" id="wealthChart" tabindex="0" aria-describedby="wealthPathSummary"><svg id="wealthSvg" viewBox="0 0 720 270" role="img" aria-labelledby="wealthChartTitle wealthChartDesc"><title id="wealthChartTitle">Modeled wealth path</title><desc id="wealthChartDesc">Two strategies compared over the selected holding period.</desc></svg><div class="chartTooltip" id="chartTooltip" role="status" aria-live="polite" aria-atomic="true" hidden></div></div><div class="chartHint">Hover, tap, or use the arrow keys to inspect the timeline.</div></section>
 <div id="sharedHousingMetrics" style="display:none">
 <h3>Shared-housing impact</h3>
@@ -633,12 +655,12 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'liveMoveMonth','liveAltRent','liveAltRentCap','liveAltRentGrowth','liveMainRent','liveMainRentCap','liveMainVacancy','liveMainReserve','liveMainOther','liveMainRentGrowth','liveMainManagementRate',
 'liveAduBuildCost','liveAduBuildPsf','liveAduValueAdded','liveAduBuildMonths','liveAduLoanRate','liveAduLoanTerm','liveAduSize','liveAduLocalPsf','liveAduCustomValue',
 'livePreAduRent','livePreAduRentCap','livePreAduVacancy','livePreAduReserve','livePreAduOther','livePreAduRentGrowth','livePreAduManagementRate',
-'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost'];
+'rentCap','rentGrowth','marketGrowth','hoa','hoaGrowth','taxRate','insurance','storage','maintRate','assessment','years','stockReturn','appreciation','buyClose','sellCost','propertyRepairs'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x), compactMoney=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(x);
 const SCENARIO_KEY='house-alpha:scenario:v1',SCENARIO_VERSION=1;
 const derivedControlIds=new Set(['storageOn','aduValueAdded','invAduValueAdded','liveAduValueAdded','bedroomRentEstimate','bedroomPriceEstimate','usdaSelectedLimit']);
 let locations={}, currentLocation='mammoth', insuranceAnchorPrice=385000, insuranceAnchorMonthly=175, insuranceUserEditing=false, priceAuto=true, rentAuto=true, invAduRentAuto=true, ownerAduPsfAuto=true, invAduPsfAuto=true, ownerAduBuildCostAuto=true, invAduBuildCostAuto=true, ownerAduBuildPsfAuto=true, invAduBuildPsfAuto=true, ownerAduSizeAuto=true, invAduSizeAuto=true, ownerStorageMarketEstimate=350, mortgageBenchmark=6.69, mortgageBenchmarkDate='August 6, 2026', rateAuto=true, currentUsdaLimits=null, liveAltRentAuto=true, liveMainRentAuto=true, livePreAduRentAuto=true, liveMoveAuto=true, liveAduPsfAuto=true, liveAduBuildCostAuto=true, liveAduBuildPsfAuto=true, liveAduSizeAuto=true;
-let currentBreakEvenPrice=null,latestResult=null,latestBreakEvenPrice=null,latestAnalysis=null,appReady=false,suspendUpdates=false,locationRequestSeq=0,leverUndoState=null,wealthChartState=null,wealthChartIndex=0,heroMotionTimer=null,resultAnnouncementTimer=null;
+let currentBreakEvenPrice=null,latestResult=null,latestBreakEvenPrice=null,latestAnalysis=null,appReady=false,suspendUpdates=false,locationRequestSeq=0,leverUndoState=null,wealthChartState=null,wealthChartIndex=0,heroMotionTimer=null,resultAnnouncementTimer=null,lastDealState=null;
 
 function setScenarioStatus(message){
  $('scenarioStatus').textContent=message;const bar=document.querySelector('.scenarioBar');if(!bar)return;
@@ -648,7 +670,32 @@ function savedTimeLabel(iso){
  const date=new Date(iso);if(Number.isNaN(date.getTime()))return 'Saved on this device';
  return `Saved on this device · ${date.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`
 }
+function actualPropertyActive(){return !!$('actualPropertyOn')?.checked}
+function propertyIdentity(includeAddress=false){
+ const name=$('propertyName')?.value.trim()||'',address=$('propertyAddress')?.value.trim()||'';
+ if(includeAddress&&name&&address)return `${name} · ${address}`;
+ return name||address||(actualPropertyActive()?'Actual property':'Your scenario')
+}
+function propertyShareName(){return $('propertyName')?.value.trim()||'Actual property'}
+function confirmedAskingPrice(){const value=+$('propertyConfirmedPrice')?.value;return Number.isFinite(value)&&value>0?value:null}
+function anchorCurrentAskingPrice(){if(actualPropertyActive()&&!confirmedAskingPrice())$('propertyConfirmedPrice').value=n('price')}
+function invalidatePropertyFacts(){if(actualPropertyActive()){$('propertyFactsConfirmed').checked=false;lastDealState=null;if(latestResult&&latestAnalysis)renderDealCheckpoint(latestResult,latestAnalysis)}}
+function safeListingUrl(){
+ const value=$('propertyListingUrl')?.value.trim();if(!value)return null;
+ try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.href:null}catch(e){return null}
+}
+function updateActualPropertyUi(render=true){
+ const active=actualPropertyActive(),fields=$('actualPropertyFields');
+ fields.hidden=!active;$('actualPropertyOn').setAttribute('aria-expanded',active?'true':'false');
+ if(active)$('actualPropertyDisclosure').open=true;
+ const shortName=propertyIdentity(false);$('actualPropertySummary').textContent=active?(shortName.length>30?shortName.slice(0,29)+'…':shortName):'Address + exact inputs';
+ $('scenarioName').textContent=active?shortName:'Your scenario';$('locationLabel').textContent=active?'Benchmark market':'Location';$('priceDiscoveryHeading').textContent=active?'Asking price & break-even':'Price discovery';$('priceInputLabel').textContent=active?'Asking price':'Exact purchase price';$('useLocalPrice').textContent=active?'Restore benchmark price':'Use local estimate';
+ $('dealCheckpoint').hidden=!active;
+ if(render&&latestResult&&latestAnalysis){renderDealCheckpoint(latestResult,latestAnalysis);renderPrintScenario(latestResult);renderHeroContext(latestResult)}
+}
 function scenarioControls(){return [...document.querySelectorAll('#calculator input[id],#calculator select[id]')].filter(el=>!derivedControlIds.has(el.id))}
+const v34DealDefaults={actualPropertyOn:false,propertyName:'',propertyAddress:'',propertyListingUrl:'',propertyRepairs:'0',propertyConfirmedPrice:'',propertyFactsConfirmed:false};
+function matchesNewDealDefault(el){const expected=v34DealDefaults[el.id];return expected!==undefined&&(el.type==='checkbox'?el.checked===expected:String(el.value)===expected)}
 function autoFlags(){return {insuranceUserEditing,priceAuto,rentAuto,invAduRentAuto,ownerAduPsfAuto,invAduPsfAuto,ownerAduBuildCostAuto,invAduBuildCostAuto,ownerAduBuildPsfAuto,invAduBuildPsfAuto,ownerAduSizeAuto,invAduSizeAuto,rateAuto,liveAltRentAuto,liveMainRentAuto,livePreAduRentAuto,liveMoveAuto,liveAduPsfAuto,liveAduBuildCostAuto,liveAduBuildPsfAuto,liveAduSizeAuto}}
 function restoreAutoFlags(f={}){
  if(typeof f.insuranceUserEditing==='boolean')insuranceUserEditing=f.insuranceUserEditing;
@@ -673,6 +720,7 @@ function applyControlSnapshot(controls={}){
 }
 function syncRestoredScenarioUi(){
  syncModeVisibility();
+ updateActualPropertyUi(false);
  const garageCharge=$('ownerGarageSituation').value==='rent';$('storageOn').checked=garageCharge;$('storage').disabled=!garageCharge;
  $('ownerGarageNote').textContent=garageCharge?`Separate owner-paid garage/storage uses your saved ${money(n('storage'))}/mo assumption.`:$('ownerGarageSituation').value==='included'?'Garage/storage is included with the purchased property, so the modeled monthly cost is $0.':'No owner garage/storage need is modeled, so the monthly cost is $0.';
  applyRenterStorageToggle();
@@ -699,11 +747,12 @@ function saveScenario(){
  if(!scenarioIsValid(true))return;const saved=captureScenario();try{localStorage.setItem(SCENARIO_KEY,JSON.stringify(saved));setScenarioStatus(savedTimeLabel(saved.savedAt));if(latestResult)renderSavedComparison(latestResult,latestBreakEvenPrice)}catch(e){setScenarioStatus('Could not save on this device')}
 }
 function buildShareSummary(){
- if(!latestResult)return 'House Alpha is still calculating.';const x=latestResult,locationName=$('location').selectedOptions[0]?.textContent||currentLocation,type=$('propertyType').selectedOptions[0]?.textContent||'',price=money(x.v.price),down=x.v.downPct>=100?'cash purchase':`${x.v.downPct}% down · ${x.v.rate.toFixed(2)}%`;
+ if(!latestResult)return 'House Alpha is still calculating.';const x=latestResult,locationName=$('location').selectedOptions[0]?.textContent||currentLocation,type=$('propertyType').selectedOptions[0]?.textContent||'',price=money(x.v.price),down=x.v.downPct>=100?'cash purchase':`${x.v.downPct}% down · ${x.v.rate.toFixed(2)}%`,dealName=actualPropertyActive()?propertyShareName():'';
  const title=x.rentalMode?'Rental property vs S&P 500':x.liveInMode?'Live-in rental vs rent + S&P 500':'Rent versus own';
  const advantage=x.adv>=0?(x.rentalMode?'Rental strategy':x.liveInMode?'Live-in strategy':'Buying'):(x.rentalMode?'S&P 500':x.liveInMode?'Rent + S&P':'Renting + investing');
  const monthOne=x.rentalMode?`Month 1: Property costs ${money(x.first.totalLandlordCosts)} · Gross rent ${money(x.first.totalGrossCollected)}`:x.liveInMode?`Month 1: Property ${money(x.first.livePropertyCost)} · Comparable rent ${money(x.first.liveAlternativeCost)}`:`Month 1: Owning ${money(x.first.effectiveOwnerCost)} · Renting ${money(x.first.totalRenterCost)}`;
- return [`House Alpha — ${title}`,`${locationName} · ${type} · ${price} · ${down}`,`${x.v.years}-year result: ${advantage} ahead by ${money(Math.abs(x.adv))}`,monthOne,latestBreakEvenPrice?`Modeled break-even purchase price: ${money(latestBreakEvenPrice)}`:'No purchase-price crossing in the tested range.','',`Planning estimate—not a lender quote.`,['http:','https:'].includes(window.location.protocol)?window.location.href:''].filter(Boolean).join('\n')
+ const rootState=latestAnalysis?.priceRootState||'none',rootSummary=rootState==='standard'&&Number.isFinite(latestBreakEvenPrice)?`Modeled break-even purchase price: ${money(latestBreakEvenPrice)}`:rootState==='multiple'?`${latestAnalysis.priceRoots.length} purchase-price crossings found; no single break-even is recommended.`:rootState==='nonstandard'?'A counterintuitive purchase-price crossing was found; review the assumptions.':'No purchase-price crossing in the tested range.';
+ return [`House Alpha — ${title}`,dealName?`Property: ${dealName}`:'',`${locationName} benchmark · ${type} · ${price} · ${down}`,x.v.propertyRepairs?`Immediate repairs/work: ${money(x.v.propertyRepairs)}`:'',`${x.v.years}-year result: ${advantage} ahead by ${money(Math.abs(x.adv))}`,monthOne,rootSummary,'',`Planning estimate—not a lender quote.`,['http:','https:'].includes(window.location.protocol)?window.location.href:''].filter(Boolean).join('\n')
 }
 async function shareScenario(){
  if(!scenarioIsValid(true)||!latestResult)return;const text=buildShareSummary();
@@ -720,7 +769,7 @@ function strategyDefinition(x){
 }
 function monthOneMetric(x){return x.rentalMode?x.first.rentalCashFlow:x.liveInMode?x.first.livePropertyCost-x.first.liveAlternativeCost:x.first.effectiveOwnerCost-x.first.totalRenterCost}
 function resultSnapshot(x,bp){const def=strategyDefinition(x);return {mode:x.mode,years:x.v.years,adv:x.adv,monthOne:monthOneMetric(x),breakEven:Number.isFinite(bp)?bp:null,strategyA:x.last[def.aKey],strategyB:x.last[def.bKey]}}
-function scenarioMatchesSaved(saved){return !!saved&&scenarioControls().every(el=>{const state=saved.controls?.[el.id];return state&&(el.type==='checkbox'?state.checked===el.checked:String(state.value)===String(el.value))})}
+function scenarioMatchesSaved(saved){return !!saved&&scenarioControls().every(el=>{const state=saved.controls?.[el.id];return state?(el.type==='checkbox'?state.checked===el.checked:String(state.value)===String(el.value)):matchesNewDealDefault(el)})}
 function signedMoney(value){return `${value>0?'+':value<0?'−':''}${money(Math.abs(value))}`}
 function setDelta(id,value,positiveIsGood=true){const el=$(id);el.textContent=signedMoney(value);el.className=Math.abs(value)<1?'':((value>0)===positiveIsGood?'good':'bad')}
 function renderSavedComparison(x,bp){
@@ -729,21 +778,27 @@ function renderSavedComparison(x,bp){
  $('savedComparisonTitle').textContent='Your edits';const current=resultSnapshot(x,bp);setDelta('savedAdvDelta',current.adv-saved.result.adv,true);setDelta('savedMonthDelta',current.monthOne-saved.result.monthOne,x.rentalMode);
  if(Number.isFinite(current.breakEven)&&Number.isFinite(saved.result.breakEven)){const delta=current.breakEven-saved.result.breakEven;$('savedBreakEvenDelta').textContent=signedMoney(delta);$('savedBreakEvenDelta').className=''}else{$('savedBreakEvenDelta').textContent=current.breakEven===saved.result.breakEven?'No change':'Not comparable';$('savedBreakEvenDelta').className=''}
 }
-function renderOutcomeHero(x,s,bp,priceDirection){
+function renderHeroContext(x){
+ const benchmark=$('location').selectedOptions[0]?.textContent||currentLocation,type=$('propertyType').selectedOptions[0]?.textContent||'Property';
+ $('heroContext').textContent=actualPropertyActive()?`${x.v.years}-year modeled outcome · ${propertyIdentity(true)} · ${benchmark} benchmark`:`${x.v.years}-year modeled outcome · ${benchmark} · ${type}`
+}
+function renderOutcomeHero(x,s,bp,priceDirection,priceRoots=[]){
  const def=strategyDefinition(x),a=x.last[def.aKey],b=x.last[def.bKey],scale=Math.max(Math.abs(a),Math.abs(b),1),winner=x.adv>=0?def.aShort:def.bShort,relative=Math.abs(x.adv)/scale,hero=$('quickResult');
- hero.dataset.state=relative<.06?'close':x.adv>=0?'positive':'negative';$('resultCard').style.setProperty('--outcome',relative<.06?'var(--amber)':x.adv>=0?'var(--green)':'var(--red)');$('heroContext').textContent=`${x.v.years}-year modeled outcome · ${$('location').selectedOptions[0]?.textContent||currentLocation} · ${$('propertyType').selectedOptions[0]?.textContent||'Property'}`;$('heroAdvantage').textContent=money(Math.abs(x.adv));$('heroWinner').textContent=`${winner} modeled wealth advantage`;$('heroScore').textContent=`${s}/100`;$('heroHorizon').textContent=`Year ${x.v.years}`;
+ hero.dataset.state=relative<.06?'close':x.adv>=0?'positive':'negative';$('resultCard').style.setProperty('--outcome',relative<.06?'var(--amber)':x.adv>=0?'var(--green)':'var(--red)');renderHeroContext(x);$('heroAdvantage').textContent=money(Math.abs(x.adv));$('heroWinner').textContent=`${winner} modeled wealth advantage`;$('heroScore').textContent=`${s}/100`;$('heroHorizon').textContent=`Year ${x.v.years}`;
  $('heroStrategyALabel').textContent=def.aLabel;$('heroStrategyBLabel').textContent=def.bLabel;$('heroStrategyAValue').textContent=money(a);$('heroStrategyBValue').textContent=money(b);$('heroStrategyABar').style.width=`${Math.max(4,Math.abs(a)/scale*100)}%`;$('heroStrategyBBar').style.width=`${Math.max(4,Math.abs(b)/scale*100)}%`;$('heroStrategyABar').classList.toggle('negativeWealth',a<0);$('heroStrategyBBar').classList.toggle('negativeWealth',b<0);
  const rail=$('thresholdRail'),min=+$('priceSlider').min,max=+$('priceSlider').max,current=n('price'),currentPct=Math.max(0,Math.min(100,(current-min)/Math.max(1,max-min)*100));$('heroCurrentMarker').style.left=`${currentPct}%`;$('heroRailMin').textContent=money(min);$('heroRailMax').textContent=money(max);
- const hasCrossing=Number.isFinite(bp),visibleCrossing=hasCrossing&&bp>=min&&bp<=max;rail.classList.toggle('noCrossing',!visibleCrossing);rail.classList.toggle('propertyAhead',!visibleCrossing&&x.adv>=0);rail.classList.toggle('reverse',visibleCrossing&&!priceDirection.leftPropertyAhead);$('heroBreakEvenMarker').hidden=!visibleCrossing;
+ const rootState=priceRootState(priceRoots,priceDirection),complex=rootState==='multiple'||rootState==='nonstandard',hasCrossing=rootState==='standard'&&Number.isFinite(bp),visibleCrossing=hasCrossing&&bp>=min&&bp<=max;rail.classList.toggle('complex',complex);rail.classList.toggle('noCrossing',!visibleCrossing&&!complex);rail.classList.toggle('propertyAhead',!visibleCrossing&&!complex&&x.adv>=0);rail.classList.toggle('reverse',visibleCrossing&&!priceDirection.leftPropertyAhead);$('heroBreakEvenMarker').hidden=!visibleCrossing;
  if(visibleCrossing){const bpPct=(bp-min)/Math.max(1,max-min)*100,p1=Math.max(0,bpPct-3),p2=Math.min(100,bpPct+3),zones=rail.querySelectorAll('.thresholdZone');zones[0].style.width=`${p1}%`;zones[1].style.left=`${p1}%`;zones[1].style.width=`${p2-p1}%`;zones[2].style.left=`${p2}%`;$('heroBreakEvenMarker').style.left=`${bpPct}%`;$('heroPricePosition').textContent=`${money(current)} vs ${money(bp)} break-even`}
  else if(hasCrossing)$('heroPricePosition').textContent=`Break-even ${money(bp)} · ${bp<min?'below':'above'} chart range`;
+ else if(rootState==='multiple')$('heroPricePosition').textContent=`${priceRoots.length} price crossings · review assumptions`;
+ else if(rootState==='nonstandard')$('heroPricePosition').textContent='Counterintuitive price response · review assumptions';
  else $('heroPricePosition').textContent=`${winner} leads across the tested range`;
- clearTimeout(resultAnnouncementTimer);resultAnnouncementTimer=setTimeout(()=>{$('resultAnnouncement').textContent=`${x.v.years}-year result. ${winner} leads by ${money(Math.abs(x.adv))}. ${hasCrossing?`Purchase-price break-even ${money(bp)}.`:'No purchase-price crossing in the tested range.'}`},450);
+ const rootAnnouncement=hasCrossing?`Purchase-price break-even ${money(bp)}.`:rootState==='multiple'?`${priceRoots.length} purchase-price crossings were found; no single threshold is recommended.`:rootState==='nonstandard'?'A counterintuitive purchase-price response was found; review the assumptions.':'No purchase-price crossing in the tested range.';clearTimeout(resultAnnouncementTimer);resultAnnouncementTimer=setTimeout(()=>{$('resultAnnouncement').textContent=`${x.v.years}-year result. ${winner} leads by ${money(Math.abs(x.adv))}. ${rootAnnouncement}`},450);
  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){clearTimeout(heroMotionTimer);hero.classList.remove('is-updated');heroMotionTimer=setTimeout(()=>hero.classList.add('is-updated'),180)}
 }
 function renderPrintScenario(x){
- const programNames={conventional:'Conventional',fha:'FHA',va:'VA',usda:'USDA'},rent=x.rentalMode?x.v.rentCollected:x.liveInMode?x.v.liveAltRent:x.v.rent;
- $('printLocation').textContent=$('location').selectedOptions[0]?.textContent||currentLocation;$('printStrategy').textContent=$('useMode').selectedOptions[0]?.textContent||x.mode;$('printProperty').textContent=$('propertyType').selectedOptions[0]?.textContent||'Property';$('printPrice').textContent=money(x.v.price);$('printFinancing').textContent=x.v.downPct>=100?'Cash purchase':`${x.v.downPct}% down · ${programNames[x.loanProgram]||x.loanProgram} · ${x.v.rate.toFixed(2)}%`;$('printHorizon').textContent=`${x.v.years} years`;$('printRent').textContent=`${money(rent)}/mo`;$('printGenerated').textContent=new Date().toLocaleString([],{dateStyle:'medium',timeStyle:'short'})
+ const programNames={conventional:'Conventional',fha:'FHA',va:'VA',usda:'USDA'},rent=x.rentalMode?x.v.rentCollected:x.liveInMode?x.v.liveAltRent:x.v.rent,active=actualPropertyActive(),address=$('propertyAddress').value.trim();
+ $('printLocation').textContent=($('location').selectedOptions[0]?.textContent||currentLocation)+(active?' benchmark':'');$('printStrategy').textContent=$('useMode').selectedOptions[0]?.textContent||x.mode;$('printProperty').textContent=active?`${propertyShareName()} · ${$('propertyType').selectedOptions[0]?.textContent||'Property'}`:$('propertyType').selectedOptions[0]?.textContent||'Property';$('printPrice').textContent=money(x.v.price);$('printAddressWrap').hidden=!(active&&address);$('printAddress').textContent=address||'—';$('printFinancing').textContent=x.v.downPct>=100?'Cash purchase':`${x.v.downPct}% down · ${programNames[x.loanProgram]||x.loanProgram} · ${x.v.rate.toFixed(2)}%`;$('printHorizon').textContent=`${x.v.years} years`;$('printRent').textContent=`${money(rent)}/mo`;$('printRepairsWrap').hidden=!(active&&x.v.propertyRepairs>0);$('printRepairs').textContent=money(x.v.propertyRepairs);$('printGenerated').textContent=new Date().toLocaleString([],{dateStyle:'medium',timeStyle:'short'})
 }
 function svgNode(name,attrs={},textValue=''){const el=document.createElementNS('http://www.w3.org/2000/svg',name);Object.entries(attrs).forEach(([key,value])=>el.setAttribute(key,value));if(textValue!=='')el.textContent=textValue;return el}
 function wealthSummary(x,def){
@@ -768,15 +823,69 @@ function initWealthChartInteraction(){
 }
 function leverDelta(value,current,kind){const delta=value-current;if(kind==='rate')return `${delta>0?'+':delta<0?'−':''}${Math.abs(delta).toFixed(2)} percentage points from current`;return `${signedMoney(delta)}${kind==='rent'?'/mo':''} from current`}
 function createLeverCard({icon,title,detail,field,value,button}){const card=document.createElement('article');card.className='leverCard'+(Number.isFinite(value)?'':' noCrossing');const badge=document.createElement('span'),heading=document.createElement('h4'),copy=document.createElement('p'),action=document.createElement('button');badge.className='leverIcon';badge.textContent=icon;heading.textContent=title;copy.textContent=detail;action.className='btn secondary';action.type='button';action.textContent=button||'Try this value';if(Number.isFinite(value)){action.dataset.field=field;action.dataset.value=value}else action.hidden=true;card.append(badge,heading,copy,action);return card}
+const DEAL_GUARDRAILS={closeRelative:.06,negotiateDiscount:.10,reworkDiscount:.20,nearbyRate:1,nearbyRevenue:.15};
+function modeledCashNeeded(x){const project=x.newAduEnabled&&x.aduFunding==='cash'?x.v.aduBuildCost:x.investmentAduEnabled&&x.invAduFunding==='cash'?x.v.invAduBuildCost:x.liveAduBuildEnabled&&x.liveAduFunding==='cash'?x.v.liveAduBuildCost:0;return x.upfrontCash+project}
+function classifyDeal(x,analysis){
+ const def=strategyDefinition(x),scale=Math.max(Math.abs(x.last[def.aKey]),Math.abs(x.last[def.bKey]),1),close=Math.abs(x.adv)/scale<DEAL_GUARDRAILS.closeRelative,cashFlowFails=x.rentalMode&&x.first.rentalCashFlow<0,priceRoots=analysis.priceRoots||[],direction=analysis.priceDirection,normalRoot=standardPriceRoot(priceRoots,direction),discount=normalRoot&&x.v.price>analysis.bp?(x.v.price-analysis.bp)/x.v.price:null;
+ const rateClose=x.v.downPct<100&&Number.isFinite(analysis.br)&&analysis.br<n('rate')&&n('rate')-analysis.br<=DEAL_GUARDRAILS.nearbyRate;
+ const revenueField=x.rentalMode?'rentCollected':x.liveInMode?'liveMainRent':null,revenueRoot=x.rentalMode?analysis.rr:x.liveInMode?analysis.liveMainRoot:null,revenueNow=revenueField?n(revenueField):0,revenueClose=Number.isFinite(revenueRoot)&&revenueRoot>revenueNow&&revenueNow>0&&(revenueRoot-revenueNow)/revenueNow<=DEAL_GUARDRAILS.nearbyRevenue;
+ const base={close,cashFlowFails,normalRoot,discount,rateClose,revenueClose};
+ if(!$('propertyFactsConfirmed').checked||!$('propertyAddress').value.trim())return {...base,state:'preliminary',reason:'unconfirmed'};
+ const listedAsk=confirmedAskingPrice();if(listedAsk&&Math.abs(x.v.price-listedAsk)>=1)return {...base,state:'preliminary',reason:'hypothetical-price'};
+ if(priceRoots.length>1||priceRoots.length===1&&!normalRoot)return {...base,state:'rework',reason:'nonstandard-price-sensitivity'};
+ if(close)return {...base,state:'rework',reason:'close-call'};
+ if(x.adv>=0)return cashFlowFails?{...base,state:'rework',reason:'wealth-positive-cash-flow-negative'}:{...base,state:'works',reason:'property-ahead'};
+ if(discount!==null){
+   if(cashFlowFails&&discount<=DEAL_GUARDRAILS.reworkDiscount)return {...base,state:'rework',reason:'two-hurdles'};
+   if(discount<=DEAL_GUARDRAILS.negotiateDiscount)return {...base,state:'negotiate',reason:'modest-price-gap'};
+   if(discount<=DEAL_GUARDRAILS.reworkDiscount)return {...base,state:'rework',reason:'material-price-gap'};
+   if(rateClose||revenueClose)return {...base,state:'rework',reason:'nearby-operating-lever'};
+   return {...base,state:'walk',reason:'large-price-gap'}
+ }
+ if(rateClose||revenueClose)return {...base,state:'rework',reason:'nearby-operating-lever'};
+ return {...base,state:'walk',reason:'no-lower-price-fix'}
+}
+function dealCopy(x,analysis,decision,listedAsk=x.v.price){
+ const ask=money(listedAsk),parity=Number.isFinite(analysis.bp)?money(analysis.bp):null,gap=decision.discount===null?null:Math.round(decision.discount*100),cashFlow=x.rentalMode?x.first.rentalCashFlow:null;
+ const copies={
+   unconfirmed:`House Alpha is modeling this property, but the deal signal stays preliminary until you enter an address or listing title and confirm the core property facts.`,
+   'hypothetical-price':`You are testing a price that differs from the listed ask. Restore the asking price before treating the deal signal as firm.`,
+   'nonstandard-price-sensitivity':`The price sweep has ${analysis.priceRoots.length>1?'multiple':'a counterintuitive'} crossing${analysis.priceRoots.length>1?'s':''}. Recheck the assumptions instead of treating one threshold as a safe offer.`,
+   'close-call':`The two strategies finish inside House Alpha’s 6% close-call band. Small changes in price, time horizon, rent, or growth assumptions can change the answer.`,
+   'property-ahead':x.rentalMode?`This property clears both the modeled long-term comparison and month-one cash flow under the entered assumptions.`:`This property clears the modeled long-term comparison under the entered assumptions.`,
+   'wealth-positive-cash-flow-negative':`The property finishes ahead long term, but starts at ${signedMoney(cashFlow)}/mo cash flow. Rework the monthly economics before calling it a clean deal.`,
+   'modest-price-gap':`The deal reaches modeled wealth parity near ${parity}, not at the ${ask} asking price. That is about ${gap}% below ask.`,
+   'material-price-gap':`The property needs roughly ${gap}% off asking to reach modeled wealth parity. Rework the price or the operating plan before proceeding.`,
+   'two-hurdles':`A lower price can close the long-term gap, but the rental still has a month-one cash-flow hurdle. Price parity alone does not make the deal work.`,
+   'nearby-operating-lever':`The current plan trails, but a nearby modeled rate or revenue threshold could change the result. Verify that lever with a real quote or defensible rent evidence.`,
+   'large-price-gap':`The helpful price threshold is more than 20% below asking, and no nearby modeled operating lever clears the gap. This is a walk-away signal under current assumptions.`,
+   'no-lower-price-fix':`The property trails and no helpful lower-price crossing appears in the tested range. This is a walk-away signal under current assumptions.`
+ };
+ return copies[decision.reason]
+}
+function renderDealCheckpoint(x,analysis){
+ const panel=$('dealCheckpoint');if(!actualPropertyActive()){panel.hidden=true;lastDealState=null;return}panel.hidden=false;
+ const decision=classifyDeal(x,analysis),labels={preliminary:'Preliminary',works:'Works as modeled',negotiate:'Negotiate',rework:'Rework the plan',walk:'Walk-away signal'},priceRoots=analysis.priceRoots||[],normal=decision.normalRoot,bp=analysis.bp,currentPrice=x.v.price,listedAsk=confirmedAskingPrice()||currentPrice,testingPrice=Math.abs(listedAsk-currentPrice)>=1,priceRange=analysis.priceRange||priceRootBounds();
+ panel.dataset.state=decision.state;$('dealBadge').textContent=labels[decision.state];$('dealIdentity').textContent=`${propertyIdentity(true)} · ${$('location').selectedOptions[0]?.textContent||currentLocation} benchmark`;$('dealSummary').textContent=dealCopy(x,analysis,decision,listedAsk);$('dealAsk').textContent=money(listedAsk);$('dealAskNote').hidden=!testingPrice;$('dealAskNote').textContent=testingPrice?`Current modeled price ${money(currentPrice)}`:'';
+ if(priceRoots.length>1){$('dealParity').textContent=`${priceRoots.length} crossings`;$('dealGapLabel').textContent='Price response';$('dealGap').textContent='Review'}else if(Number.isFinite(bp)){$('dealParity').textContent=money(bp);if(normal&&listedAsk>bp){$('dealGapLabel').textContent='Ask above parity';$('dealGap').textContent=`${money(listedAsk-bp)} · ${Math.round((listedAsk-bp)/listedAsk*100)}%`}else if(normal&&listedAsk<=bp){$('dealGapLabel').textContent='Cushion to parity';$('dealGap').textContent=money(bp-listedAsk)}else{$('dealGapLabel').textContent='Price response';$('dealGap').textContent='Nonstandard'}}else{$('dealParity').textContent='No crossing';$('dealGapLabel').textContent='Tested range';$('dealGap').textContent=money(priceRange.lo)+'–'+money(priceRange.hi)}
+ const cashNeeded=modeledCashNeeded(x);if(x.rentalMode){$('dealMonthlyLabel').textContent='Month-one cash flow';$('dealMonthly').textContent=signedMoney(x.first.rentalCashFlow)+'/mo';$('dealMonthly').className=x.first.rentalCashFlow>=0?'good':'bad'}else{$('dealMonthlyLabel').textContent='Modeled cash needed';$('dealMonthly').textContent=money(cashNeeded);$('dealMonthly').className=''}
+ const test=$('dealTestOffer'),actionable=normal&&Number.isFinite(bp)&&currentPrice>bp&&x.adv<0;test.hidden=!actionable;test.dataset.value=actionable?bp:'';test.textContent=actionable?`Test ${money(bp)} parity price`:'Test parity price';$('dealRestoreAsk').hidden=!testingPrice;$('dealReviewLevers').textContent=decision.state==='works'?'Stress-test the deal':'Review ways to make it work';
+ const source=$('dealSource'),url=safeListingUrl();source.hidden=!url;if(url)source.href=url;else source.removeAttribute('href');
+ const reasons=[`${x.v.years}-year ending advantage: ${signedMoney(x.adv)} for ${x.adv>=0?'the property strategy':'the alternative strategy'}.`,x.rentalMode?`Month-one property cash flow: ${signedMoney(x.first.rentalCashFlow)}/mo.`:`Month-one property cost difference: ${signedMoney(monthOneMetric(x))}/mo.`,normal&&Number.isFinite(bp)?`One normally oriented wealth-parity price was found near ${money(bp)}.`:priceRoots.length===0?`No purchase-price crossing was found from ${money(priceRange.lo)} to ${money(priceRange.hi)}.`:`${priceRoots.length} nonstandard or multiple purchase-price crossing${priceRoots.length===1?' was':'s were'} found.`,x.v.propertyRepairs>0?`${money(x.v.propertyRepairs)} of immediate work is treated as upfront cash with no automatic resale value.`:'No immediate repair or renovation cash is entered.',`Signal bands: close call within 6% of ending wealth; Negotiate at up to a 10% price gap; Rework at 10–20%, within 1 mortgage-rate point, or within 15% of needed revenue; Walk-away signal above 20% with no nearby modeled lever.`];$('dealReasons').replaceChildren(...reasons.map(textValue=>{const li=document.createElement('li');li.textContent=textValue;return li}));
+ if(lastDealState!==decision.state){$('dealStatusAnnounce').textContent=`Deal checkpoint: ${labels[decision.state]}. ${$('dealSummary').textContent}`;lastDealState=decision.state}
+}
 function renderDecisionLevers(x,analysis){
- const grid=$('decisionLevers');grid.replaceChildren();const rentField=x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',rentLabel=x.rentalMode?'Gross-rent break-even':x.liveInMode?'Comparable-rent break-even':'Base-rent break-even',rentUnavailable=x.liveInMode&&!analysis.liveAltRentActive;
- grid.append(createLeverCard({icon:'$',title:Number.isFinite(analysis.bp)?`Purchase-price break-even ${money(analysis.bp)}`:'No purchase-price crossing',detail:Number.isFinite(analysis.bp)?leverDelta(analysis.bp,n('price'),'price'):'The current winner stays ahead across the tested price range.',field:'price',value:analysis.bp,button:Number.isFinite(analysis.bp)?`Try ${money(analysis.bp)}`:''}));
+ const grid=$('decisionLevers');grid.replaceChildren();const rentField=x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',rentLabel=x.rentalMode?'Gross-rent break-even':x.liveInMode?'Comparable-rent break-even':'Base-rent break-even',rentUnavailable=x.liveInMode&&!analysis.liveAltRentActive,rootState=analysis.priceRootState||priceRootState(analysis.priceRoots||[],analysis.priceDirection);
+ if(rootState==='standard')grid.append(createLeverCard({icon:'$',title:`Purchase-price break-even ${money(analysis.bp)}`,detail:leverDelta(analysis.bp,n('price'),'price'),field:'price',value:analysis.bp,button:`Try ${money(analysis.bp)}`}));
+ else if(rootState==='multiple')grid.append(createLeverCard({icon:'$',title:`${analysis.priceRoots.length} purchase-price crossings`,detail:'There is no single safe price lever. Review the assumptions and sensitivity before testing an offer.',value:null}));
+ else if(rootState==='nonstandard')grid.append(createLeverCard({icon:'$',title:'Counterintuitive price response',detail:'The property improves at higher prices in this sweep, so House Alpha will not suggest a price action.',value:null}));
+ else grid.append(createLeverCard({icon:'$',title:'No purchase-price crossing',detail:'The current winner stays ahead across the tested price range.',value:null}));
  if(x.v.downPct<100)grid.append(createLeverCard({icon:'%',title:Number.isFinite(analysis.br)?`Rate break-even ${analysis.br.toFixed(2)}%`:'No mortgage-rate crossing',detail:Number.isFinite(analysis.br)?leverDelta(analysis.br,n('rate'),'rate'):'The answer does not flip within the tested 0%–20% rate range.',field:'rate',value:analysis.br,button:Number.isFinite(analysis.br)?`Try ${analysis.br.toFixed(2)}%`:''}));
  grid.append(createLeverCard({icon:'R',title:rentUnavailable?'Comparable rent is not active':Number.isFinite(analysis.rr)?`${rentLabel} ${money(analysis.rr)}/mo`:`No ${rentLabel.toLowerCase()}`,detail:rentUnavailable?'The alternative strategy does not incur comparable rent during this modeled horizon.':Number.isFinite(analysis.rr)?leverDelta(analysis.rr,n(rentField),'rent'):'The answer does not flip within the tested rent range.',field:rentField,value:rentUnavailable?null:analysis.rr,button:Number.isFinite(analysis.rr)?`Try ${money(analysis.rr)}/mo`:''}));$('undoLever').hidden=!leverUndoState
 }
 function tryDecisionLever(field,value){
- if(!$(field)||!Number.isFinite(value))return;const watched=['price','rate','rent','rentCap','rentCollected','rentCollectedCap','liveAltRent','liveAltRentCap','insurance'],controls={};watched.forEach(id=>{if($(id))controls[id]={value:$(id).value}});leverUndoState={controls,flags:autoFlags(),field};$(field).value=Math.round(value*(field==='rate'?100:1))/(field==='rate'?100:1);
- if(field==='price'){priceAuto=false;insuranceUserEditing=false;syncInsuranceToPrice()}else if(field==='rate')rateAuto=false;else if(field==='rent'){rentAuto=false;$('rentCap').value=$(field).value}else if(field==='rentCollected'){rentAuto=false;$('rentCollectedCap').value=$(field).value}else if(field==='liveAltRent'){liveAltRentAuto=false;$('liveAltRentCap').value=$(field).value}markScenarioDirty();update();$('leverStatus').textContent=`Tried the modeled ${field==='price'?'purchase price':field==='rate'?'mortgage rate':'rent'} break-even. Use Undo last try to restore your assumptions.`;$('undoLever').focus({preventScroll:true})
+ if(!$(field)||!Number.isFinite(value))return;if(field==='price')anchorCurrentAskingPrice();const watched=['price','rate','rent','rentCap','rentCollected','rentCollectedCap','liveAltRent','liveAltRentCap','insurance'],controls={};watched.forEach(id=>{if($(id))controls[id]={value:$(id).value}});leverUndoState={controls,flags:autoFlags(),field};$(field).value=Math.round(value*(field==='rate'?100:1))/(field==='rate'?100:1);
+ if(field==='price'){priceAuto=false;insuranceUserEditing=false;syncInsuranceToPrice()}else if(field==='rate')rateAuto=false;else if(field==='rent'){rentAuto=false;$('rentCap').value=$(field).value}else if(field==='rentCollected'){rentAuto=false;$('rentCollectedCap').value=$(field).value}else if(field==='liveAltRent'){liveAltRentAuto=false;$('liveAltRentCap').value=$(field).value}if(['price','rent','rentCollected','liveAltRent','liveMainRent'].includes(field))invalidatePropertyFacts();markScenarioDirty();update();$('leverStatus').textContent=`Tried the modeled ${field==='price'?'purchase price':field==='rate'?'mortgage rate':'rent'} break-even. Use Undo last try to restore your assumptions.`;$('undoLever').focus({preventScroll:true})
 }
 function undoDecisionLever(){if(!leverUndoState)return;const saved=leverUndoState;applyControlSnapshot(saved.controls);restoreAutoFlags(saved.flags);leverUndoState=null;markScenarioDirty();update();$('leverStatus').textContent='Restored the assumptions from before the last decision-lever experiment.';$('leverHeading').focus({preventScroll:true})}
 function printDecisionBrief(){if(!scenarioIsValid(true)||!latestResult)return;renderPrintScenario(latestResult);window.print()}
@@ -790,7 +899,7 @@ function configureNumericConstraints(){
  ['aduLoanTerm','invAduLoanTerm','liveAduLoanTerm'].forEach(id=>rules[id]=[1,50,true]);
  ['aduSize','invAduSize','liveAduSize'].forEach(id=>rules[id]=[100,10000,true]);
  ['aduBuildPsf','invAduBuildPsf','liveAduBuildPsf','aduLocalPsf','invAduLocalPsf','liveAduLocalPsf'].forEach(id=>rules[id]=[0,5000,false]);
- ['aduBuildCost','invAduBuildCost','liveAduBuildCost','aduCustomValue','invAduCustomValue','liveAduCustomValue'].forEach(id=>rules[id]=[0,10000000,false]);
+ ['aduBuildCost','invAduBuildCost','liveAduBuildCost','aduCustomValue','invAduCustomValue','liveAduCustomValue','propertyRepairs'].forEach(id=>rules[id]=[0,100000000,false]);
  ['rent','rentCap','renterStorage','renterShareContribution','ownerIncomeGross','ownerIncomeCap','ownerIncomeOther','liveAltRent','liveAltRentCap','liveMainRent','liveMainRentCap','liveMainOther','livePreAduRent','livePreAduRentCap','livePreAduOther','hoa','storage','insurance','assessment','rentCollected','rentCollectedCap','landlordUtilities','landlordOther','invAduOther','invAduRent','invAduRentCap'].forEach(id=>rules[id]=[0,1000000,false]);
  ['renterShareGrowth','ownerIncomeGrowth','liveAltRentGrowth','liveMainRentGrowth','livePreAduRentGrowth','collectedRentGrowth','invAduRentGrowth'].forEach(id=>rules[id]=[-50,100,false]);
  Object.entries(rules).forEach(([id,[min,max,required]])=>{const el=$(id);if(!el)return;el.min=min;el.max=max;if(required)el.required=true})
@@ -821,8 +930,8 @@ function pmt(P,r,y){if(P<=0)return 0;let m=r/1200,N=y*12;if(!m)return P/N;return
 function bal(P,r,y,k){if(P<=0)return 0;let m=r/1200,N=y*12,a=pmt(P,r,y);if(k>=N)return 0;if(!m)return Math.max(0,P-a*k);return P*(1+m)**k-a*((1+m)**k-1)/m}
 function validLoanProgramForDown(program,down,rental=false){
  if(rental)return 'conventional';
- if(program==='conventional'&&down<3)return down<=0?'va':'conventional';
- if(program==='fha'&&down<3.5)return down<=0?'va':'conventional';
+ if(down<3&&(program==='conventional'||program==='fha'))return 'va';
+ if(program==='fha'&&down<3.5)return 'conventional';
  return program
 }
 function selectedLoanProgram(override=null){
@@ -1004,6 +1113,7 @@ function setDownPaymentPreset(value){
 function model(o={}){
  let v={};ids.forEach(i=>v[i]=i in o?o[i]:n(i));
  v.hoa=$('hoaOn').checked?v.hoa:0;
+ v.propertyRepairs=actualPropertyActive()?v.propertyRepairs:0;
 
  const mode=$('useMode').value;
  const primaryMode=mode==='primary';
@@ -1050,10 +1160,10 @@ function model(o={}){
  const upfrontFee=baseLoan*upfrontFeeRate/100;
 
  let M=Math.round(v.years*12),dp=v.price*v.downPct/100,loan=baseLoan+upfrontFee,
-     mp=pmt(loan,v.rate,v.term),rtrn=v.stockReturn/1200;
- let rent=v.rent,cap=v.rentCap,renter=dp+v.price*v.buyClose/100,
-     rentalAlternative=dp+v.price*v.buyClose/100,
-     liveAlternative=dp+v.price*v.buyClose/100,buyerInv=0,rec=[],
+     mp=pmt(loan,v.rate,v.term),rtrn=v.stockReturn/1200,upfrontCash=dp+v.price*v.buyClose/100+v.propertyRepairs;
+ let rent=v.rent,cap=v.rentCap,renter=upfrontCash,
+     rentalAlternative=upfrontCash,
+     liveAlternative=upfrontCash,buyerInv=0,rec=[],
      pmiEnabled=loanProgram==='conventional'&&$('pmiOn').checked&&v.downPct<20;
 
  let grossCollected=v.rentCollected,collectedCap=Math.max(v.rentCollectedCap||v.rentCollected,v.rentCollected);
@@ -1206,7 +1316,7 @@ function model(o={}){
 
  const z=rec.at(-1);
  const adv=rentalMode?z.rentalOwnerWealth-z.rentalAlternative:liveInMode?z.livePropertyWealth-z.liveAlternative:z.buyWealth-z.renter;
- return {v,rec,first:rec[0],last:z,dp,mp,pmi0:rec[0].pmi,adv,mode,primaryMode,liveInMode,rentalMode,
+ return {v,rec,first:rec[0],last:z,dp,upfrontCash,mp,pmi0:rec[0].pmi,adv,mode,primaryMode,liveInMode,rentalMode,
    loanProgram,baseLoan,loan,upfrontFeeRate,upfrontFee,renterShareEnabled,ownerIncomeEnabled,ownerIncomeType,newAduEnabled,
    ownerManagementEnabled,aduFunding,aduCompletionMonth,aduLoanPayment,investmentAduEnabled,invAduFunding,invAduManagementEnabled,
    invAduCompletionMonth,invAduLoanPayment,liveAduType,liveAduBuildEnabled,liveBeforeMove,liveMoveMonth,liveAduCompletionMonth,
@@ -1276,8 +1386,9 @@ function root(field,lo,hi,extra={}){
  const all=roots(field,lo,hi,extra);
  if(!all.length)return null;
  const current=(field in extra)?extra[field]:currentFieldValue(field);
- return all.sort((a,b)=>Math.abs(a-current)-Math.abs(b-current))[0]
+ return nearestRoot(all,current)
 }
+function nearestRoot(values,current){return values.reduce((best,value)=>best===null||Math.abs(value-current)<Math.abs(best-current)?value:best,null)}
 function rootDirection(field,rootValue,extra={}){
  if(rootValue===null)return '';
  const now=model(extra),live=now.liveInMode,rental=now.rentalMode;
@@ -1294,13 +1405,15 @@ function rootDirection(field,rootValue,extra={}){
  if(field==='invAduBuildCost')return now.adv>=0?'maximum ADU construction cost before the S&P 500 wins':'lower ADU cost needed for the property strategy to catch up';
  return '';
 }
-function priceDirectionAtRoot(bp){
- const slider=$('priceSlider'),min=+slider.min,max=+slider.max,sample=price=>model(scenarioForRoot('price',price)).adv>=0;
+function priceDirectionAtRoot(bp,extra={}){
+ const slider=$('priceSlider'),min=+slider.min,max=+slider.max,sample=price=>model(scenarioForRoot('price',price,extra)).adv>=0;
  const rangeLowPropertyAhead=sample(min),rangeHighPropertyAhead=sample(max);
  if(!Number.isFinite(bp))return {leftPropertyAhead:rangeLowPropertyAhead,rightPropertyAhead:rangeHighPropertyAhead,rangeLowPropertyAhead,rangeHighPropertyAhead};
- const delta=Math.max(1000,(max-min)*.01),leftPropertyAhead=sample(Math.max(50000,bp-delta)),rightPropertyAhead=sample(Math.min(1500000,bp+delta));
+ const delta=Math.max(1000,(max-min)*.01),leftPropertyAhead=sample(Math.max(50000,bp-delta)),rightPropertyAhead=sample(Math.min(100000000,bp+delta));
  return {leftPropertyAhead,rightPropertyAhead,rangeLowPropertyAhead,rangeHighPropertyAhead}
 }
+function standardPriceRoot(priceRoots,priceDirection){return priceRoots.length===1&&priceDirection.leftPropertyAhead&&!priceDirection.rightPropertyAhead}
+function priceRootState(priceRoots,priceDirection){return !priceRoots.length?'none':priceRoots.length>1?'multiple':standardPriceRoot(priceRoots,priceDirection)?'standard':'nonstandard'}
 function cashFlowBreakEven(x){
  const vacancyKeep=Math.max(.01,1-x.v.vacancyRate/100);
  const variableRate=(($('managementOn').checked?x.v.managementRate:0)+x.v.rentalReserveRate)/100;
@@ -1356,6 +1469,10 @@ function localPurchaseEstimate(){
  const base=+(loc.home_value||n('price')||385000);
  return Math.round(base*(type==='condo'?.72:1)/1000)*1000;
 }
+function priceRootBounds(){
+ const lo=50000,current=Math.max(lo,n('price')),sliderMax=Math.max(0,+$('priceSlider').max||0),hi=Math.min(100000000,Math.ceil(Math.max(1500000,current*2,sliderMax*1.25)/50000)*50000);
+ return {lo,hi:Math.max(lo+50000,hi)}
+}
 function setDynamicSliderRange(estimate,current){
  const slider=$('priceSlider');
  let min=Math.max(50000,Math.floor(estimate*.42/5000)*5000);
@@ -1377,25 +1494,31 @@ function ensureBreakEvenInSliderRange(bp){
  if(changed){slider.min=min;slider.max=max;$('sliderRangeText').textContent=`${money(min)} to ${money(max)}`;slider.value=Math.min(max,Math.max(min,n('price')))}
  return changed
 }
-function applyLocalPurchaseEstimate(force=true){
- const estimate=localPurchaseEstimate(),mode=$('useMode').value;
+function updatePurchaseEstimateNote(estimate=localPurchaseEstimate()){
+ const mode=$('useMode').value;
  $('bedroomPriceEstimate')&&($('bedroomPriceEstimate').value=Math.round(estimate));
  $('priceEstimateNote').textContent=mode==='rental'
    ? `${$('bedrooms').value}BR ${$('propertyType').value==='condo'?'condo':'house'} investment planning estimate: ${money(estimate)}`
    : mode==='livein'
    ? `${$('bedrooms').value}BR main-home planning estimate: ${money(estimate)}`
    : `Local ${$('propertyType').value==='condo'?'condo':'home'} planning estimate: ${money(estimate)}`;
+}
+function applyLocalPurchaseEstimate(force=true){
+ const estimate=localPurchaseEstimate();updatePurchaseEstimateNote(estimate);
  if(force||priceAuto){priceAuto=true;$('price').value=Math.round(estimate);insuranceUserEditing=false;syncInsuranceToPrice();}
  setDynamicSliderRange(estimate,n('price'));
 }
-function updatePriceVisual(bp,priceDirection){
+function updatePriceVisual(bp,priceDirection,priceRoots=[]){
  const slider=$('priceSlider'),zones=$('priceDecisionZones'),marker=$('beMarker'),min=+slider.min,max=+slider.max;
- const useBreakEven=$('useBreakEvenPrice'),sliderActions=document.querySelector('.sliderActions'),hasBreakEven=Number.isFinite(bp);
- useBreakEven.hidden=!hasBreakEven;useBreakEven.disabled=!hasBreakEven;sliderActions.classList.toggle('single',!hasBreakEven);
- if(hasBreakEven)useBreakEven.setAttribute('aria-label',`Use modeled break-even purchase price ${money(bp)}`);
- currentBreakEvenPrice=Number.isFinite(bp)?bp:null;
+ const useBreakEven=$('useBreakEvenPrice'),sliderActions=document.querySelector('.sliderActions'),state=priceRootState(priceRoots,priceDirection),actionable=state==='standard';
+ useBreakEven.hidden=!actionable;useBreakEven.disabled=!actionable;sliderActions.classList.toggle('single',!actionable);
+ if(actionable)useBreakEven.setAttribute('aria-label',`Use modeled break-even purchase price ${money(bp)}`);else useBreakEven.removeAttribute('aria-label');
+ currentBreakEvenPrice=actionable?bp:null;
  const lowColor=priceDirection.rangeLowPropertyAhead?'var(--green)':'var(--red)',highColor=priceDirection.rangeHighPropertyAhead?'var(--green)':'var(--red)';
  marker.classList.remove('edge-low','edge-high');
+ if(state==='multiple'||state==='nonstandard'){
+   marker.style.display='none';zones.style.background='#d9e1eb';slider.classList.remove('snap');$('snapText').textContent=state==='multiple'?`${priceRoots.length} price crossings · review assumptions`:'Nonstandard price crossing · review assumptions';$('priceSliderDescription').textContent=state==='multiple'?`${priceRoots.length} purchase-price crossings were found in the tested range. No single break-even action or snap is available.`:'A counterintuitive purchase-price crossing was found. No break-even action or snap is available.';return
+ }
  if(!Number.isFinite(bp)){
    marker.style.display='none';zones.style.background=lowColor;slider.classList.remove('snap');$('snapText').textContent='No crossing in tested range';$('priceSliderDescription').textContent=`No purchase-price crossing in the displayed range. ${priceDirection.rangeLowPropertyAhead?'The property strategy':'The alternative strategy'} stays ahead. Current price ${money(n('price'))}.`;return
  }
@@ -1516,19 +1639,19 @@ function update(){
  $('rentalMetrics').style.display=x.rentalMode?'block':'none';if(x.rentalMode){$('effectiveRent').textContent=money(x.first.totalEffectiveCollected);$('landlordCashFlow').textContent=(x.first.rentalCashFlow>=0?'+':'')+money(x.first.rentalCashFlow);$('landlordCashFlow').className=x.first.rentalCashFlow>=0?'good':'bad';$('cashFlowBreakEven').textContent=money(cashFlowBreakEven(x))+'/mo';}
  $('investmentAduMetrics').style.display=x.investmentAduEnabled?'block':'none';if(x.investmentAduEnabled){const completionIndex=Math.min(x.invAduCompletionMonth,x.rec.length-1),ar=x.rec[completionIndex],completed=x.invAduCompletionMonth<=Math.round(x.v.years*12);$('invAduRentResult').textContent=completed?money(ar.invAduGrossRent)+'/mo':'Not completed';$('invAduCashFlowResult').textContent=completed?(ar.invAduCashFlow>=0?'+':'')+money(ar.invAduCashFlow)+'/mo':'—';$('invAduCashFlowResult').className=completed?(ar.invAduCashFlow>=0?'good':'bad'):'';$('invAduValueResult').textContent=completed?money(ar.invAduValue):'—';if(completed){const aduRentRoot=root('invAduRent',0,12000),aduCostRoot=root('invAduBuildCost',0,1500000);$('investmentAduBreakEven').innerHTML=`The ADU begins producing rent after month <b>${x.invAduCompletionMonth}</b>. Modeled ADU-rent break-even: <b>${aduRentRoot?money(aduRentRoot)+'/mo':noRootMessage('invAduRent',0,12000)}</b>. Modeled construction-cost break-even: <b>${aduCostRoot?money(aduCostRoot):noRootMessage('invAduBuildCost',0,1500000)}</b>. Tax and maintenance on modeled added value are included.`}else $('investmentAduBreakEven').innerHTML=`The ADU completes in month <b>${x.invAduCompletionMonth}</b>, after the ${x.v.years}-year holding period, so ADU break-evens are not shown.`;}
 
- const bp=root('price',50000,1500000),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):x.liveInMode?liveAltRoot:root('rent',250,12000);
- ensureBreakEvenInSliderRange(bp);
- const priceDirection=priceDirectionAtRoot(bp),propertyLabel=x.rentalMode?'PROPERTY':x.liveInMode?'LIVE-IN STRATEGY':'BUYING',alternativeLabel=x.rentalMode?'S&P 500':x.liveInMode?'RENT + S&P':'RENTING';
+ const priceRange=priceRootBounds(),priceRoots=roots('price',priceRange.lo,priceRange.hi),bp=nearestRoot(priceRoots,n('price')),br=x.v.downPct<100?root('rate',0,20):null,rr=x.rentalMode?root('rentCollected',250,20000):x.liveInMode?liveAltRoot:root('rent',250,12000);
+ if(priceRoots.length===1)ensureBreakEvenInSliderRange(bp);
+ const priceDirection=priceDirectionAtRoot(bp),rootState=priceRootState(priceRoots,priceDirection),standardBp=rootState==='standard'?bp:null,propertyLabel=x.rentalMode?'PROPERTY':x.liveInMode?'LIVE-IN STRATEGY':'BUYING',alternativeLabel=x.rentalMode?'S&P 500':x.liveInMode?'RENT + S&P':'RENTING';
  const lowWinner=$('priceLowWinner'),highWinner=$('priceHighWinner');
  lowWinner.textContent=`${priceDirection.rangeLowPropertyAhead?propertyLabel:alternativeLabel} WINS`;highWinner.textContent=`${priceDirection.rangeHighPropertyAhead?propertyLabel:alternativeLabel} WINS`;
  lowWinner.classList.toggle('propertyAhead',priceDirection.rangeLowPropertyAhead);lowWinner.classList.toggle('alternativeAhead',!priceDirection.rangeLowPropertyAhead);highWinner.classList.toggle('propertyAhead',priceDirection.rangeHighPropertyAhead);highWinner.classList.toggle('alternativeAhead',!priceDirection.rangeHighPropertyAhead);
- updatePriceVisual(bp,priceDirection);const bpText=bp?money(bp):noRootMessage('price',50000,1500000),brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`)),rrText=x.liveInMode&&!liveAltRentActive?'not applicable within this holding period':rr?money(rr)+'/mo':noRootMessage(x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',250,x.rentalMode?20000:12000);
- if(x.rentalMode)$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the rental property matches the S&amp;P 500 at approximately <b>${bpText}</b> purchase price or <b>${rrText}</b> gross monthly rent. The mortgage-rate crossing is <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`;
- else if(x.liveInMode){const mainThreshold=liveMainRentActive?(liveMainRoot?money(liveMainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)):'not active within this holding period';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the live-in strategy matches rent + S&amp;P near <b>${bpText}</b> purchase price. Mortgage-rate crossing: <b>${brText}</b>. Comparable-rent crossing: <b>${rrText}</b>. Main-home rent crossing: <b>${mainThreshold}</b>.${liveMoveWithinHorizon?'':` The modeled move occurs after year ${x.v.years}; only rents active before that point affect these thresholds.`}`;}
- else{const bpLabel=bp?rootDirection('price',bp):'Purchase-price result',brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result',rrLabel=rr!==null?rootDirection('rent',rr):'Current-rent result';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;}
+ updatePriceVisual(bp,priceDirection,priceRoots);const bpText=rootState==='standard'?money(bp):rootState==='multiple'?`${priceRoots.length} crossings between ${money(priceRange.lo)} and ${money(priceRange.hi)}`:rootState==='nonstandard'?`a counterintuitive crossing near ${money(bp)}`:noRootMessage('price',priceRange.lo,priceRange.hi),brText=x.v.downPct>=100?'not applicable for cash':(br===null?noRootMessage('rate',0,20):(br<2?`below 2% (${br.toFixed(2)}% modeled)`:`${br.toFixed(2)}%`)),rrText=x.liveInMode&&!liveAltRentActive?'not applicable within this holding period':rr?money(rr)+'/mo':noRootMessage(x.rentalMode?'rentCollected':x.liveInMode?'liveAltRent':'rent',250,x.rentalMode?20000:12000);
+ if(x.rentalMode)$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the purchase-price result is <b>${bpText}</b>. Gross-rent crossing: <b>${rrText}</b>. Mortgage-rate crossing: <b>${brText}</b>. Positive monthly property cash flow begins near <b>${money(cashFlowBreakEven(x))}/mo</b> gross rent.`;
+ else if(x.liveInMode){const mainThreshold=liveMainRentActive?(liveMainRoot?money(liveMainRoot)+'/mo':noRootMessage('liveMainRent',0,20000)):'not active within this holding period';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>, the purchase-price result is <b>${bpText}</b>. Mortgage-rate crossing: <b>${brText}</b>. Comparable-rent crossing: <b>${rrText}</b>. Main-home rent crossing: <b>${mainThreshold}</b>.${liveMoveWithinHorizon?'':` The modeled move occurs after year ${x.v.years}; only rents active before that point affect these thresholds.`}`;}
+ else{const bpLabel=rootState==='standard'?rootDirection('price',bp):'Purchase-price result',brLabel=br!==null?rootDirection('rate',br):'Mortgage-rate result',rrLabel=rr!==null?rootDirection('rent',rr):'Current-rent result';$('thresholds').innerHTML=`At <b>${x.v.downPct}% down</b>: <b>${bpLabel}</b> is <b>${bpText}</b>. <b>${brLabel}</b>: <b>${brText}</b>. <b>Base-rent ${rrLabel}</b>: <b>${rrText}</b>${x.first.renterGarage>0?` plus ${money(x.first.renterGarage)}/mo renter garage/storage`:''}.`;}
 
  $('milestones').innerHTML=[0,1,3,5,10,x.v.years].filter((a,i,A)=>a<=x.v.years&&A.indexOf(a)==i).map(y=>{const r=x.rec[Math.round(y*12)];if(x.rentalMode)return `<tr><td>${y}</td><td>${money(r.totalGrossCollected)}</td><td>${money(r.totalLandlordCosts)}</td><td>${money(r.home+r.invAduValue)}</td><td>${money(r.loanBal+r.invAduLoanBalance)}</td><td>${money(r.rentalAlternative)}</td><td>${money(r.rentalOwnerWealth)}</td></tr>`;if(x.liveInMode)return `<tr><td>${y}</td><td>${money(r.liveGrossRent)}</td><td>${money(r.livePropertyCost)}</td><td>${money(r.home+r.liveAduValue)}</td><td>${money(r.loanBal+r.liveAduLoanBalance)}</td><td>${money(r.liveAlternative)}</td><td>${money(r.livePropertyWealth)}</td></tr>`;return `<tr><td>${y}</td><td>${money(r.totalRenterCost)}</td><td>${money(r.effectiveOwnerCost)}</td><td>${money(r.home)}</td><td>${money(r.loanBal)}</td><td>${money(r.renter)}</td><td>${money(r.buyWealth)}</td></tr>`;}).join('');
- latestResult=x;latestBreakEvenPrice=bp;latestAnalysis={bp,br,rr,liveMainRoot,liveMoveWithinHorizon,liveMainRentActive,liveAltRentActive,priceDirection};$('quickVerdict').textContent=$('verdict').textContent;$('quickExplain').textContent=$('explain').textContent;$('quickBreakEven').textContent=bp?`Break-even ${money(bp)}`:'No price crossing in range';renderOutcomeHero(x,s,bp,priceDirection);renderPrintScenario(x);renderWealthChart(x);renderDecisionLevers(x,latestAnalysis);renderSavedComparison(x,bp);$('quickResult').setAttribute('aria-busy','false');
+ latestResult=x;latestBreakEvenPrice=standardBp;latestAnalysis={bp,br,rr,priceRange,priceRoots,priceRootState:rootState,liveMainRoot,liveMoveWithinHorizon,liveMainRentActive,liveAltRentActive,priceDirection};$('quickVerdict').textContent=$('verdict').textContent;$('quickExplain').textContent=$('explain').textContent;$('quickBreakEven').textContent=rootState==='standard'?`Break-even ${money(bp)}`:rootState==='multiple'?`${priceRoots.length} price crossings`:rootState==='nonstandard'?'Nonstandard price response':'No price crossing in range';renderOutcomeHero(x,s,bp,priceDirection,priceRoots);renderPrintScenario(x);renderDealCheckpoint(x,latestAnalysis);renderWealthChart(x);renderDecisionLevers(x,latestAnalysis);renderSavedComparison(x,standardBp);$('quickResult').setAttribute('aria-busy','false');
  updateSensitivity();if($('downpayments').classList.contains('active'))updateDp();
 }
 function updateDp(){
@@ -1540,7 +1663,11 @@ function updateDp(){
  const baseDps=(rental?[15,20,25,30,40,50,75,100]:[0,3,3.5,5,10,15,20,25,30,40,50,75,100]).filter(dp=>dp>=minDown);
  const dps=[...baseDps,n('downPct')].sort((a,b)=>a-b).filter((value,index,all)=>all.indexOf(value)===index);
  $('dpProgramNote').textContent=rental?'Investment rows use conventional financing.':`${loanProgramName(selectedProgram)} is used below 20% down; 20%+ rows use conventional financing.`;
- $('dpRows').innerHTML=dps.map(dp=>{const program=rental||dp>=20?'conventional':selectedProgram,rate=dp>=100?0:estimatedRateFor(program,dp,rental),extra={downPct:dp,loanProgram:program,rate},x=model(extra),bp=root('price',50000,1500000,extra),rr=rental?root('rentCollected',250,20000,extra):live?root('liveAltRent',250,12000,extra):root('rent',250,12000,extra),monthlyCost=rental?x.first.totalLandlordCosts:live?x.first.livePropertyCost:x.first.effectiveOwnerCost;return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">current</span>':''}</td><td>${money(x.dp+x.v.price*x.v.buyClose/100)}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bp?money(bp):'—'}</td><td>${rr?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`;}).join('');
+ const priceRange=priceRootBounds();
+ $('dpRows').innerHTML=dps.map(dp=>{
+   const program=rental||dp>=20?'conventional':selectedProgram,rate=dp>=100?0:estimatedRateFor(program,dp,rental),extra={downPct:dp,loanProgram:program,rate},x=model(extra),rowRoots=roots('price',priceRange.lo,priceRange.hi,extra),rowBp=nearestRoot(rowRoots,n('price')),rowDirection=priceDirectionAtRoot(rowBp,extra),rowState=priceRootState(rowRoots,rowDirection),bpText=rowState==='standard'?money(rowBp):rowState==='multiple'?`${rowRoots.length} crossings`:rowState==='nonstandard'?'Nonstandard':'—',rr=rental?root('rentCollected',250,20000,extra):live?root('liveAltRent',250,12000,extra):root('rent',250,12000,extra),monthlyCost=rental?x.first.totalLandlordCosts:live?x.first.livePropertyCost:x.first.effectiveOwnerCost;
+   return `<tr><td>${dp}%${dp==n('downPct')?' <span class="pill">current</span>':''}</td><td>${money(modeledCashNeeded(x))}</td><td>${money(monthlyCost)}</td><td>${x.pmi0?money(x.pmi0):'—'}</td><td>${bpText}</td><td>${Number.isFinite(rr)?money(rr):'—'}</td><td class="${x.adv>=0?'good':'bad'}">${x.adv>=0?'+':''}${money(x.adv)}</td></tr>`
+ }).join('');
 }
 function currentPropertyRentEstimate(){
  const loc=locations[currentLocation]||{};
@@ -1792,6 +1919,7 @@ function syncModeVisibility(){
 }
 function applyUseMode(){
  const mode=$('useMode').value,rental=mode==='rental',live=mode==='livein';syncModeVisibility();
+ if(actualPropertyActive()){updatePurchaseEstimateNote();if(live)updateLiveInControls(false);applyLoanProgramRules();applyEstimatedRate(false);applyPmiVisibility();update();return}
  if(rental){applyPropertyRentEstimate(false);applyLocalPurchaseEstimate(priceAuto);}else if(live){applyLiveRentEstimates(false);applyLocalPurchaseEstimate(priceAuto);applyOwnerGarageSituation();updateLiveInControls(true);}else applyOwnerGarageSituation();
  applyLoanProgramRules();applyEstimatedRate(false);applyPmiVisibility();update();
 }
@@ -1853,14 +1981,16 @@ async function applyLocation(key,live=true,{preserve=false}={}){
  currentLocation=key;$('location').value=key;
  locations[key]={...(locations[key]||{}),...d};
  currentUsdaLimits=d.usda_limits||locations[key]?.usda_limits||null;
+ const protectProperty=preserve&&actualPropertyActive();
  ownerStorageMarketEstimate=+(d.storage||0);
  if(!preserve){$('rent').value=d.rent;$('rentCap').value=d.rent;$('hoa').value=d.hoa;$('taxRate').value=d.tax;insuranceAnchorPrice=d.home_value||n('price')||385000;insuranceAnchorMonthly=d.insurance;$('insurance').value=d.insurance;$('renterStorage').value=d.storage;$('renterStorageOn').checked=false;insuranceUserEditing=false;priceAuto=true}
- else if($('insuranceAuto').checked&&!insuranceUserEditing){insuranceAnchorPrice=d.home_value||n('price')||385000;insuranceAnchorMonthly=d.insurance;syncInsuranceToPrice()}
+ else if(!protectProperty&&$('insuranceAuto').checked&&!insuranceUserEditing){insuranceAnchorPrice=d.home_value||n('price')||385000;insuranceAnchorMonthly=d.insurance;syncInsuranceToPrice()}
  if(d.mortgage_rate)mortgageBenchmark=+d.mortgage_rate;
  if(d.mortgage_rate_date)mortgageBenchmarkDate=d.mortgage_rate_date;
  if(rateAuto)applyEstimatedRate(true);
  $('updated').textContent=`${d.name}: ${d.note||''}${preserve?' Scenario edits were preserved.':''}`;
- if($('useMode').value==='rental'){applyPropertyRentEstimate(!preserve);applyLocalPurchaseEstimate(!preserve);}else if($('useMode').value==='livein'){applyLiveRentEstimates(!preserve);applyLocalPurchaseEstimate(!preserve);}else applyLocalPurchaseEstimate(!preserve);
+ if(protectProperty){const estimate=localPurchaseEstimate();updatePurchaseEstimateNote(estimate);setDynamicSliderRange(estimate,n('price'));}
+ else if($('useMode').value==='rental'){applyPropertyRentEstimate(!preserve);applyLocalPurchaseEstimate(!preserve);}else if($('useMode').value==='livein'){applyLiveRentEstimates(!preserve);applyLocalPurchaseEstimate(!preserve);}else applyLocalPurchaseEstimate(!preserve);
  if(!preserve)applyOwnerGarageSituation();else $('ownerGarageNote').textContent=$('ownerGarageSituation').value==='rent'?`Your scenario uses ${money(n('storage'))}/mo; the refreshed local garage/storage benchmark is ${money(ownerStorageMarketEstimate)}/mo.`:$('ownerGarageSituation').value==='included'?'Garage/storage is included with the purchased property, so the modeled monthly cost is $0.':'No owner garage/storage need is modeled, so the monthly cost is $0.';
  applyRenterStorageToggle();
  updateSharedHousingEstimates(false,false);
@@ -1909,12 +2039,14 @@ $('renterStorage').addEventListener('input',()=>{applyRenterStorageToggle();upda
 $('insuranceAuto').addEventListener('change',()=>{insuranceUserEditing=false;syncInsuranceToPrice();update()});
 $('insurance').addEventListener('input',()=>{if(!$('insuranceAuto').checked){insuranceAnchorMonthly=n('insurance');insuranceAnchorPrice=n('price')}else{insuranceUserEditing=true}update()});
 $('propertyType').addEventListener('change',()=>{
+ invalidatePropertyFacts();
+ if(actualPropertyActive()){syncModeVisibility();updatePurchaseEstimateNote();applyPmiVisibility();update();return}
  applyPropertyDefaults();insuranceUserEditing=false;
  if($('useMode').value==='rental')applyPropertyRentEstimate(false);if($('useMode').value==='livein')applyLiveRentEstimates(false);
  applyLocalPurchaseEstimate(priceAuto);syncInsuranceToPrice();update()
 });
-$('useMode').addEventListener('change',applyUseMode);
-$('bedrooms').addEventListener('change',()=>{if($('useMode').value==='rental')applyBedroomRent();else if($('useMode').value==='livein'){liveMainRentAuto=true;applyLiveRentEstimates(false);applyLocalPurchaseEstimate(priceAuto);update();}else update()});
+$('useMode').addEventListener('change',()=>{invalidatePropertyFacts();applyUseMode()});
+$('bedrooms').addEventListener('change',()=>{invalidatePropertyFacts();if(actualPropertyActive()){updatePurchaseEstimateNote();update();return}if($('useMode').value==='rental')applyBedroomRent();else if($('useMode').value==='livein'){liveMainRentAuto=true;applyLiveRentEstimates(false);applyLocalPurchaseEstimate(priceAuto);update();}else update()});
 $('managementOn').addEventListener('change',applyRentalManagementToggle);
 $('investmentAduOn').addEventListener('change',applyInvestmentAduToggle);
 $('invAduFunding').addEventListener('change',applyInvestmentAduFundingToggle);
@@ -1977,7 +2109,18 @@ $('liveAduValueMethod').addEventListener('change',()=>{if($('liveAduValueMethod'
 $('liveAduBuildCost').addEventListener('input',()=>{liveAduBuildCostAuto=false;update()});$('liveAduBuildPsf').addEventListener('input',()=>{liveAduBuildPsfAuto=false;liveAduBuildCostAuto=true;update()});$('liveAduSize').addEventListener('input',()=>{liveAduSizeAuto=false;liveAduBuildCostAuto=true;update()});
 $('liveAduBuildMonths').addEventListener('input',()=>{if(liveMoveAuto)$('liveMoveMonth').value=n('liveAduBuildMonths');update()});$('useLiveAduBuildEstimate').onclick=()=>{liveAduSizeAuto=true;liveAduBuildPsfAuto=true;liveAduBuildCostAuto=true;updateAduBuildEstimate('liveAdu',true);update()};
 $('liveAduLocalPsf').addEventListener('input',()=>{liveAduPsfAuto=false;update()});$('liveAduCustomValue').addEventListener('input',update);
-$('location').addEventListener('change',e=>applyLocation(e.target.value,true,{preserve:false}));
+$('actualPropertyOn').addEventListener('change',()=>{$('propertyFactsConfirmed').checked=false;lastDealState=null;updateActualPropertyUi(false);update()});
+const refreshPropertyIdentity=()=>{updateActualPropertyUi(false);if(latestResult&&latestAnalysis){renderHeroContext(latestResult);renderDealCheckpoint(latestResult,latestAnalysis);renderPrintScenario(latestResult)}};
+$('propertyName').addEventListener('input',refreshPropertyIdentity);
+$('propertyAddress').addEventListener('input',()=>{$('propertyFactsConfirmed').checked=false;$('propertyConfirmedPrice').value='';lastDealState=null;refreshPropertyIdentity()});
+$('propertyListingUrl').addEventListener('input',refreshPropertyIdentity);
+$('propertyFactsConfirmed').addEventListener('change',()=>{if($('propertyFactsConfirmed').checked&&!confirmedAskingPrice())$('propertyConfirmedPrice').value=n('price');lastDealState=null;if(latestResult&&latestAnalysis)renderDealCheckpoint(latestResult,latestAnalysis)});
+$('reviewPropertyInputs').onclick=()=>{$('price').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});$('price').focus({preventScroll:true})};
+$('restoreBenchmarkDefaults').onclick=async()=>{if(!confirm('Replace the current price, rent, HOA, tax, insurance, and related property inputs with benchmark defaults?'))return;$('propertyFactsConfirmed').checked=false;$('propertyRepairs').value=0;lastDealState=null;applyPropertyDefaults();await applyLocation(currentLocation,true,{preserve:false});updateActualPropertyUi(false);update()};
+$('dealTestOffer').onclick=()=>{const value=+$('dealTestOffer').dataset.value;if(Number.isFinite(value))tryDecisionLever('price',value)};
+$('dealRestoreAsk').onclick=()=>{const ask=confirmedAskingPrice();if(!Number.isFinite(ask))return;priceAuto=false;$('price').value=Math.round(ask);insuranceUserEditing=false;syncInsuranceToPrice();leverUndoState=null;$('undoLever').hidden=true;invalidatePropertyFacts();markScenarioDirty();update()};
+$('dealReviewLevers').onclick=()=>{$('leverHeading').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});$('leverHeading').focus({preventScroll:true})};
+$('location').addEventListener('change',e=>{invalidatePropertyFacts();applyLocation(e.target.value,true,{preserve:actualPropertyActive()})});
 $('refresh').onclick=async()=>{const button=$('refresh');button.disabled=true;button.textContent='Refreshing…';await applyLocation(currentLocation,true,{preserve:true});button.disabled=false;button.textContent='Refresh market benchmarks'};
 document.querySelectorAll('.downPreset,.rentalDownPreset').forEach(btn=>{
  btn.addEventListener('click',()=>setDownPaymentPreset(+btn.dataset.down))
@@ -2011,9 +2154,9 @@ $('vaUse').addEventListener('change',()=>{rateAuto=true;applyLoanProgramRules();
 $('vaFeeExempt').addEventListener('change',()=>{applyLoanProgramRules();update()});
 $('rate').addEventListener('input',()=>{rateAuto=false;updateLoanProgramDetails();update()});
 $('useEstimatedRate').onclick=()=>{rateAuto=true;applyEstimatedRate(true);update()};
-$('useBreakEvenPrice').onclick=()=>{if(!Number.isFinite(currentBreakEvenPrice))return;priceAuto=false;$('price').value=Math.round(currentBreakEvenPrice);insuranceUserEditing=false;syncInsuranceToPrice();update()};
-$('useLocalPrice').onclick=()=>{priceAuto=true;applyLocalPurchaseEstimate(true);update()};
-$('useLocalRent').onclick=()=>{rentAuto=true;applyPropertyRentEstimate(true);update()};
+$('useBreakEvenPrice').onclick=()=>{if(!Number.isFinite(currentBreakEvenPrice))return;anchorCurrentAskingPrice();priceAuto=false;$('price').value=Math.round(currentBreakEvenPrice);insuranceUserEditing=false;syncInsuranceToPrice();invalidatePropertyFacts();update()};
+$('useLocalPrice').onclick=()=>{anchorCurrentAskingPrice();priceAuto=true;applyLocalPurchaseEstimate(true);invalidatePropertyFacts();update()};
+$('useLocalRent').onclick=()=>{rentAuto=true;applyPropertyRentEstimate(true);invalidatePropertyFacts();update()};
 $('return10').onclick=()=>setReturnPreset(10);
 $('return7').onclick=()=>setReturnPreset(7);
 $('appreciation4').onclick=()=>setAppreciationPreset(4);
@@ -2021,6 +2164,9 @@ $('appreciation3').onclick=()=>setAppreciationPreset(3);
 ['rentGrowth','marketGrowth','buyClose','sellCost'].forEach(id=>$(id).addEventListener('input',updateAdvancedGrowthSummary));
 $('rentCollected').addEventListener('input',()=>{rentAuto=false;update()});
 $('rentCollectedCap').addEventListener('input',()=>{rentAuto=false;update()});
+const propertyFactControlIds=new Set(['priceSlider','price','rent','rentCap','rentCollected','rentCollectedCap','vacancyRate','managementRate','rentalReserveRate','landlordUtilities','landlordOther','liveAltRent','liveAltRentCap','liveMainRent','liveMainRentCap','liveMainVacancy','liveMainReserve','liveMainOther','livePreAduRent','livePreAduRentCap','hoaOn','hoa','taxRate','insurance','assessment','maintRate','propertyRepairs']);
+const invalidateEditedPropertyFact=event=>{if(propertyFactControlIds.has(event.target.id)&&$('propertyFactsConfirmed').checked)invalidatePropertyFacts()};
+$('calculator').addEventListener('input',invalidateEditedPropertyFact);$('calculator').addEventListener('change',invalidateEditedPropertyFact);
 document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>activateTab(tab,false));
 $('saveScenario').onclick=saveScenario;$('saveCurrent').onclick=saveScenario;$('restoreSaved').onclick=()=>restoreScenario(readSavedScenario());$('shareScenario').onclick=shareScenario;$('resetScenario').onclick=resetScenario;$('printBrief').onclick=printDecisionBrief;$('heroPrintBrief').onclick=printDecisionBrief;$('viewDetails').onclick=()=>{const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;$('resultCard').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});$('resultCard').focus({preventScroll:true})};
 $('decisionLevers').addEventListener('click',event=>{const button=event.target.closest('button[data-field]');if(button)tryDecisionLever(button.dataset.field,+button.dataset.value)});$('undoLever').onclick=undoDecisionLever;initWealthChartInteraction();
