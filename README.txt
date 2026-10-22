@@ -1,22 +1,27 @@
-HOUSE ALPHA V35
+HOUSE ALPHA V36
 
-This release turns actual-property mode into a reviewable address-to-deal workflow while preserving manual entry and the existing financial engine.
+This release strengthens calculation accuracy, saved-scenario comparisons, and private detailed-property access while preserving the v35 review workflow and public Census address matching.
 
-New in v35:
-- Find and normalize a U.S. street address through an explicit, privacy-disclosed lookup.
-- Optionally enrich an exact address with an active asking price, property type, bedrooms, HOA, rent estimate, and reference-only physical/tax details when a private RentCast key is configured.
-- Stage every found value in a Current vs Found review; nothing changes until selected facts are applied.
-- Keep active-listing price separate from old sale prices and AVMs; historical tax bills never silently become the modeled buyer tax rate.
-- Apply selected facts in one update, keep the Deal checkpoint preliminary, and offer one-step undo.
-- Send lookup addresses only in POST bodies, never listing URLs; exclude lookups from service-worker caches and strip owner/contact data server-side.
-- Preserve manual entry and benchmark controls when lookup is unavailable or an address cannot be matched.
+New in v36:
+- Treats the entered stock-market return as an effective annual return and converts it to the mathematically equivalent monthly compound rate.
+- Detects exact break-even roots at search endpoints, so a threshold equal to the minimum or maximum tested value is no longer missed.
+- Saves automatic/manual input flags and the calculation-engine version with each scenario. Comparisons are shown only when the saved and current results use the same calculation version and input state.
+- Keeps U.S. Census address normalization public while placing paid RentCast enrichment behind a private access code and signed, time-limited, HTTP-only session cookie.
+- Reduces the common purchase-property enrichment to one RentCast active-listing call. Rental and live-in modes add a second call for a rent estimate; a broader property-record call is used only as a fallback when the listing is absent or too sparse.
+- Preserves Current vs Found review, selective apply, provenance, undo, manual entry, and the preliminary Deal checkpoint from v35.
 
-Optional detailed property data:
-- Set `RENTCAST_API_KEY` as a private Render environment variable. Never put the key in index.html or a public repository.
-- House Alpha requests RentCast's `suppressLogging=true` option and sends only the entered address; restrict the key to the property-record, active-sale-listing, and long-term-rent-estimate endpoints in the RentCast dashboard.
-- `RENTCAST_PROCESS_CALL_LIMIT` is an optional per-server-process emergency ceiling (default 45). It limits blast radius but does not track a provider billing month or replace RentCast account quota controls.
-- One uncached primary-residence enrichment requests 2 RentCast endpoints; rental and live-in enrichment requests 3. RentCast documents that each successful 200 response with a body counts against the account billing period: https://developers.rentcast.io/reference/billing-and-pricing
-- Without this key, House Alpha still matches U.S. addresses and suggests a supported benchmark market when available.
+Required Render environment variables for detailed property enrichment:
+- `PROPERTY_LOOKUP_ACCESS_CODE`: the private code trusted users enter before a paid lookup.
+- `PROPERTY_LOOKUP_SESSION_SECRET`: a long random server-side secret used to sign access cookies. Render can generate it; never reuse the access code.
+- `RENTCAST_API_KEY`: the private RentCast key. Never put it in index.html or a public repository.
+- `HOUSE_ALPHA_ORIGIN`: the exact public HTTPS origin, for example `https://mammoth-rent-vs-buy.onrender.com`.
+
+Property lookup and billing notes:
+- House Alpha requests RentCast's `suppressLogging=true` option and sends only the entered address. Restrict the key to the active-sale-listing, long-term-rent-estimate, and property-record endpoints in the RentCast dashboard.
+- A typical uncached primary-residence enrichment uses 1 RentCast call. Rental and live-in enrichment normally use 2 because they also request a rent estimate. A sparse or missing listing can trigger 1 additional property-record fallback call.
+- `RENTCAST_PROCESS_CALL_LIMIT` is an optional per-server-process emergency ceiling (default 30). It resets when the server process restarts, so it is not a durable monthly billing cap and does not replace RentCast account quota or billing controls.
+- RentCast documents that each successful 200 response with a body counts against the account billing period: https://developers.rentcast.io/reference/billing-and-pricing
+- Without an authorized cookie—or without a configured RentCast key—House Alpha still matches U.S. addresses and suggests a supported benchmark market when available.
 - Census-only results are address-range normalization/geocoding, not parcel, unit, deliverability, structure, or listing verification.
 
 VERSION HISTORY

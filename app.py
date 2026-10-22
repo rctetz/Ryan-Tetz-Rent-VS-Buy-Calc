@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-import hashlib, ipaddress, json, os, re, threading, time, webbrowser
+import csv, hashlib, hmac, io, ipaddress, json, math, os, re, secrets, threading, time, webbrowser
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from http.cookies import CookieError, SimpleCookie
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -202,10 +203,39 @@ def usda_limits_for_location(location):
     })
     return data
 
-MORTGAGE_URL='https://www.freddiemac.com/pmms'
+MORTGAGE_URL='https://www.freddiemac.com/pmms/pmms_archives'
+MORTGAGE_DATA_URL='https://www.freddiemac.com/pmms/docs/PMMS_history.csv'
+MORTGAGE_FALLBACK_RATE=7.40
+MORTGAGE_FALLBACK_DATE=date(2026,10,15)
+
+def format_pmms_date(value):
+    return f'{value:%B} {value.day}, {value.year}'
+
+def parse_latest_pmms_30yr(text,as_of=None):
+    if not isinstance(text,str) or not text or len(text)>1_000_000:raise ValueError('Invalid PMMS CSV')
+    reader=csv.DictReader(io.StringIO(text.lstrip('\ufeff')),skipinitialspace=True)
+    if not reader.fieldnames:raise ValueError('Missing PMMS header')
+    fields={}
+    for raw_name in reader.fieldnames:
+        name=(raw_name or '').lstrip('\ufeff').strip().casefold()
+        if not name or name in fields:raise ValueError('Invalid PMMS header')
+        fields[name]=raw_name
+    if not {'date','pmms30'}.issubset(fields):raise ValueError('Missing required PMMS columns')
+    cutoff=as_of or datetime.now(timezone.utc).date();values={}
+    for row in reader:
+        date_text=str(row.get(fields['date']) or '').strip();rate_text=str(row.get(fields['pmms30']) or '').strip()
+        if not date_text or not rate_text:continue
+        try:published=datetime.strptime(date_text,'%m/%d/%Y').date();rate=float(rate_text)
+        except (TypeError,ValueError):continue
+        if published<date(1971,4,1) or published>cutoff or not math.isfinite(rate) or not 0<rate<30:continue
+        if published in values and values[published]!=rate:raise ValueError('Conflicting PMMS rows')
+        values[published]=rate
+    if not values:raise ValueError('No valid PMMS rows')
+    published=max(values)
+    return values[published],published
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/35.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/36.0'})
     with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
@@ -215,13 +245,20 @@ PROPERTY_LOOKUP_CACHE_MAX=64
 PROPERTY_LOOKUP_BODY_MAX=4096
 PROPERTY_LOOKUP_RATE_WINDOW=10*60
 PROPERTY_LOOKUP_RATE_MAX=12
+PROPERTY_ACCESS_BODY_MAX=1024
+PROPERTY_ACCESS_RATE_WINDOW=15*60
+PROPERTY_ACCESS_RATE_MAX=5
+PROPERTY_ACCESS_COOKIE='house_alpha_property_access'
+try:PROPERTY_ACCESS_TTL=max(300,min(24*60*60,int(os.environ.get('PROPERTY_LOOKUP_SESSION_TTL','28800'))))
+except ValueError:PROPERTY_ACCESS_TTL=8*60*60
 PROPERTY_LOOKUP_SEMAPHORE=threading.BoundedSemaphore(3)
 PROPERTY_LOOKUP_LOCK=threading.Lock()
 PROPERTY_LOOKUP_SALT=os.urandom(32)
 PROPERTY_LOOKUP_CACHE={}
 PROPERTY_LOOKUP_RATE={}
-try:RENTCAST_PROCESS_CALL_MAX=max(0,int(os.environ.get('RENTCAST_PROCESS_CALL_LIMIT','45')))
-except ValueError:RENTCAST_PROCESS_CALL_MAX=45
+PROPERTY_ACCESS_RATE={}
+try:RENTCAST_PROCESS_CALL_MAX=max(0,int(os.environ.get('RENTCAST_PROCESS_CALL_LIMIT','30')))
+except ValueError:RENTCAST_PROCESS_CALL_MAX=30
 RENTCAST_PROCESS_CALL_COUNT=0
 RENTCAST_BASE='https://api.rentcast.io/v1'
 CENSUS_GEOCODER='https://geocoding.geo.census.gov/geocoder/locations/onelineaddress'
@@ -238,7 +275,7 @@ BENCHMARK_BY_CITY_STATE={
 }
 
 def fetch_json(url,headers=None,timeout=9,max_bytes=2_000_000):
-    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/35.0','Accept':'application/json'}
+    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/36.0','Accept':'application/json'}
     request_headers.update(headers or {})
     req=Request(url,headers=request_headers)
     with urlopen(req,timeout=timeout) as response:
@@ -269,6 +306,22 @@ def lookup_rate_allowed(client_value):
             for old_key in list(PROPERTY_LOOKUP_RATE)[:64]: PROPERTY_LOOKUP_RATE.pop(old_key,None)
     return True
 
+def access_rate_blocked(client_value):
+    now=time.monotonic();key=lookup_hash('access\0'+(client_value or 'unknown'))
+    with PROPERTY_LOOKUP_LOCK:
+        recent=[stamp for stamp in PROPERTY_ACCESS_RATE.get(key,[]) if now-stamp<PROPERTY_ACCESS_RATE_WINDOW]
+        if recent:PROPERTY_ACCESS_RATE[key]=recent
+        else:PROPERTY_ACCESS_RATE.pop(key,None)
+        return len(recent)>=PROPERTY_ACCESS_RATE_MAX
+
+def record_access_failure(client_value):
+    now=time.monotonic();key=lookup_hash('access\0'+(client_value or 'unknown'))
+    with PROPERTY_LOOKUP_LOCK:
+        recent=[stamp for stamp in PROPERTY_ACCESS_RATE.get(key,[]) if now-stamp<PROPERTY_ACCESS_RATE_WINDOW]
+        recent.append(now);PROPERTY_ACCESS_RATE[key]=recent
+        if len(PROPERTY_ACCESS_RATE)>256:
+            for old_key in list(PROPERTY_ACCESS_RATE)[:64]:PROPERTY_ACCESS_RATE.pop(old_key,None)
+
 def reserve_provider_calls(count):
     global RENTCAST_PROCESS_CALL_COUNT
     with PROPERTY_LOOKUP_LOCK:
@@ -279,9 +332,73 @@ def reserve_provider_calls(count):
 def lookup_client_address(handler):
     peer=str(handler.client_address[0] or 'unknown')
     if not os.environ.get('RENDER'):return peer
-    forwarded=str(handler.headers.get('X-Forwarded-For','')).split(',')[0].strip()
-    try:return ipaddress.ip_address(forwarded).compressed
+    # Render sits behind Cloudflare. Unlike the leftmost X-Forwarded-For value,
+    # CF-Connecting-IP is not caller-selected, so prefer it and fail closed to
+    # the socket peer when it is absent or malformed.
+    cloudflare=str(handler.headers.get('CF-Connecting-IP','')).strip()
+    try:return ipaddress.ip_address(cloudflare).compressed
     except ValueError:return peer
+
+def normalized_origin(value):
+    value=str(value or '').strip().rstrip('/')
+    try:parsed=urlparse(value);port=parsed.port
+    except ValueError:return None
+    if parsed.scheme not in ('http','https') or not parsed.hostname:return None
+    if parsed.username or parsed.password or parsed.path or parsed.params or parsed.query or parsed.fragment:return None
+    host=parsed.hostname.lower()
+    if ':' in host:host=f'[{host}]'
+    default=(parsed.scheme=='http' and port in (None,80)) or (parsed.scheme=='https' and port in (None,443))
+    return f'{parsed.scheme}://{host}' if default else f'{parsed.scheme}://{host}:{port}'
+
+def request_origin_allowed(handler):
+    origin=str(handler.headers.get('Origin','')).strip()
+    normalized=normalized_origin(origin)
+    if not normalized:return False
+    configured=normalized_origin(os.environ.get('HOUSE_ALPHA_ORIGIN',''))
+    if configured:return normalized==configured and origin.rstrip('/')==os.environ.get('HOUSE_ALPHA_ORIGIN','').strip().rstrip('/')
+    # Development works without production configuration, but only when both
+    # the request Host and Origin are the same loopback address.
+    if os.environ.get('RENDER'):return False
+    host=str(handler.headers.get('Host','')).strip()
+    try:host_parts=urlparse('http://'+host);host_name=host_parts.hostname
+    except ValueError:return False
+    if not host_name:return False
+    try:is_loopback=ipaddress.ip_address(host_name).is_loopback
+    except ValueError:is_loopback=host_name.lower()=='localhost'
+    return is_loopback and urlparse(normalized).netloc.lower()==host.lower()
+
+def property_access_configured():
+    return bool(os.environ.get('PROPERTY_LOOKUP_ACCESS_CODE','').strip() and os.environ.get('PROPERTY_LOOKUP_SESSION_SECRET','').strip())
+
+def property_access_code_valid(value):
+    expected=os.environ.get('PROPERTY_LOOKUP_ACCESS_CODE','').strip()
+    supplied=value if isinstance(value,str) else ''
+    return bool(expected and 8<=len(supplied)<=256 and hmac.compare_digest(supplied,expected))
+
+def property_access_signing_key():
+    secret=os.environ['PROPERTY_LOOKUP_SESSION_SECRET'].strip().encode('utf-8')
+    code=os.environ['PROPERTY_LOOKUP_ACCESS_CODE'].strip().encode('utf-8')
+    return hmac.new(secret,b'house-alpha-property-access\0'+code,hashlib.sha256).digest()
+
+def issue_property_access_cookie(now=None):
+    if not property_access_configured():raise RuntimeError('property access is not configured')
+    now=int(time.time() if now is None else now);expires=now+PROPERTY_ACCESS_TTL
+    payload=f'v1.{expires}.{secrets.token_urlsafe(18)}'
+    signature=hmac.new(property_access_signing_key(),payload.encode('utf-8'),hashlib.sha256).hexdigest()
+    token=f'{payload}.{signature}'
+    return token,f'{PROPERTY_ACCESS_COOKIE}={token}; Max-Age={PROPERTY_ACCESS_TTL}; Path=/; HttpOnly; Secure; SameSite=Strict'
+
+def property_access_cookie_valid(cookie_header,now=None):
+    if not property_access_configured():return False
+    try:
+        cookie=SimpleCookie();cookie.load(str(cookie_header or ''));token=cookie[PROPERTY_ACCESS_COOKIE].value
+        version,expires_text,nonce,signature=token.split('.',3)
+        expires=int(expires_text);current=int(time.time() if now is None else now)
+        if version!='v1' or not nonce or expires<=current or expires>current+PROPERTY_ACCESS_TTL:return False
+        payload=f'{version}.{expires}.{nonce}'
+        expected=hmac.new(property_access_signing_key(),payload.encode('utf-8'),hashlib.sha256).hexdigest()
+        return hmac.compare_digest(signature,expected)
+    except (CookieError,KeyError,ValueError):return False
 
 def finite_number(value,minimum=None,maximum=None):
     if isinstance(value,bool): return None
@@ -403,26 +520,41 @@ def census_address_match(address):
         clean.append({'address':matched,'city':str(components.get('city') or '').strip(),'state':str(components.get('state') or '').strip(),'zip':str(components.get('zip') or '').strip()})
     return clean
 
+def rentcast_listing_sparse(listing):
+    if not isinstance(listing,dict):return True
+    return any(listing.get(field) in (None,'',{}) for field in ('price','propertyType','bedrooms','bathrooms','squareFootage','yearBuilt','hoa'))
+
 def rentcast_requests(address,api_key,include_rent=False):
     headers={'X-Api-Key':api_key}
     query=urlencode({'address':address,'suppressLogging':'true'})
     urls={
-        'record':f'{RENTCAST_BASE}/properties?{query}',
         'listing':f'{RENTCAST_BASE}/listings/sale?{urlencode({"address":address,"status":"Active","limit":5,"suppressLogging":"true"})}',
+        'record':f'{RENTCAST_BASE}/properties?{urlencode({"address":address,"limit":5,"suppressLogging":"true"})}',
+        'rent':f'{RENTCAST_BASE}/avm/rent/long-term?{query}',
     }
-    if include_rent:urls['rent']=f'{RENTCAST_BASE}/avm/rent/long-term?{query}'
-    results={};errors=[]
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        futures={name:executor.submit(fetch_json,url,headers) for name,url in urls.items()}
-        for name,future in futures.items():
-            try:results[name]=future.result()
-            except Exception:errors.append(name)
-    return results,errors
+    results={};errors=[];budget_reached=False
+    def request(name):
+        nonlocal budget_reached
+        if not reserve_provider_calls(1):budget_reached=True;return
+        try:results[name]=fetch_json(urls[name],headers)
+        except Exception:errors.append(name)
+    # Active listing data covers the common purchase workflow in one billed
+    # call. Rental estimates are mode-specific. The broader property record is
+    # deliberately last and is requested only when the listing is absent or
+    # too sparse to support a useful review.
+    request('listing')
+    if include_rent and not budget_reached:request('rent')
+    raw_listings=results.get('listing') if isinstance(results.get('listing'),list) else []
+    matching=[item for item in raw_listings if isinstance(item,dict) and compatible_property_address(item.get('formattedAddress'),address) and str(item.get('status') or '').casefold()=='active']
+    listing=matching[0] if len(matching)==1 else None
+    if rentcast_listing_sparse(listing) and not budget_reached:request('record')
+    return results,errors,budget_reached
 
-def build_property_lookup(address,use_mode='primary'):
+def build_property_lookup(address,use_mode='primary',allow_provider=False):
     use_mode=use_mode if use_mode in ('primary','rental','livein') else 'primary'
     rentcast_key=os.environ.get('RENTCAST_API_KEY','').strip()
-    cache_key=lookup_hash(address+'\0'+use_mode+'\0'+('connected' if rentcast_key else 'address-only'));now=time.monotonic()
+    provider_connected=bool(rentcast_key and allow_provider)
+    cache_key=lookup_hash(address+'\0'+use_mode+'\0'+('connected' if provider_connected else 'address-only'));now=time.monotonic()
     with PROPERTY_LOOKUP_LOCK:
         cached=PROPERTY_LOOKUP_CACHE.get(cache_key)
         if cached and now-cached[0]<PROPERTY_LOOKUP_CACHE_TTL:return cached[1]
@@ -436,11 +568,9 @@ def build_property_lookup(address,use_mode='primary'):
     # canonicalize an unparseable string, return that address for review first;
     # this prevents dropped/unknown unit aliases from inheriting building facts.
     provider_eligible=bool(parsed_requested) and len(census_matches)<=1
-    provider_call_count=2+(1 if use_mode in ('rental','livein') else 0)
-    provider_allowed=bool(rentcast_key) and provider_eligible and reserve_provider_calls(provider_call_count)
-    if rentcast_key and provider_eligible and not provider_allowed:provider_budget_reached=True
+    provider_allowed=provider_connected and provider_eligible
     if provider_allowed:
-        try:provider_results,provider_errors=rentcast_requests(provider_address,rentcast_key,use_mode in ('rental','livein'))
+        try:provider_results,provider_errors,provider_budget_reached=rentcast_requests(provider_address,rentcast_key,use_mode in ('rental','livein'))
         except Exception:provider_errors=['record','listing']+(['rent'] if use_mode in ('rental','livein') else [])
     raw_records=provider_results.get('record')
     all_records=raw_records if isinstance(raw_records,list) else []
@@ -512,16 +642,18 @@ def build_property_lookup(address,use_mode='primary'):
     if census_failed:warnings.append('The U.S. Census address matcher was temporarily unavailable.')
     if provider_errors and rentcast_key:warnings.append('Some property-data sources were unavailable, so this result may be partial.')
     if provider_budget_reached:warnings.append('The property-data lookup allowance is currently reached; the address match still works and manual entry remains available.')
-    canonical_review_required=bool(rentcast_key) and not parsed_requested and len(census_matches)==1
+    canonical_review_required=provider_connected and not parsed_requested and len(census_matches)==1
     if canonical_review_required:warnings.append('Review and apply the matched address, then choose Find property facts again for exact property-data enrichment.')
     matched=bool(census_matches or subject)
+    access_required=bool(rentcast_key and property_access_configured() and not allow_provider)
+    provider_message='Private property data is locked. Enter the owner access code to enrich this address.' if access_required else 'Private property data is unavailable; Census matching and manual entry remain available.' if rentcast_key and not provider_connected else None
     response={
         'schema_version':PROPERTY_LOOKUP_SCHEMA,
         'status':'enriched' if facts else ('matched' if matched else 'not_found'),
         'match':{'canonical_address':canonical if matched else None,'source':'RentCast property data' if subject else 'U.S. Census Geocoder','retrieved_at':retrieved_at},
         'address_matches':census_matches if len(census_matches)>1 and not subject else [],
         'benchmark':{'key':benchmark_key,'name':LOCATIONS[benchmark_key]['name']} if benchmark_key in LOCATIONS else None,
-        'provider':{'connected':bool(rentcast_key),'name':'RentCast' if rentcast_key else None,'enrichment_status':'canonical_review_required' if canonical_review_required else 'budget_reached' if provider_budget_reached else 'partial' if provider_errors and facts else 'available' if facts else 'unavailable' if rentcast_key else 'not_connected'},
+        'provider':{'connected':provider_connected,'access_required':access_required,'name':'RentCast' if provider_connected else None,'enrichment_status':'access_required' if access_required else 'canonical_review_required' if canonical_review_required else 'budget_reached' if provider_budget_reached else 'partial' if provider_errors and facts else 'available' if facts else 'unavailable' if rentcast_key else 'not_connected','message':provider_message},
         'facts':facts,'details':details,'warnings':warnings,
     }
     if not matched and census_failed and not provider_results:raise RuntimeError('lookup_unavailable')
@@ -567,8 +699,8 @@ def market(location='mammoth'):
     loc=LOCATIONS[location].copy()
     out={
         'updated_at':datetime.now(timezone.utc).isoformat(),
-        'mortgage_rate':6.69,
-        'mortgage_rate_date':'August 6, 2026',
+        'mortgage_rate':MORTGAGE_FALLBACK_RATE,
+        'mortgage_rate_date':format_pmms_date(MORTGAGE_FALLBACK_DATE),
         'mortgage_benchmark_note':'Freddie Mac PMMS conventional conforming benchmark at 80% LTV or less',
         'location_key':location,
         **loc,
@@ -576,13 +708,9 @@ def market(location='mammoth'):
     }
     def mortgage_update():
         try:
-            text=fetch(MORTGAGE_URL)
-            rate=first_float([r'30-year fixed-rate mortgage averaged\s*([0-9.]+)%',r'30-Yr FRM[^0-9]+([0-9.]+)%'],text)
-            if rate is None: raise ValueError('Mortgage rate not found')
-            date_match=re.search(r'as of\s+([A-Za-z]+\s+\d{1,2},\s+\d{4})',text,re.I)
-            values={'mortgage_rate':rate}
-            if date_match: values['mortgage_rate_date']=date_match.group(1)
-            return values,'Updated from Freddie Mac PMMS'
+            rate,published=parse_latest_pmms_30yr(fetch(MORTGAGE_DATA_URL))
+            if published<MORTGAGE_FALLBACK_DATE:raise ValueError('PMMS source older than saved benchmark')
+            return {'mortgage_rate':rate,'mortgage_rate_date':format_pmms_date(published)},'Updated from Freddie Mac PMMS archive'
         except Exception:
             return {},'Using saved weekly Freddie Mac benchmark'
 
@@ -650,15 +778,28 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         u=urlparse(self.path)
-        if u.path!='/api/property-lookup':self.send_json(404,{'error':'not_found'});return
+        if u.path not in ('/api/property-access','/api/property-lookup'):self.send_json(404,{'error':'not_found'});return
         content_type=self.headers.get('Content-Type','').split(';')[0].strip().lower()
-        if content_type!='application/json':self.send_json(415,{'error':'json_required','message':'Send the address as JSON.'});return
+        if content_type!='application/json':self.send_json(415,{'error':'json_required','message':'Send the request as JSON.'});return
         try:length=int(self.headers.get('Content-Length','0'))
         except ValueError:length=0
-        if length<2:self.send_json(400,{'error':'empty_request','message':'Enter a street address.'});return
-        if length>PROPERTY_LOOKUP_BODY_MAX:self.send_json(413,{'error':'request_too_large','message':'The lookup request is too large.'});return
-        origin=self.headers.get('Origin','').strip();host=self.headers.get('Host','').strip();local_host=host.startswith(('127.0.0.1:','localhost:'))
-        if (not origin and not local_host) or (origin and urlparse(origin).netloc!=host):self.send_json(403,{'error':'origin_not_allowed'});return
+        body_max=PROPERTY_ACCESS_BODY_MAX if u.path=='/api/property-access' else PROPERTY_LOOKUP_BODY_MAX
+        if length<2:self.send_json(400,{'error':'empty_request','message':'Enter the required information.'});return
+        if length>body_max:self.send_json(413,{'error':'request_too_large','message':'The request is too large.'});return
+        if not request_origin_allowed(self):self.send_json(403,{'error':'origin_not_allowed'});return
+        client=lookup_client_address(self)
+        if u.path=='/api/property-access':
+            if access_rate_blocked(client):self.send_json(429,{'error':'rate_limited','message':'Too many unlock attempts. Try again later.'},{'Retry-After':str(PROPERTY_ACCESS_RATE_WINDOW)});return
+            try:
+                body=json.loads(self.rfile.read(length).decode('utf-8'))
+                if not isinstance(body,dict) or set(body)!={'code'} or not isinstance(body.get('code'),str):raise ValueError('Enter the private access code.')
+            except (UnicodeDecodeError,json.JSONDecodeError,ValueError) as error:
+                record_access_failure(client);self.send_json(400,{'error':'invalid_request','message':str(error) or 'Enter the private access code.'});return
+            if not property_access_configured():self.send_json(503,{'error':'access_unavailable','message':'Detailed property access is not configured.'});return
+            if not property_access_code_valid(body.get('code')):
+                record_access_failure(client);self.send_json(401,{'error':'access_denied','message':'That access code was not accepted.'});return
+            _,set_cookie=issue_property_access_cookie()
+            self.send_json(200,{'status':'authorized','expires_in':PROPERTY_ACCESS_TTL},{'Set-Cookie':set_cookie});return
         try:
             body=json.loads(self.rfile.read(length).decode('utf-8'))
             if not isinstance(body,dict) or 'address' not in body or not set(body).issubset({'address','use_mode'}):raise ValueError('Send only an address and property use.')
@@ -667,11 +808,10 @@ class Handler(SimpleHTTPRequestHandler):
             if use_mode not in ('primary','rental','livein'):raise ValueError('Choose a supported property use.')
         except (UnicodeDecodeError,json.JSONDecodeError,ValueError) as error:
             self.send_json(400,{'error':'invalid_request','message':str(error) or 'Enter a valid street address.'});return
-        client=lookup_client_address(self)
         if not lookup_rate_allowed(client):self.send_json(429,{'error':'rate_limited','message':'Too many property lookups. Try again in a few minutes.'},{'Retry-After':'60'});return
         if not PROPERTY_LOOKUP_SEMAPHORE.acquire(timeout=.25):self.send_json(503,{'error':'lookup_busy','message':'Property lookup is busy. Try again shortly.'},{'Retry-After':'15'});return
         try:
-            try:self.send_json(200,build_property_lookup(address,use_mode))
+            try:self.send_json(200,build_property_lookup(address,use_mode,property_access_cookie_valid(self.headers.get('Cookie',''))),{'Vary':'Cookie'})
             except Exception:self.send_json(502,{'error':'lookup_unavailable','message':'Property lookup is unavailable right now. Your inputs have not changed.'})
         finally:PROPERTY_LOOKUP_SEMAPHORE.release()
 

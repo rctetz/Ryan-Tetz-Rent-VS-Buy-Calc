@@ -10,5 +10,15 @@ services:
         value: "0"
       - key: PYTHON_VERSION
         value: "3.12.2"
+      - key: HOUSE_ALPHA_ORIGIN
+        value: "https://mammoth-rent-vs-buy.onrender.com"
+      - key: PROPERTY_LOOKUP_ACCESS_CODE
+        sync: false
+      - key: PROPERTY_LOOKUP_SESSION_SECRET
+        generateValue: true
+      - key: PROPERTY_LOOKUP_SESSION_TTL
+        value: "28800"
+      - key: RENTCAST_PROCESS_CALL_LIMIT
+        value: "30"
       - key: RENTCAST_API_KEY
         sync: false
