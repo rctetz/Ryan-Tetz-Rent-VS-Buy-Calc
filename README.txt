@@ -1,3 +1,74 @@
+HOUSE ALPHA V41
+
+This release compares the location cost of where you rent or buy with where you work, while keeping route, schedule, storage, and maintenance assumptions visible and editable.
+
+New in v41:
+- Add an optional Commute comparison with separate renter-side and owner-side routes, distance, drive time, weekly round trips, weeks per year, and other transportation cost.
+- Put modeled driving cost into the correct rent-versus-buy cash flows without treating personal commuting time as money or adding owner commute to a rental property's operating cost.
+- Include editable Eastern Sierra town-route planning presets and make the exact annual miles, driving hours, and monthly cost visible before they influence the result.
+- Let the renter-side town load its rent and storage benchmarks without changing the town of the property being purchased; storage remains excluded until its separate toggle is turned on.
+- Add an optional location-aware maintenance planning reserve for higher-snow or remote-service areas while keeping the percentage editable and clearly separate from immediate repairs and HOA-covered work.
+- Carry active commute assumptions into saved scenarios, Property History, shared summaries, and printed decision briefs; older scenarios continue with safe defaults.
+
+Important scope:
+- Route distances and drive times are clear-condition planning inputs. Replace them with the real home and job locations, and check Caltrans road and chain conditions for winter travel.
+- The mileage rate is a whole-vehicle planning proxy, not a statement that ordinary commuting is tax deductible. Gas-only estimates can materially understate wear, depreciation, tires, and repairs.
+- Maintenance percentages and town storage amounts are planning benchmarks, not bids or guaranteed local prices. Use inspection findings, written HOA responsibilities, contractor quotes, and current storage offers when available.
+
+VERSION HISTORY
+
+HOUSE ALPHA V40
+
+This release makes manufactured-home, RV, and camper-van resale uncertainty visible instead of implying that one annual rate is accurate.
+
+New in v40:
+- Replace the two alternative-housing appreciation shortcuts with three editable resale stress cases: downside, base, and better resale.
+- Show the selected ending unit value and all three scenario values at the chosen holding period, before selling costs and with land explicitly excluded.
+- Keep the Ski Trails leased-site manufactured-home base at 0% unit resale growth, with -2% and +2% cases instead of applying Mammoth's ordinary-home appreciation rate.
+- Use -13% / -10% / -5% for fifth-wheel planning and -12% / -8% / -4% for camper vans; these are stress cases, not forecasts.
+- Update the Mammoth Ski Trails site-rent-growth planning input to 7%, reflecting the pace residents reported in 2026; the exact written lease still controls.
+- Base alternative-housing maintenance reserves on purchase cost rising with repair inflation, so a depreciating RV or van no longer appears cheaper to maintain merely because its resale value falls.
+- Include the projected unit resale value and land-exclusion note in shared summaries and printed decision briefs.
+
+Why the range matters:
+- FHFA's manufactured-home appreciation index covers real-property homes that include land and excludes personal-property/chattel homes, so it is not a valid direct proxy for a Ski Trails or Bishop leased-pad unit.
+- Local repeat sales are sparse and can be distorted by remodeling, condition, park approval, site-rent changes, and thin marketing periods. House Alpha therefore keeps 0% as the leased-pad manufactured-home base and makes the uncertainty testable.
+
+HOUSE ALPHA V39
+
+This release adds a focused alternative-housing model for living in a manufactured/mobile home, fifth wheel/RV, or camper van without pretending that park rent is HOA or that a vehicle loan is a mortgage.
+
+New in v39:
+- Choose Manufactured / mobile home, Fifth wheel / RV, or Camper van from Property type; House Alpha automatically keeps these options in the primary-residence comparison.
+- Load editable Mammoth and Bishop planning examples, including a $250,000 Ski Trails manufactured-home case, a Bishop manufactured home, a fifth wheel, and a camper van.
+- Model leased-site rent, annual site-rent growth, other required park charges, added mobility costs, registration or personal-property tax, delivery/setup/winterization, repairs, insurance, maintenance, and unit resale appreciation or depreciation.
+- Keep site rent separate from HOA and land equity. Leased-site rent creates no equity and continues after the unit loan ends.
+- Use custom manufactured-home/chattel, RV, or vehicle-loan APR and term inputs with no mortgage-program fee, Freddie Mac substitution, or PMI.
+- Stop unit-loan payments exactly when the entered term ends, while continuing site and ownership costs through the holding period.
+- Extend the gray/red/green purchase-price slider and break-even search below $50,000 for lower-cost units.
+- Save alternative housing options alongside real properties, including a private thumbnail, site-cost summary, complete inputs, and source link kept only in the local browser.
+- Keep shared summaries private while including site cost, resale assumption, setup cost, and the modeled result; printed briefs show the site arrangement separately.
+- Hold actual-option deal signals at Preliminary until the user confirms both the unit facts and park/private-site placement review.
+- Preserve the existing condo, single-family, repair-planner, property-history, lookup, sharing, and break-even behavior.
+
+Important scope:
+- Mammoth Ski Trails examples observed for this release were roughly $1,500-$1,630 per month in listed site charges; the preset uses $1,590, not the older $1,000-$1,200 assumption. Always replace it with the exact written lease for the chosen unit.
+- The Bishop RV $650 monthly site figure is an editable planning estimate, not a quoted park rate. Verify monthly availability, legal full-time occupancy, rig limits, utilities, and winter service directly with the park.
+- Private-site mode assumes the site is already owned or free to use. It excludes land purchase cost, land value, land property tax, permits, and land equity.
+
+HOUSE ALPHA V38
+
+This release adds a compact repair and renovation planner for underwriting a real property without cluttering the main calculator.
+
+New in v38:
+- Keep the repair budget behind one collapsed Repairs & renovation row until it is needed.
+- Enter one quick total or build a draft from safety and structural, roof and exterior, systems, interior and appliances, and other project categories.
+- Add an adjustable contingency cushion, with a 15% planning default that can be reduced as inspection findings and contractor bids become firm.
+- Review the category subtotal, contingency, and total before explicitly applying the draft to the financial model. Draft edits never silently change the result.
+- Treat the applied total as acquisition cash and investment opportunity cost, while keeping ongoing maintenance separate and adding no automatic resale value.
+- Save and reopen the full repair worksheet with a property, and show an applied repair budget on saved-property cards, shared summaries, and printed decision briefs.
+- Preserve v37 saved properties and scenarios; missing repair-planner fields restore to safe defaults.
+
 HOUSE ALPHA V37
 
 This release adds a private, low-clutter Property History for returning to real-property matches and underwriting scenarios without losing the focused calculator workflow.
@@ -14,8 +85,6 @@ New in v37:
 
 Local-data note:
 - Property History depends on browser storage. Clearing site data, using private browsing, or removing browser storage can erase it. Keep the original listing or another record for anything important.
-
-VERSION HISTORY
 
 HOUSE ALPHA V36
 
