@@ -1,4 +1,4 @@
-HOUSE ALPHA V36 — PHONE APP / SHARING SETUP
+HOUSE ALPHA V37 â€” PHONE APP / SHARING SETUP
 
 WHAT THIS IS
 This is an installable Progressive Web App (PWA). Once hosted at an HTTPS web address, it can be:
@@ -46,6 +46,10 @@ IMPORTANT
 - The live data refresh requires the hosted Python backend.
 - The app still performs saved/default calculations offline.
 - Detailed RentCast enrichment requires the private access code and an online connection; Census-only address matching stays public.
+- Property History is stored only in that browser profile on that device. It has no account or cloud sync, so saved properties do not automatically appear in another browser or on another device.
+- An optional property photo is resized into a local thumbnail in the browser. It is not uploaded to the House Alpha backend, Census, or RentCast, and it is omitted from shared result text.
+- Running Reset clears the working/saved calculator scenario but keeps the separate Property History. Delete a saved property from its history card when you want to remove it.
+- Clearing browser site data, using private browsing, or removing browser storage can erase Property History and its thumbnails.
 - Public-source page layouts can change and break automated data extraction. The app always keeps values editable and shows fallback data.
 - HOA and insurance are planning benchmarks, not exact quotes.
 - Stock-return inputs are effective annual returns and are compounded at the equivalent monthly rate.
