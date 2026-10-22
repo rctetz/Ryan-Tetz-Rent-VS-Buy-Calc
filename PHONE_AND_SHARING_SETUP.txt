@@ -1,4 +1,4 @@
-HOUSE ALPHA V37 -- PHONE APP / SHARING SETUP
+HOUSE ALPHA V41 -- PHONE APP / SHARING SETUP
 
 WHAT THIS IS
 This is an installable Progressive Web App (PWA). Once hosted at an HTTPS web address, it can be:
@@ -49,6 +49,11 @@ IMPORTANT
 - Property History is stored only in that browser profile on that device. It has no account or cloud sync, so saved properties do not automatically appear in another browser or on another device.
 - An optional property photo is resized into a local thumbnail in the browser. It is not uploaded to the House Alpha backend, Census, or RentCast, and it is omitted from shared result text.
 - Running Reset clears the working/saved calculator scenario but keeps the separate Property History. Delete a saved property from its history card when you want to remove it.
+- The optional repair itemizer stays collapsed until needed. Category drafts remain local with the saved property and do not affect results until Use as total is selected.
+- Applied repair budgets are modeled as upfront cash with no automatic resale-value credit. Ongoing maintenance is already modeled separately, so avoid counting the same work twice.
+- Commute comparison is optional. It keeps renter-side and owner-side routes separate, uses editable town-to-town distance and schedule assumptions, and treats driving time as a visible life-cost rather than money.
+- The commute mileage rate is a planning proxy for vehicle cost, not a claim that ordinary commuting is tax deductible. Verify winter closures and chain controls before relying on a route.
+- Location-aware maintenance planning is an optional editable reserve, not a property inspection or contractor quote. Avoid duplicating HOA-covered exterior work or a separate immediate-repair budget.
 - Clearing browser site data, using private browsing, or removing browser storage can erase Property History and its thumbnails.
 - Public-source page layouts can change and break automated data extraction. The app always keeps values editable and shows fallback data.
 - HOA and insurance are planning benchmarks, not exact quotes.
