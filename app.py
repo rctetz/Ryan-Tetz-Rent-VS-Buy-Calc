@@ -14,15 +14,15 @@ PORT=int(os.environ.get('PORT','8765'))
 # Planning presets. Rent values aim to represent a current one-bedroom long-term rental.
 # Sparse-market places are deliberately conservative estimates and remain editable.
 LOCATIONS={
- 'mammoth': {'name':'Mammoth Lakes, CA','rent':2985,'tax':1.16,'hoa':750,'insurance':175,'storage':350,'source':'https://www.zillow.com/rental-manager/market-trends/mammoth-lakes-ca/','note':'Published 1BR benchmark; vacation-heavy inventory can make the sample volatile.','home_value':825455,'home_source':'https://www.zillow.com/home-values/35858/mammoth-lakes-ca/','renter_storage_default':True},
- 'june-lake': {'name':'June Lake, CA','rent':2850,'tax':1.12,'hoa':700,'insurance':180,'storage':350,'source':'https://www.zillow.com/rental-manager/market-trends/june-lake-ca/','note':'Sparse vacation market. Uses a planning estimate close to Mammoth rather than the distorted all-property average.','home_value':750000,'home_source':'','renter_storage_default':True},
+ 'mammoth': {'name':'Mammoth Lakes, CA','rent':2985,'tax':1.16,'hoa':750,'insurance':175,'storage':450,'storage_source':'https://www.mammothministorage.com/pages/rent','storage_note':'Posted standard 10x20 rate; specialty spaces may differ and availability is not guaranteed.','source':'https://www.zillow.com/rental-manager/market-trends/mammoth-lakes-ca/','note':'Published 1BR benchmark; vacation-heavy inventory can make the sample volatile.','home_value':825455,'home_source':'https://www.zillow.com/home-values/35858/mammoth-lakes-ca/','renter_storage_default':True},
+ 'june-lake': {'name':'June Lake, CA','rent':2850,'tax':1.12,'hoa':700,'insurance':180,'storage':425,'storage_note':'Mammoth-area 10x20 proxy; verify June Lake availability and exact size.','source':'https://www.zillow.com/rental-manager/market-trends/june-lake-ca/','note':'Sparse vacation market. Uses a planning estimate close to Mammoth rather than the distorted all-property average.','home_value':750000,'home_source':'','renter_storage_default':True},
  'crowley-lake': {'name':'Crowley Lake, CA','rent':2250,'tax':1.12,'hoa':250,'insurance':165,'storage':325,'source':'https://www.zillow.com/rental-manager/market-trends/crowley-lake-ca/','note':'Sparse listings; planning estimate.','home_value':700000,'home_source':'','renter_storage_default':True},
  'toms-place': {'name':"Tom's Place, CA",'rent':2050,'tax':1.12,'hoa':200,'insurance':165,'storage':300,'source':'','note':'Very sparse market; planning estimate.','home_value':625000,'home_source':'','renter_storage_default':True},
  'lee-vining': {'name':'Lee Vining, CA','rent':1750,'tax':1.12,'hoa':100,'insurance':160,'storage':275,'source':'','note':'Sparse market; planning estimate.','home_value':550000,'home_source':'','renter_storage_default':False},
  'bridgeport': {'name':'Bridgeport, CA','rent':1550,'tax':1.12,'hoa':100,'insurance':155,'storage':250,'source':'','note':'Sparse market; planning estimate.','home_value':400000,'home_source':'','renter_storage_default':False},
  'benton': {'name':'Benton, CA','rent':1450,'tax':1.12,'hoa':75,'insurance':150,'storage':225,'source':'','note':'Very sparse market; rough planning estimate.','home_value':350000,'home_source':'','renter_storage_default':False},
- 'bishop': {'name':'Bishop, CA','rent':1950,'tax':1.12,'hoa':250,'insurance':155,'storage':250,'source':'https://www.zillow.com/rental-manager/market-trends/bishop-ca/','note':'Published or saved 1BR benchmark.','home_value':602317,'home_source':'https://www.zillow.com/home-values/23717/bishop-ca/','renter_storage_default':False},
- 'big-pine': {'name':'Big Pine, CA','rent':1300,'tax':1.12,'hoa':100,'insurance':150,'storage':225,'source':'https://www.zillow.com/rental-manager/market-trends/big-pine-ca/','note':'Very small sample; rough planning benchmark.','home_value':420000,'home_source':'','renter_storage_default':False},
+ 'bishop': {'name':'Bishop, CA','rent':1950,'tax':1.12,'hoa':250,'insurance':155,'storage':250,'storage_source':'https://www.bishopstorage.com/home','storage_note':'Rounded from a posted 10x20 rate; availability and wait times can matter.','source':'https://www.zillow.com/rental-manager/market-trends/bishop-ca/','note':'Published or saved 1BR benchmark.','home_value':602317,'home_source':'https://www.zillow.com/home-values/23717/bishop-ca/','renter_storage_default':False},
+ 'big-pine': {'name':'Big Pine, CA','rent':1300,'tax':1.12,'hoa':100,'insurance':150,'storage':240,'storage_source':'https://www.bigpineselfstorage.com/pages/rent','storage_note':'Posted standard 10x20 rate; availability is not guaranteed.','source':'https://www.zillow.com/rental-manager/market-trends/big-pine-ca/','note':'Very small sample; rough planning benchmark.','home_value':420000,'home_source':'','renter_storage_default':False},
  'paradise-sunny-slopes': {'name':'Paradise / Sunny Slopes, CA','rent':1800,'tax':1.12,'hoa':100,'insurance':160,'storage':250,'source':'','note':'Combined local planning estimate.','home_value':500000,'home_source':'','renter_storage_default':False},
  'swall-meadows': {'name':'Swall Meadows, CA','rent':1900,'tax':1.12,'hoa':100,'insurance':165,'storage':275,'source':'','note':'Sparse market; planning estimate.','home_value':600000,'home_source':'','renter_storage_default':False},
  'chalfant': {'name':'Chalfant Valley, CA','rent':1650,'tax':1.12,'hoa':75,'insurance':150,'storage':225,'source':'','note':'Sparse market; planning estimate.','home_value':425000,'home_source':'','renter_storage_default':False},
@@ -39,6 +39,26 @@ LOCATIONS={
  'zephyr-cove': {'name':'Zephyr Cove, NV','rent':1950,'tax':0.65,'hoa':650,'insurance':185,'storage':350,'source':'','note':'Small sample; planning benchmark.','home_value':1100000,'home_source':'','renter_storage_default':True},
  'custom': {'name':'Custom / Anywhere','rent':2000,'tax':1.10,'hoa':300,'insurance':160,'storage':250,'source':'','note':'Enter local values manually.','home_value':500000,'home_source':'','renter_storage_default':False},
 }
+
+# Editable planning reserves, not observed town-level maintenance averages.
+# Fannie Mae's broad rule is 1%-4% of home value annually; the local bands
+# below apply a modest climate/remoteness heuristic while keeping condo
+# reserves lower when an HOA may cover exterior and snow work.
+MAINTENANCE_BASELINE_SOURCE='https://yourhome.fanniemae.com/own/how-build-your-maintenance-and-repair-budget'
+MAINTENANCE_BANDS={
+ 'alpine': {'rates':{'condo':0.75,'single':1.50},'note':'High-snow planning heuristic, not a measured local average. Verify HOA exterior coverage, roof and snow responsibility, age, condition, and inspection findings.','climate_source':'https://townofmammothlakes.ca.gov/DocumentCenter/View/6429/Minimum-Design-Standards-2020'},
+ 'mountain': {'rates':{'condo':0.65,'single':1.25},'note':'Mountain and remote-labor planning heuristic, not a measured local average. Verify HOA coverage, access, age, condition, and inspection findings.','climate_source':'https://www.monocounty.ca.gov/sites/default/files/fileattachments/building_division/page/5877/2022_design_standards.pdf'},
+ 'valley': {'rates':{'condo':0.50,'single':1.00},'note':'General planning reserve. Age, condition, systems, inspection findings, and HOA coverage can matter more than town.','climate_source':''}
+}
+MAINTENANCE_LOCATION_BANDS={
+ 'mammoth':'alpine','june-lake':'alpine','truckee':'alpine','south-lake-tahoe':'alpine','incline-village':'alpine','stateline':'alpine','zephyr-cove':'alpine',
+ 'crowley-lake':'mountain','toms-place':'mountain','lee-vining':'mountain','bridgeport':'mountain','paradise-sunny-slopes':'mountain','swall-meadows':'mountain','sonora':'mountain',
+ 'benton':'valley','bishop':'valley','big-pine':'valley','chalfant':'valley','independence':'valley','lone-pine':'valley','carson-city':'valley','gardnerville':'valley','fresno':'valley','custom':'valley'
+}
+def maintenance_assumptions(location):
+    band_name=MAINTENANCE_LOCATION_BANDS.get(location,'valley')
+    band=MAINTENANCE_BANDS[band_name]
+    return {'maintenance_rates':band['rates'],'maintenance_note':band['note'],'maintenance_source':MAINTENANCE_BASELINE_SOURCE,'maintenance_climate_source':band['climate_source'],'maintenance_band':band_name}
 
 # Citywide/countywide median listing-price-per-square-foot planning proxies.
 # These are not ADU comparable-sale appraisals. Sparse locations use a
@@ -235,7 +255,7 @@ def parse_latest_pmms_30yr(text,as_of=None):
     return values[published],published
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/37.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/41.0'})
     with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
@@ -275,7 +295,7 @@ BENCHMARK_BY_CITY_STATE={
 }
 
 def fetch_json(url,headers=None,timeout=9,max_bytes=2_000_000):
-    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/37.0','Accept':'application/json'}
+    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/41.0','Accept':'application/json'}
     request_headers.update(headers or {})
     req=Request(url,headers=request_headers)
     with urlopen(req,timeout=timeout) as response:
@@ -706,6 +726,7 @@ def market(location='mammoth'):
         **loc,
         'status':{}
     }
+    out.update(maintenance_assumptions(location))
     def mortgage_update():
         try:
             rate,published=parse_latest_pmms_30yr(fetch(MORTGAGE_DATA_URL))
@@ -826,6 +847,7 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
         if u.path=='/api/locations':
             data=json.dumps({k:{'name':v['name'],**v,
+                **maintenance_assumptions(k),
                 'adu_market_psf':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['value'],
                 'adu_market_psf_source':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['source'],
                 'adu_market_psf_note':ADU_MARKET_PSF.get(k,ADU_MARKET_PSF['custom'])['note'],
