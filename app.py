@@ -235,7 +235,7 @@ def parse_latest_pmms_30yr(text,as_of=None):
     return values[published],published
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/36.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/37.0'})
     with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
@@ -275,7 +275,7 @@ BENCHMARK_BY_CITY_STATE={
 }
 
 def fetch_json(url,headers=None,timeout=9,max_bytes=2_000_000):
-    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/36.0','Accept':'application/json'}
+    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/37.0','Accept':'application/json'}
     request_headers.update(headers or {})
     req=Request(url,headers=request_headers)
     with urlopen(req,timeout=timeout) as response:
@@ -722,7 +722,7 @@ def market(location='mammoth'):
             if rent is None: raise ValueError('Rent value not found')
             return {'rent':rent},'Updated from public rental-market page'
         except Exception:
-            return {},'Saved planning benchmark — live source unavailable'
+            return {},'Saved planning benchmark â€” live source unavailable'
 
     def home_value_update():
         try:
@@ -765,7 +765,7 @@ def market(location='mammoth'):
     out['status']['bedroom_prices']='Editable purchase-price estimates anchored to the local overall home-value benchmark'
     out['status']['hoa']='Location-specific editable condo benchmark'
     out['status']['insurance']='Editable home-insurance planning estimate'
-    out['status']['storage']='Editable one-car garage / roughly 10×20 storage estimate'
+    out['status']['storage']='Editable one-car garage / roughly 10Ã—20 storage estimate'
     out['sources']={'mortgage':MORTGAGE_URL,'rent':loc.get('source',''),'home':loc.get('home_source','')}
     return out
 
