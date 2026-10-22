@@ -722,7 +722,7 @@ def market(location='mammoth'):
             if rent is None: raise ValueError('Rent value not found')
             return {'rent':rent},'Updated from public rental-market page'
         except Exception:
-            return {},'Saved planning benchmark â€” live source unavailable'
+            return {},'Saved planning benchmark — live source unavailable'
 
     def home_value_update():
         try:
@@ -765,7 +765,7 @@ def market(location='mammoth'):
     out['status']['bedroom_prices']='Editable purchase-price estimates anchored to the local overall home-value benchmark'
     out['status']['hoa']='Location-specific editable condo benchmark'
     out['status']['insurance']='Editable home-insurance planning estimate'
-    out['status']['storage']='Editable one-car garage / roughly 10Ã—20 storage estimate'
+    out['status']['storage']='Editable one-car garage / roughly 10×20 storage estimate'
     out['sources']={'mortgage':MORTGAGE_URL,'rent':loc.get('source',''),'home':loc.get('home_source','')}
     return out
 
