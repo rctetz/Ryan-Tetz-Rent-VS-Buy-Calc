@@ -785,7 +785,7 @@ function updateAlternativeResaleGuide(){
  const meta=housingTypeMeta(),cases=meta.resaleCases,selected=n('appreciation'),years=Math.max(0,n('years')),price=Math.max(0,n('price')),values=cases.map(rate=>unitValueAtRate(rate,price,years)),isPreset=cases.some(rate=>Math.abs(rate-selected)<.001);
  $('resaleGuideTitle').textContent=`${meta.short} resale stress test`;
  $('resaleGuideSelected').textContent=`${isPreset?'Selected':'Custom'}: ${money(unitValueAtRate(selected,price,years))} estimated unit value in ${years} year${years===1?'':'s'} at ${signedRateLabel(selected)}/yr.`;
- $('resaleGuideRange').textContent=`Downside ${money(values[0])} Â· Base ${money(values[1])} Â· Better resale ${money(values[2])}, before ${n('sellCost')}% selling costs. ${leasedSiteHousing()?'Leased land':'Land value'} excluded.`
+ $('resaleGuideRange').textContent=`Downside ${money(values[0])} · Base ${money(values[1])} · Better resale ${money(values[2])}, before ${n('sellCost')}% selling costs. ${leasedSiteHousing()?'Leased land':'Land value'} excluded.`
 }
 function commuteActive(){return $('useMode').value!=='rental'&&$('commuteOn').checked}
 function commuteRoute(side){return COMMUTE_ROUTES[$(`${side}CommuteRoute`).value]||COMMUTE_ROUTES.custom}
