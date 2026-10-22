@@ -40,7 +40,7 @@ Property lookup and billing notes:
 - A typical uncached primary-residence enrichment uses 1 RentCast call. Rental and live-in enrichment normally use 2 because they also request a rent estimate. A sparse or missing listing can trigger 1 additional property-record fallback call.
 - `RENTCAST_PROCESS_CALL_LIMIT` is an optional per-server-process emergency ceiling (default 30). It resets when the server process restarts, so it is not a durable monthly billing cap and does not replace RentCast account quota or billing controls.
 - RentCast documents that each successful 200 response with a body counts against the account billing period: https://developers.rentcast.io/reference/billing-and-pricing
-- Without an authorized cookieâ€”or without a configured RentCast keyâ€”House Alpha still matches U.S. addresses and suggests a supported benchmark market when available.
+- Without an authorized cookie—or without a configured RentCast key—House Alpha still matches U.S. addresses and suggests a supported benchmark market when available.
 - Census-only results are address-range normalization/geocoding, not parcel, unit, deliverability, structure, or listing verification.
 
 HOUSE ALPHA V34
@@ -52,7 +52,7 @@ New in v34:
 - Keep address and listing details local to the device; shared text omits both by default.
 - Protect exact deal inputs from benchmark-location, property-type, and bedroom changes while actual-property mode is active.
 - Add immediate repairs / work as upfront cash with no automatic resale value, including its opportunity cost in every strategy.
-- Show a Deal checkpoint based on exact ending wealth, price-root orientation, and rental cash flowâ€”not the heuristic Alpha score.
+- Show a Deal checkpoint based on exact ending wealth, price-root orientation, and rental cash flow—not the heuristic Alpha score.
 - Distinguish Works as modeled, Negotiate, Rework the plan, and Walk-away signal under current assumptions.
 - Preserve every purchase-price crossing so nonstandard or multiple roots are never mislabeled as a safe offer.
 - Let users test a legitimate lower wealth-parity price and then undo it through the existing decision-lever workflow.
@@ -97,7 +97,7 @@ New in v31:
 - Decision-lever cards let you try the modeled price, rate, or rent break-even and undo the experiment in one click.
 - Saved-scenario comparison shows how current edits change ending advantage, month-one economics, and break-even price.
 - A focused print layout creates a clean decision brief from the current scenario.
-- A bespoke 1200Ã—630 House Alpha preview card sharpens shared links and social unfurls.
+- A bespoke 1200×630 House Alpha preview card sharpens shared links and social unfurls.
 - A compact masthead and workspace bar improve hierarchy, density, and mobile usability.
 - Expanded numeric guardrails cover ADU loans, costs, rents, sizes, and operating assumptions; rental scenarios require at least 15% down.
 - Live-in scoring and break-even copy now respect moves beyond the selected holding period.
@@ -214,7 +214,7 @@ HOUSE ALPHA V12
 - Investment mode compares the rental-property strategy directly with an S&P 500 index-fund strategy.
 - Removes renter, renter-storage, and owner-garage comparisons from investment mode.
 - Rental-property storage/garage costs are forced to zero and the garage UI is hidden in investment mode.
-- Adds estimated rent by location, property type (condo or single-family), and 1â€“4 bedrooms.
+- Adds estimated rent by location, property type (condo or single-family), and 1–4 bedrooms.
 - Gross collected rent and its market-rent cap can auto-load from the selected property estimate.
 - Rental income growth is capped by a market-rent ceiling that rises with inflation.
 - Adds a Use Local Rent Estimate button and preserves manual rent overrides.
@@ -299,7 +299,7 @@ HOUSE ALPHA V22
 - Adds ADU value-added assumptions to both owner-occupied and investment-property Build New ADU paths.
 - Defaults to 75% of construction cost (Conservative).
 - Adds 100% of cost (Cost basis), Local market proxy, and Custom / appraisal options.
-- Local proxy uses ADU finished square feet Ã— editable local listing $/sq ft Ã— 75%.
+- Local proxy uses ADU finished square feet × editable local listing $/sq ft × 75%.
 - Adds location-specific city, county, or nearby price-per-square-foot planning benchmarks and source links.
 - Sparse markets are explicitly identified as county or nearby fallbacks.
 - Local market proxies are labeled as planning estimates, not appraisals.
@@ -309,7 +309,7 @@ HOUSE ALPHA V23
 - Removes the universal $250,000 ADU construction default.
 - Adds location-adjusted planning build cost per square foot.
 - ADU size defaults by bedroom count: 600, 800, 1,000, or 1,200 square feet.
-- Total construction cost is automatically calculated from size Ã— regional build-cost assumption.
+- Total construction cost is automatically calculated from size × regional build-cost assumption.
 - Both owner-occupied and investment-property ADUs include a Use Local Build Estimate button.
 - Size, cost per square foot, and total cost remain editable; manual total costs are preserved.
 - Regional estimates are labeled as planning assumptions, not contractor bids.
@@ -350,16 +350,16 @@ HOUSE ALPHA V26
 HOUSE ALPHA V27
 - Adds a USDA Guaranteed income-limit information box when USDA is selected.
 - Limits update with the selected House Alpha location and its USDA county/HUD area.
-- Displays separate individual, couple, 3â€“4 person, and 5â€“8 person cards.
-- Clarifies that USDA officially uses the same limit for all 1â€“4 person households.
+- Displays separate individual, couple, 3–4 person, and 5–8 person cards.
+- Clarifies that USDA officially uses the same limit for all 1–4 person households.
 - Adds a household-size selector and highlights the applicable limit.
 - Uses USDA FY 2026 adjusted income limits effective July 13, 2026.
 - Clarifies that limits apply to adjusted annual household income, not only borrower income.
-- Links to USDAâ€™s official limit table and exact property/income eligibility checker.
+- Links to USDA’s official limit table and exact property/income eligibility checker.
 - Notes that address eligibility must still be checked separately.
 
 HOUSE ALPHA V28
-- Shortens the USDA eligibility link label to â€œCheck exact address.â€
+- Shortens the USDA eligibility link label to “Check exact address.”
 
 HOUSE ALPHA V29
 - Adds a dedicated Live-In Rental / Owner in ADU strategy mode.
