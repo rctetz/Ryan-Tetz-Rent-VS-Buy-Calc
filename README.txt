@@ -1,3 +1,22 @@
+HOUSE ALPHA V42
+
+This release makes recurring monthly affordability visible across every strategy and adds a realistic zero-fixed-rent camper-van planning mode.
+
+New in v42:
+- Put a Total monthly cash bill panel ahead of long-term wealth, showing the complete month-one cash need for both strategies, the lower-cost option, the dollar difference, and each option's average monthly cash need over the selected holding period.
+- Keep monthly cash and ending wealth separate: down payment, closing, setup, and immediate repairs remain upfront cash, while loan payments, taxes, insurance, HOA or site costs, maintenance reserves, storage, housing-income offsets, and commuting are included when applicable.
+- Add a Roaming camper van / $0 fixed site rent preset with editable paid parking, relocation mileage, MPG, fuel price, variable tire and road wear, an optional storage unit, road-living services, and annual cost growth.
+- Avoid double-counting van ownership in commuting: a roaming van's own-side commute uses fuel plus variable road wear per mile, while its insurance, registration, maintenance reserve, and depreciation remain in the housing strategy.
+- Carry the cash-bill comparison and roaming breakdown into saved-property results, shared summaries, and printed decision briefs; saved housing options identify the lowest recurring cash need when comparable results are available.
+- Keep legal and practical overnight parking explicitly unverified until the user reviews stay limits, seasonal access, sanitation, insurance, registration or address needs, and permission for recurring locations.
+- Keep the manufactured-home, RV, and camper-van purchase-price rail fixed while it is being dragged, use matching $500 price bumps, expand only for an out-of-range exact price or modeled break-even, and let the next deliberate bump leave the sticky break-even point.
+
+Important scope:
+- Zero fixed rent does not mean zero housing cost or guaranteed free parking. Replace every starter input with the actual van, travel pattern, paid-night plan, insurance, repair reserve, and legal overnight locations.
+- The cash panel is a recurring modeled planning total, not a household budget. Utilities and everyday spending appear only when entered, and upfront acquisition cash is shown separately.
+
+VERSION HISTORY
+
 HOUSE ALPHA V41
 
 This release compares the location cost of where you rent or buy with where you work, while keeping route, schedule, storage, and maintenance assumptions visible and editable.
@@ -14,8 +33,6 @@ Important scope:
 - Route distances and drive times are clear-condition planning inputs. Replace them with the real home and job locations, and check Caltrans road and chain conditions for winter travel.
 - The mileage rate is a whole-vehicle planning proxy, not a statement that ordinary commuting is tax deductible. Gas-only estimates can materially understate wear, depreciation, tires, and repairs.
 - Maintenance percentages and town storage amounts are planning benchmarks, not bids or guaranteed local prices. Use inspection findings, written HOA responsibilities, contractor quotes, and current storage offers when available.
-
-VERSION HISTORY
 
 HOUSE ALPHA V40
 
