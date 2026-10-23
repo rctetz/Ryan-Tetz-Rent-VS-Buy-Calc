@@ -1,4 +1,4 @@
-HOUSE ALPHA V41 -- PHONE APP / SHARING SETUP
+HOUSE ALPHA V42 -- PHONE APP / SHARING SETUP
 
 WHAT THIS IS
 This is an installable Progressive Web App (PWA). Once hosted at an HTTPS web address, it can be:
@@ -54,6 +54,8 @@ IMPORTANT
 - Commute comparison is optional. It keeps renter-side and owner-side routes separate, uses editable town-to-town distance and schedule assumptions, and treats driving time as a visible life-cost rather than money.
 - The commute mileage rate is a planning proxy for vehicle cost, not a claim that ordinary commuting is tax deductible. Verify winter closures and chain controls before relying on a route.
 - Location-aware maintenance planning is an optional editable reserve, not a property inspection or contractor quote. Avoid duplicating HOA-covered exterior work or a separate immediate-repair budget.
+- Total monthly cash bill compares recurring modeled cash needs; acquisition cash and ordinary household spending that was not entered remain separate.
+- Roaming camper-van mode assumes $0 fixed site rent only. It still models the van loan or purchase, insurance, registration, maintenance reserve, parking, relocation fuel, variable road wear, optional storage, and entered road-living services. Verify that every overnight location is legal and season-ready.
 - Clearing browser site data, using private browsing, or removing browser storage can erase Property History and its thumbnails.
 - Public-source page layouts can change and break automated data extraction. The app always keeps values editable and shows fallback data.
 - HOA and insurance are planning benchmarks, not exact quotes.
