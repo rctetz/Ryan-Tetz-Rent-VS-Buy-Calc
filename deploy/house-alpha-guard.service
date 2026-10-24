@@ -1,0 +1,10 @@
+[Unit]
+Description=Enforce conservative House Alpha resource limits
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/house-alpha/current/deploy/resource_guard.py
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/house-alpha-guard
+
