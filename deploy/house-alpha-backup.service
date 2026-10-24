@@ -1,0 +1,13 @@
+[Unit]
+Description=Back up House Alpha library
+[Service]
+Type=oneshot
+User=house-alpha
+Group=house-alpha
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/house-alpha/current/deploy/backup.py
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/house-alpha
+
