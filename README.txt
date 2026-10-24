@@ -1,3 +1,8 @@
+ORACLE SYNCED LIBRARY EDITION
+Live: https://house.ryantetz.com
+Deployment, limits, backups, and recovery: deploy/README.md
+The original Render deployment remains available.
+
 HOUSE ALPHA V42
 
 This release makes recurring monthly affordability visible across every strategy and adds a realistic zero-fixed-rent camper-van planning mode.
