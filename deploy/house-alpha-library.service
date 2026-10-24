@@ -1,0 +1,24 @@
+[Unit]
+Description=House Alpha private synced library
+After=network.target
+
+[Service]
+User=house-alpha
+Group=house-alpha
+WorkingDirectory=/opt/house-alpha/current
+EnvironmentFile=/etc/house-alpha.env
+ExecStart=/opt/house-alpha/venv/bin/gunicorn --bind 127.0.0.1:8766 --workers 2 --threads 2 --timeout 30 --max-requests 1000 --max-requests-jitter 100 library_server:create_app()
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/house-alpha
+MemoryMax=768M
+TasksMax=40
+
+[Install]
+WantedBy=multi-user.target
+
