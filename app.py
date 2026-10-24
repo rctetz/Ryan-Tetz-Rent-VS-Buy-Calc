@@ -257,7 +257,9 @@ def parse_latest_pmms_30yr(text,as_of=None):
 def fetch(url):
     req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/42.0'})
     with urlopen(req,timeout=10) as r:
-        return r.read().decode('utf-8',errors='ignore')
+        body=r.read(6_000_001)
+        if len(body)>6_000_000:raise ValueError('Source response too large')
+        return body.decode('utf-8',errors='ignore')
 
 PROPERTY_LOOKUP_SCHEMA=1
 PROPERTY_LOOKUP_CACHE_TTL=15*60
@@ -351,6 +353,9 @@ def reserve_provider_calls(count):
 
 def lookup_client_address(handler):
     peer=str(handler.client_address[0] or 'unknown')
+    if os.environ.get('HOUSE_ALPHA_TRUST_LOCAL_PROXY')=='1' and peer in ('127.0.0.1','::1'):
+        try:return ipaddress.ip_address(handler.headers.get('X-Real-IP','').strip()).compressed
+        except ValueError:return peer
     if not os.environ.get('RENDER'):return peer
     # Render sits behind Cloudflare. Unlike the leftmost X-Forwarded-For value,
     # CF-Connecting-IP is not caller-selected, so prefer it and fail closed to
@@ -713,7 +718,7 @@ def bedroom_prices(home_value, property_type='condo'):
         factors = {'1': 0.48, '2': 0.70, '3': 0.92, '4': 1.10}
     return {k: round(home_value * f / 1000) * 1000 for k, f in factors.items()}
 
-def market(location='mammoth'):
+def build_market(location='mammoth',live=True):
     if location not in LOCATIONS:
         raise ValueError(f'Unknown location: {location}')
     loc=LOCATIONS[location].copy()
@@ -729,6 +734,7 @@ def market(location='mammoth'):
     out.update(maintenance_assumptions(location))
     def mortgage_update():
         try:
+            if not live:raise ValueError('Using saved benchmark')
             rate,published=parse_latest_pmms_30yr(fetch(MORTGAGE_DATA_URL))
             if published<MORTGAGE_FALLBACK_DATE:raise ValueError('PMMS source older than saved benchmark')
             return {'mortgage_rate':rate,'mortgage_rate_date':format_pmms_date(published)},'Updated from Freddie Mac PMMS archive'
@@ -737,6 +743,7 @@ def market(location='mammoth'):
 
     def rent_update():
         try:
+            if not live:raise ValueError('Using saved benchmark')
             if not loc.get('source'): raise ValueError('No live source')
             text=fetch(loc['source'])
             rent=first_float([r'one-bedroom apartment[^$]{0,220}\$([0-9,]+)',r'one bedroom[^$]{0,220}\$([0-9,]+)'],text)
@@ -747,6 +754,7 @@ def market(location='mammoth'):
 
     def home_value_update():
         try:
+            if not live:raise ValueError('Using saved benchmark')
             if not loc.get('home_source'): raise ValueError('No live home-value source')
             text=fetch(loc['home_source'])
             value=first_float([
@@ -790,7 +798,55 @@ def market(location='mammoth'):
     out['sources']={'mortgage':MORTGAGE_URL,'rent':loc.get('source',''),'home':loc.get('home_source','')}
     return out
 
+MARKET_CACHE={}
+MARKET_LOCKS={key:threading.Lock() for key in LOCATIONS}
+MARKET_FETCH_LIMIT=threading.BoundedSemaphore(3)
+
+def market(location='mammoth'):
+    if location not in LOCATIONS:raise ValueError('Unknown location')
+    cached=MARKET_CACHE.get(location)
+    if cached and time.monotonic()-cached[0]<3600:return cached[1]
+    lock=MARKET_LOCKS[location]
+    if not lock.acquire(timeout=1):return cached[1] if cached else build_market(location,False)
+    try:
+        cached=MARKET_CACHE.get(location)
+        if cached and time.monotonic()-cached[0]<3600:return cached[1]
+        if not MARKET_FETCH_LIMIT.acquire(blocking=False):return cached[1] if cached else build_market(location,False)
+        try:
+            value=build_market(location)
+            MARKET_CACHE[location]=(time.monotonic(),value)
+            return value
+        finally:MARKET_FETCH_LIMIT.release()
+    finally:lock.release()
+
+PUBLIC_ASSETS={'/index.html','/manifest.webmanifest','/social-card.png','/icon-192.png','/icon-512.png',
+               '/icons/icon-192.png','/icons/icon-512.png','/service-worker.js','/library-sync.js','/library-sync.css'}
+
+class BoundedHTTPServer(ThreadingHTTPServer):
+    daemon_threads=True
+    def __init__(self,*args,**kwargs):
+        self.request_slots=threading.BoundedSemaphore(32)
+        super().__init__(*args,**kwargs)
+    def process_request(self,request,client_address):
+        request.settimeout(20)
+        if not self.request_slots.acquire(blocking=False):
+            try:request.sendall(b'HTTP/1.1 503 Service Unavailable\r\nContent-Length: 0\r\nConnection: close\r\n\r\n')
+            finally:self.shutdown_request(request)
+            return
+        try:super().process_request(request,client_address)
+        except BaseException:
+            self.request_slots.release()
+            raise
+    def process_request_thread(self,*args):
+        try:super().process_request_thread(*args)
+        finally:self.request_slots.release()
+
 class Handler(SimpleHTTPRequestHandler):
+    def do_HEAD(self):
+        if urlparse(self.path).path not in PUBLIC_ASSETS|{'/'}:
+            self.send_error(404);return
+        super().do_HEAD()
+
     def send_json(self,status,payload,extra_headers=None):
         data=json.dumps(payload,separators=(',',':')).encode()
         self.send_response(status);self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Cache-Control','private, no-store');self.send_header('X-Content-Type-Options','nosniff')
@@ -869,11 +925,12 @@ class Handler(SimpleHTTPRequestHandler):
             origin=f'{proto}://{host}' if re.fullmatch(r'[A-Za-z0-9.-]+(?::\d{1,5})?',host) else ''
             data=(ROOT/'index.html').read_text(encoding='utf-8').replace('__HOUSE_ALPHA_ORIGIN__',origin).encode()
             self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Cache-Control','no-cache');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
+        if u.path not in PUBLIC_ASSETS:self.send_error(404);return
         return super().do_GET()
     def log_message(self,fmt,*args): pass
 
 def main():
-    os.chdir(ROOT);host=os.environ.get('HOST','0.0.0.0');server=ThreadingHTTPServer((host,PORT),Handler)
+    os.chdir(ROOT);host=os.environ.get('HOST','0.0.0.0');server=BoundedHTTPServer((host,PORT),Handler)
     url=f'http://127.0.0.1:{PORT}';print('House Alpha running at',url)
     if os.environ.get('OPEN_BROWSER','1')=='1' and not os.environ.get('RENDER'):threading.Timer(.8,lambda:webbrowser.open(url)).start()
     try:server.serve_forever()
