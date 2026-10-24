@@ -1,0 +1,23 @@
+[Unit]
+Description=House Alpha public calculator
+After=network.target
+
+[Service]
+User=house-alpha
+Group=house-alpha
+WorkingDirectory=/opt/house-alpha/current
+EnvironmentFile=/etc/house-alpha.env
+ExecStart=/usr/bin/python3 /opt/house-alpha/current/app.py
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+MemoryMax=512M
+TasksMax=100
+
+[Install]
+WantedBy=multi-user.target
+
