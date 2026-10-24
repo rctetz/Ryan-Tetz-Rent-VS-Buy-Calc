@@ -1,0 +1,8 @@
+[Unit]
+Description=Daily House Alpha library backup
+[Timer]
+OnCalendar=*-*-* 09:00:00 UTC
+Persistent=true
+[Install]
+WantedBy=timers.target
+
