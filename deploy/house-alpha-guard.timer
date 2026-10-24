@@ -1,0 +1,8 @@
+[Unit]
+Description=Check House Alpha resource limits every five minutes
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+[Install]
+WantedBy=timers.target
+
