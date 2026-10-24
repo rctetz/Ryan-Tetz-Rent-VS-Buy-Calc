@@ -1,6 +1,6 @@
-const SHELL_CACHE='house-alpha-shell-v42';
-const DATA_CACHE='house-alpha-data-v42';
-const SHELL=['/','/index.html','/manifest.webmanifest','/social-card.png','/icons/icon-192.png','/icons/icon-512.png'];
+const SHELL_CACHE='house-alpha-shell-v43-library';
+const DATA_CACHE='house-alpha-data-v43-library';
+const SHELL=['/','/index.html','/library-sync.js','/library-sync.css','/manifest.webmanifest','/social-card.png','/icons/icon-192.png','/icons/icon-512.png'];
 
 self.addEventListener('install',event=>event.waitUntil(
   caches.open(SHELL_CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())
@@ -28,7 +28,11 @@ async function offlineMarketFallback(request){
 self.addEventListener('fetch',event=>{
   const request=event.request,url=new URL(request.url);if(request.method!=='GET'||url.origin!==self.location.origin)return;
 
-  if(url.pathname.startsWith('/api/')){
+  // Never intercept or cache authentication, libraries, exports, or property lookup.
+  // Only public benchmark data is eligible for an offline cache.
+  if(url.pathname.startsWith('/api/')&&!['/api/locations','/api/market'].includes(url.pathname))return;
+
+  if(['/api/locations','/api/market'].includes(url.pathname)){
     event.respondWith((async()=>{
       const cacheKey=normalizedApiRequest(request);
       try{
@@ -44,7 +48,7 @@ self.addEventListener('fetch',event=>{
 
   event.respondWith((async()=>{
     try{
-      const response=await fetch(request);if(response.ok){const cache=await caches.open(SHELL_CACHE);await cache.put(request,response.clone())}return response
+      const response=await fetch(request);if(response.ok&&SHELL.includes(url.pathname)&&!response.headers.get('Cache-Control')?.includes('no-store')){const cache=await caches.open(SHELL_CACHE);await cache.put(request,response.clone())}return response
     }catch(error){
       const cached=await caches.match(request);if(cached)return cached;
       if(request.mode==='navigate')return caches.match('/index.html');
