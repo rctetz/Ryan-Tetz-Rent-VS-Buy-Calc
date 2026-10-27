@@ -255,7 +255,7 @@ def parse_latest_pmms_30yr(text,as_of=None):
     return values[published],published
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/44.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/45.0'})
     with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
@@ -295,7 +295,7 @@ BENCHMARK_BY_CITY_STATE={
 }
 
 def fetch_json(url,headers=None,timeout=9,max_bytes=2_000_000):
-    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/44.0','Accept':'application/json'}
+    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/45.0','Accept':'application/json'}
     request_headers.update(headers or {})
     req=Request(url,headers=request_headers)
     with urlopen(req,timeout=timeout) as response:

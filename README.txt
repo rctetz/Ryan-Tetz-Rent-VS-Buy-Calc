@@ -1,3 +1,23 @@
+HOUSE ALPHA V45
+
+This release turns the phone layout into a faster, clearer working tool while preserving the full desktop experience and every financial feature.
+
+New in v45:
+- Collapse the sticky phone workspace to one compact tab row after the masthead leaves view, returning valuable screen space during long edits.
+- Make every phone tab jump directly to its selected panel, including the already-selected Calculator tab, so navigation always produces a visible result.
+- Add a live bottom result dock while editing, with the current leading strategy, modeled advantage, Edit, Result, and Save shortcuts.
+- Add a compact mobile journey rail for Home, Price, Costs, Growth, and Result sections without hiding any assumptions.
+- Restore Print and Reset on phones through a More control instead of dropping those actions at narrow widths.
+- Compress the phone result hero while keeping its verdict, advantage, key signal, Alpha signal, break-even, and full-result action visible.
+- Add phone precision buttons that move the original gray purchase-price slider by its matching $1,000 or $500 step.
+- Expand coarse-pointer hit areas, prevent iPhone zoom in actual-property fields, and hide the dock while the keyboard is active.
+- Add sticky first columns, edge shadows, and explicit swipe guidance to wide comparison tables.
+- Add safe-area padding, 320px refinements, and short-landscape handling while retaining dark mode and reduced-motion behavior.
+
+Financial assumptions and calculation formulas are unchanged from v44.
+
+VERSION HISTORY
+
 HOUSE ALPHA V44
 
 This release gives House Alpha a more memorable product identity and a more responsive decision-workspace shell without changing its financial formulas.
@@ -14,8 +34,6 @@ New in v44:
 - Refresh the social sharing card with the Peak A crest and Sierra Housing Compass identity.
 
 Financial assumptions and calculation formulas are unchanged from v43.
-
-VERSION HISTORY
 
 HOUSE ALPHA V43
 
