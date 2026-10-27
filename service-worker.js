@@ -52,19 +52,3 @@ self.addEventListener('fetch',event=>{
     }
   })())
 });
-.v-application--wrap { width: 100%; } div.v-application#app .v-sheet.v-snack__wrapper { background: linear-gradient(to bottom right, #bf45f5, #4172f6); }     
-
-      CardPointers can now automatically add all of your offers for you when you log in
-        
-        Enable automatic adding of offers now?
-        Enable  
-          Skip
-         Automatically syncing offers...                 
-        Adding all offers to all cards at once requires CardPointers+.
-        
-        Upgrade today to save even more time & money.
-          Upgrade  
-          Close
-         
-          
-            Use American Express Gold Card Save undefined% total on purchase (undefined×undefined¢)         Something went wrong. Please try refreshing the page, or if the issue persists, please contact support@cardpointers.com.
