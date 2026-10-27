@@ -1,3 +1,20 @@
+HOUSE ALPHA V43
+
+This release makes House Alpha feel more responsive and alive while keeping the financial model clean, serious, and unchanged.
+
+New in v43:
+- Add a restrained Sierra ridgeline signature and one-time alpha-mark sheen without introducing looping decoration.
+- Restore visible Save, Share, Copy, load, and error feedback on phone and tablet layouts with a compact action toast; keep an amber dot on the Save button while the scenario has unsaved edits.
+- Make the original break-even slider more tactile with drag feedback and one confirmation pulse when it catches the sticky modeled break-even, without changing its range, step, or escape behavior.
+- Show the immediate modeled outcome of a Decision Lever test beside the lever cards, with plain-English winner and margin feedback plus the existing Undo action.
+- Add short, state-bounded cues when a deal checkpoint or monthly-cash winner actually changes, and a brief entrance when switching calculator sections or opening a disclosure.
+- Make saved-property cards easier to browse with housing-type placeholders, focused hover treatment, and a one-time new-card reveal while keeping real thumbnails primary and local-only.
+- Expand reduced-motion coverage so every new effect disappears when the device requests less motion.
+
+Financial assumptions and calculation formulas are unchanged from v42.
+
+VERSION HISTORY
+
 HOUSE ALPHA V42
 
 This release makes recurring monthly affordability visible across every strategy and adds a realistic zero-fixed-rent camper-van planning mode.
@@ -14,8 +31,6 @@ New in v42:
 Important scope:
 - Zero fixed rent does not mean zero housing cost or guaranteed free parking. Replace every starter input with the actual van, travel pattern, paid-night plan, insurance, repair reserve, and legal overnight locations.
 - The cash panel is a recurring modeled planning total, not a household budget. Utilities and everyday spending appear only when entered, and upfront acquisition cash is shown separately.
-
-VERSION HISTORY
 
 HOUSE ALPHA V41
 
@@ -456,3 +471,19 @@ HOUSE ALPHA V29
 - Compares the strategy against renting a comparable ADU/apartment elsewhere and investing the same initial cash and monthly differences in the S&P 500.
 - Adds live-in strategy result labels, timeline metrics, milestones, break-even main-home rent, comparable-rent crossing, price/rate thresholds, sensitivity results, and down-payment comparisons.
 - Keeps owner-occupied loan-program planning controls available, with a clear delayed-occupancy financing warning.
+.v-application--wrap { width: 100%; } div.v-application#app .v-sheet.v-snack__wrapper { background: linear-gradient(to bottom right, #bf45f5, #4172f6); }     
+
+      CardPointers can now automatically add all of your offers for you when you log in
+        
+        Enable automatic adding of offers now?
+        Enable  
+          Skip
+         Automatically syncing offers...                 
+        Adding all offers to all cards at once requires CardPointers+.
+        
+        Upgrade today to save even more time & money.
+          Upgrade  
+          Close
+         
+          
+            Use American Express Gold Card Save undefined% total on purchase (undefined×undefined¢)         Something went wrong. Please try refreshing the page, or if the issue persists, please contact support@cardpointers.com.
