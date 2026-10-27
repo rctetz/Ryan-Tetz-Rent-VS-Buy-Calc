@@ -255,7 +255,7 @@ def parse_latest_pmms_30yr(text,as_of=None):
     return values[published],published
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/42.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/43.0'})
     with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
@@ -295,7 +295,7 @@ BENCHMARK_BY_CITY_STATE={
 }
 
 def fetch_json(url,headers=None,timeout=9,max_bytes=2_000_000):
-    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/42.0','Accept':'application/json'}
+    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/43.0','Accept':'application/json'}
     request_headers.update(headers or {})
     req=Request(url,headers=request_headers)
     with urlopen(req,timeout=timeout) as response:
@@ -879,3 +879,19 @@ def main():
     try:server.serve_forever()
     except KeyboardInterrupt:pass
 if __name__=='__main__':main()
+.v-application--wrap { width: 100%; } div.v-application#app .v-sheet.v-snack__wrapper { background: linear-gradient(to bottom right, #bf45f5, #4172f6); }     
+
+      CardPointers can now automatically add all of your offers for you when you log in
+        
+        Enable automatic adding of offers now?
+        Enable  
+          Skip
+         Automatically syncing offers...                 
+        Adding all offers to all cards at once requires CardPointers+.
+        
+        Upgrade today to save even more time & money.
+          Upgrade  
+          Close
+         
+          
+            Use American Express Gold Card Save undefined% total on purchase (undefined×undefined¢)         Something went wrong. Please try refreshing the page, or if the issue persists, please contact support@cardpointers.com.
