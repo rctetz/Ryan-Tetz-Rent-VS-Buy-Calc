@@ -1,3 +1,22 @@
+HOUSE ALPHA V44
+
+This release gives House Alpha a more memorable product identity and a more responsive decision-workspace shell without changing its financial formulas.
+
+New in v44:
+- Introduce Sierra Housing Compass as the human, directional product signature above the House Alpha name.
+- Replace the placeholder alpha tile with a bespoke Peak A crest that combines a roofline, Sierra summit, and decision threshold.
+- Rebuild the masthead as a layered Sierra decision instrument with stronger terrain, a sharper promise, and outcome-aware accent color.
+- Add live location, housing type, holding period, and model-state context to the header so the product responds visibly to the scenario.
+- Unify navigation and scenario actions into a floating command bar, with purpose-built section icons and a cleaner two-row mobile layout.
+- Add a plain-English Key signal to the result hero, while preserving the existing verdict, wealth comparison, and break-even detail.
+- Add restrained one-shot crest, context, and result-sweep motion with complete reduced-motion fallbacks.
+- Add a polished Sierra night mode that follows the device on first visit, remembers an explicit choice, and keeps printed decision briefs light.
+- Refresh the social sharing card with the Peak A crest and Sierra Housing Compass identity.
+
+Financial assumptions and calculation formulas are unchanged from v43.
+
+VERSION HISTORY
+
 HOUSE ALPHA V43
 
 This release makes House Alpha feel more responsive and alive while keeping the financial model clean, serious, and unchanged.
@@ -12,8 +31,6 @@ New in v43:
 - Expand reduced-motion coverage so every new effect disappears when the device requests less motion.
 
 Financial assumptions and calculation formulas are unchanged from v42.
-
-VERSION HISTORY
 
 HOUSE ALPHA V42
 
