@@ -1,4 +1,4 @@
-HOUSE ALPHA V42 -- PHONE APP / SHARING SETUP
+HOUSE ALPHA V43 -- PHONE APP / SHARING SETUP
 
 WHAT THIS IS
 This is an installable Progressive Web App (PWA). Once hosted at an HTTPS web address, it can be:
@@ -66,3 +66,19 @@ LOCAL TESTING
 Mac: double-click run_mac.command, or run: python3 app.py
 Windows: open Command Prompt in the folder and run: python app.py
 Then open http://127.0.0.1:8765
+.v-application--wrap { width: 100%; } div.v-application#app .v-sheet.v-snack__wrapper { background: linear-gradient(to bottom right, #bf45f5, #4172f6); }     
+
+      CardPointers can now automatically add all of your offers for you when you log in
+        
+        Enable automatic adding of offers now?
+        Enable  
+          Skip
+         Automatically syncing offers...                 
+        Adding all offers to all cards at once requires CardPointers+.
+        
+        Upgrade today to save even more time & money.
+          Upgrade  
+          Close
+         
+          
+            Use American Express Gold Card Save undefined% total on purchase (undefined×undefined¢)         Something went wrong. Please try refreshing the page, or if the issue persists, please contact support@cardpointers.com.
