@@ -838,7 +838,7 @@ const ids=['price','downPct','rate','term','pmiRate','pmiCancelLtv','rent','rent
 'siteRent','siteRentGrowth','siteOther','registrationAnnual','assetSetupCost','roamingParking','roamingMiles','roamingMpg','roamingFuelPrice','roamingWearPerMile','roamingStorage','roamingCostGrowth',
 'rentCommuteMiles','rentCommuteMinutes','rentCommuteTrips','rentCommuteExtra','buyCommuteMiles','buyCommuteMinutes','buyCommuteTrips','altMobilityCost','commuteWeeks','commuteCostPerMile','commuteCostGrowth'];
 const n=id=>+$(id).value||0, money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(x), compactMoney=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(x);
-const APP_RELEASE=45,SCENARIO_KEY='house-alpha:scenario:v1',SCENARIO_VERSION=1,CALCULATION_VERSION=45;
+const APP_RELEASE=46,SCENARIO_KEY='house-alpha:scenario:v1',SCENARIO_VERSION=1,CALCULATION_VERSION=45;
 const PROPERTY_HISTORY_KEY='house-alpha:property-history:v1',PROPERTY_HISTORY_VERSION=1,PROPERTY_HISTORY_LIMIT=12,PROPERTY_PHOTO_MAX_DATA_LENGTH=220000;
 const THEME_KEY='house-alpha:theme:v1',themeMedia=matchMedia('(prefers-color-scheme: dark)');
 const phoneLayoutMedia=matchMedia('(max-width: 760px), (max-height: 560px) and (pointer: coarse)');
@@ -2742,6 +2742,23 @@ function renderLocationSources(d,{preserve=false,restored=false}={}){
   ['USDA Guaranteed income limit',d.usda_limits?.one_four?`${money(d.usda_limits.one_four)} (1\u20134) / ${money(d.usda_limits.five_eight)} (5\u20138)`:'Check USDA',d.usda_limits?.area||'Exact area depends on property location',d.usda_limits?.source]
  ].map(a=>`<div class="source"><b>${a[0]}</b><div style="font-size:25px;font-weight:900;margin:5px 0">${a[1]}</div><div class="muted">${a[2]}</div>${a[3]?`<div style="margin-top:7px"><a href="${a[3]}" target="_blank" rel="noopener">Open source</a></div>`:''}</div>`).join('')
 }
+async function refreshLocationInBackground(key,{applyToScenario=false}={}){
+ const requestId=++locationRequestSeq;let refreshed;
+ try{
+   const response=await fetch('/api/market?location='+encodeURIComponent(key)+'&x='+Date.now());if(!response.ok)throw new Error('Market refresh unavailable');refreshed=await response.json();
+   if(!refreshed||refreshed.error||refreshed.location_key!==key||!refreshed.name)throw new Error('Invalid market response')
+ }catch(error){if(requestId===locationRequestSeq&&currentLocation===key)$('updated').textContent='Saved benchmarks are ready. Live refresh is unavailable right now.';return false}
+ if(requestId!==locationRequestSeq||currentLocation!==key)return false;
+ locations[key]={...(locations[key]||{}),...refreshed};
+ if(applyToScenario&&!scenarioDirty){
+   await applyLocation(key,false,{preserve:false});
+   $('updated').textContent=`${refreshed.name}: Live market benchmarks refreshed in the background.`;
+ }else{
+   renderLocationSources(refreshed,{preserve:true});
+   $('updated').textContent=`${refreshed.name}: Live benchmarks checked. Your current scenario stayed unchanged.`
+ }
+ return true
+}
 async function loadLocations(){
  renderPropertyHistory();const saved=readSavedScenario();suspendUpdates=true;
  try{
@@ -2752,11 +2769,13 @@ async function loadLocations(){
  }
  $('location').innerHTML=Object.entries(locations).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join('');
  const savedLocation=saved?.controls?.location?.value,startLocation=locations[savedLocation]?savedLocation:'mammoth';$('location').value=startLocation;
- await applyLocation(startLocation,true,{preserve:false});
+ await applyLocation(startLocation,false,{preserve:false});
  selectOwnerGarageFromPropertyType();updateSharedHousingEstimates(true,true);syncAlternativeHousingUi();applyUseMode();applyRenterStorageToggle();applyOwnerIncomePreset(false);applyAduFundingToggle();applySharedHousingToggles();applyInvestmentAduFundingToggle();applyInvestmentAduManagementToggle();applyRentalManagementToggle();applyLoanProgramRules();applyEstimatedRate(true);applyPmiVisibility();updateAllAduBuildEstimates(true);updateAllAduValues(true);applyLiveRentEstimates(true);updateLiveInControls(true);applyInvestmentAduToggle();
  if(saved)restoreScenario(saved);
  suspendUpdates=false;appReady=true;renderPropertyHistory();update();
- if(saved)setScenarioStatus(`Saved scenario restored \u00B7 ${new Date(saved.savedAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`);else setScenarioStatus('Not saved')
+ if(saved)setScenarioStatus(`Saved scenario restored \u00B7 ${new Date(saved.savedAt).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}`);else setScenarioStatus('Not saved');
+ $('updated').textContent=saved?'Saved scenario ready. Checking live benchmarks in the background\u2026':'Saved benchmarks ready. Checking live market data in the background\u2026';
+ void refreshLocationInBackground(startLocation,{applyToScenario:!saved})
 }
 async function applyLocation(key,live=true,{preserve=false}={}){
  const requestId=++locationRequestSeq;let d=locations[key];

@@ -1,3 +1,19 @@
+HOUSE ALPHA V46
+
+This release makes House Alpha usable sooner while live market data refreshes safely in the background.
+
+New in v46:
+- Render immediately from saved location benchmarks instead of blocking the calculator on live mortgage, rent, and home-value sources.
+- Refresh live market benchmarks in the background after the model is ready.
+- Preserve every restored scenario and any input edited while a background refresh is running.
+- Add a one-hour, per-location market cache with bounded refresh concurrency to prevent repeated upstream requests and request stampedes.
+- Keep the explicit Refresh market benchmarks action live and awaited.
+- Remove the social sharing card from install-time offline precaching while keeping the image and sharing metadata available normally.
+
+Financial assumptions and calculation formulas are unchanged from v45. Saved v45 scenarios remain calculation-compatible.
+
+VERSION HISTORY
+
 HOUSE ALPHA V45
 
 This release turns the phone layout into a faster, clearer working tool while preserving the full desktop experience and every financial feature.
@@ -15,8 +31,6 @@ New in v45:
 - Add safe-area padding, 320px refinements, and short-landscape handling while retaining dark mode and reduced-motion behavior.
 
 Financial assumptions and calculation formulas are unchanged from v44.
-
-VERSION HISTORY
 
 HOUSE ALPHA V44
 

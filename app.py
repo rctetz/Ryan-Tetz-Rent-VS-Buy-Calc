@@ -255,7 +255,7 @@ def parse_latest_pmms_30yr(text,as_of=None):
     return values[published],published
 
 def fetch(url):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/45.0'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 HouseAlpha/46.0'})
     with urlopen(req,timeout=10) as r:
         return r.read().decode('utf-8',errors='ignore')
 
@@ -295,7 +295,7 @@ BENCHMARK_BY_CITY_STATE={
 }
 
 def fetch_json(url,headers=None,timeout=9,max_bytes=2_000_000):
-    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/45.0','Accept':'application/json'}
+    request_headers={'User-Agent':'Mozilla/5.0 HouseAlpha/46.0','Accept':'application/json'}
     request_headers.update(headers or {})
     req=Request(url,headers=request_headers)
     with urlopen(req,timeout=timeout) as response:
@@ -713,7 +713,7 @@ def bedroom_prices(home_value, property_type='condo'):
         factors = {'1': 0.48, '2': 0.70, '3': 0.92, '4': 1.10}
     return {k: round(home_value * f / 1000) * 1000 for k, f in factors.items()}
 
-def market(location='mammoth'):
+def build_market(location='mammoth',live=True):
     if location not in LOCATIONS:
         raise ValueError(f'Unknown location: {location}')
     loc=LOCATIONS[location].copy()
@@ -729,6 +729,7 @@ def market(location='mammoth'):
     out.update(maintenance_assumptions(location))
     def mortgage_update():
         try:
+            if not live:raise ValueError('Using saved benchmark')
             rate,published=parse_latest_pmms_30yr(fetch(MORTGAGE_DATA_URL))
             if published<MORTGAGE_FALLBACK_DATE:raise ValueError('PMMS source older than saved benchmark')
             return {'mortgage_rate':rate,'mortgage_rate_date':format_pmms_date(published)},'Updated from Freddie Mac PMMS archive'
@@ -737,6 +738,7 @@ def market(location='mammoth'):
 
     def rent_update():
         try:
+            if not live:raise ValueError('Using saved benchmark')
             if not loc.get('source'): raise ValueError('No live source')
             text=fetch(loc['source'])
             rent=first_float([r'one-bedroom apartment[^$]{0,220}\$([0-9,]+)',r'one bedroom[^$]{0,220}\$([0-9,]+)'],text)
@@ -747,6 +749,7 @@ def market(location='mammoth'):
 
     def home_value_update():
         try:
+            if not live:raise ValueError('Using saved benchmark')
             if not loc.get('home_source'): raise ValueError('No live home-value source')
             text=fetch(loc['home_source'])
             value=first_float([
@@ -789,6 +792,27 @@ def market(location='mammoth'):
     out['status']['storage']='Editable one-car garage / roughly 10\u00D720 storage estimate'
     out['sources']={'mortgage':MORTGAGE_URL,'rent':loc.get('source',''),'home':loc.get('home_source','')}
     return out
+
+MARKET_CACHE={}
+MARKET_LOCKS={key:threading.Lock() for key in LOCATIONS}
+MARKET_FETCH_LIMIT=threading.BoundedSemaphore(3)
+
+def market(location='mammoth'):
+    if location not in LOCATIONS:raise ValueError('Unknown location')
+    cached=MARKET_CACHE.get(location)
+    if cached and time.monotonic()-cached[0]<3600:return cached[1]
+    lock=MARKET_LOCKS[location]
+    if not lock.acquire(timeout=1):return cached[1] if cached else build_market(location,False)
+    try:
+        cached=MARKET_CACHE.get(location)
+        if cached and time.monotonic()-cached[0]<3600:return cached[1]
+        if not MARKET_FETCH_LIMIT.acquire(blocking=False):return cached[1] if cached else build_market(location,False)
+        try:
+            value=build_market(location)
+            MARKET_CACHE[location]=(time.monotonic(),value)
+            return value
+        finally:MARKET_FETCH_LIMIT.release()
+    finally:lock.release()
 
 class Handler(SimpleHTTPRequestHandler):
     def send_json(self,status,payload,extra_headers=None):
